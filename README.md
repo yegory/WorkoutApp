@@ -64,3 +64,4 @@ Here is a list of the goals of my app for the first phase:
 - As a user, I want to be able to create a list of exercises (call it a **routine**) and **give the routine a name** 
 e.g. "Shoulder Workout 25 min"
 - As a user, I want to be able to **edit existing exercises and routines**.
+- As a user, I want to be able to calculate the total time a routine would take to complete.
