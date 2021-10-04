@@ -2,6 +2,13 @@ package model;
 
 import java.util.List;
 
+// Represents an exercise having:
+//      - a name;
+//      - description;
+//      - # of reps;
+//      - # of sets;
+//      - rest time in seconds; and
+//      - rating [1-5] (any other number is "Unrated")
 public class Exercise {
     private String exerciseName;
     private String exerciseDescription;
@@ -9,8 +16,6 @@ public class Exercise {
     private int exerciseNumOfSets;
     private int exerciseRestTime;
     private int exerciseRating;
-
-    private List<Exercise> listOfExercises;
 
     public Exercise(String exsName, String exsDesc, int exsNoR, int exsNoS, int exsRT, int exsRating) {
         this.exerciseName = exsName;
@@ -21,14 +26,9 @@ public class Exercise {
         this.exerciseRating = exsRating;
     }
 
-    void addExercise(Exercise exercise) {
-        listOfExercises.add(exercise);
-    }
-
     public void printExercise() {
         int index = 65;
-        System.out.println("Exercise name: " + exerciseName);
-        System.out.println("Description:");
+        exerciseDescription = "[" + exerciseName + "]: " + exerciseDescription;
         while (exerciseDescription.length() > index) {
             while (' '  != (exerciseDescription.charAt(index))) {
                 index += 1;
@@ -37,12 +37,11 @@ public class Exercise {
             System.out.println(printOut);
             exerciseDescription = exerciseDescription.substring(index);
         }
-        System.out.println(exerciseDescription.trim());
-
-        System.out.println("Number of reps: " + exerciseNumOfReps);
-        System.out.println("Number of sets: " + exerciseNumOfSets);
-        System.out.println("Rest time: " + exerciseRestTime);
-        System.out.println("Rating: " + returnDefinedRating());
+        System.out.println(exerciseDescription.trim() + "\n"
+                            + "Number of reps: " + exerciseNumOfReps + "\n"
+                            + "Number of sets: " + exerciseNumOfSets + "\n"
+                            + "Rest time     : " + exerciseRestTime + " seconds\n"
+                            + "Rating        : " + returnDefinedRating());
     }
 
     private String returnDefinedRating() {
@@ -60,7 +59,7 @@ public class Exercise {
                 break;
             case 5: returnedRating = "A - Amazing";
                 break;
-            default: returnedRating = "N/A";
+            default: returnedRating = "Unrated";
                 break;
         }
         return returnedRating;
