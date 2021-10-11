@@ -73,6 +73,18 @@ public class Exercise {
         return exerciseName;
     }
 
+    public int getExerciseNumOfReps() {
+        return exerciseNumOfReps;
+    }
+
+    public int getExerciseNumOfSets() {
+        return exerciseNumOfSets;
+    }
+
+    public int getExerciseRestTime() {
+        return exerciseRestTime;
+    }
+
     public int getExerciseRating() {
         return exerciseRating;
     }
@@ -90,14 +102,14 @@ public class Exercise {
     }
 
     public void setExerciseNumOfSets(int sets) {
-        exerciseNumOfReps = sets;
+        exerciseNumOfSets = sets;
     }
 
     public void setExerciseRestTime(int restTime) {
-        exerciseNumOfReps = restTime;
+        exerciseRestTime = restTime;
     }
 
     public void setExerciseRating(int rating) {
-        exerciseNumOfReps = rating;
+        exerciseRating = rating;
     }
 }

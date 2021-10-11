@@ -293,6 +293,16 @@ public class WorkoutApp {
     }
 
     private void editUsingNumber() {
+        input = new Scanner(System.in);
+        boolean foundExercise = false;
+        System.out.println("What's the exercise number?");
+        int userInput = input.nextInt();
+        if (userInput >= 1 && userInput <= listOfExercises.size()) {
+            System.out.println("Exercise found!");
+            runEditMenu(listOfExercises.get(userInput - 1));
+        } else {
+            System.out.println("Number is out of range!");
+        }
     }
 
     private void editUsingName() {
@@ -308,7 +318,7 @@ public class WorkoutApp {
                 runEditMenu(exercise);
             }
         }
-        if (foundExercise)
+        if (foundExercise) {
             System.out.println("Exercise not found!");
         }
     }
