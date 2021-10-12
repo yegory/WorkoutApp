@@ -1,6 +1,5 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Routine {
@@ -10,7 +9,7 @@ public class Routine {
     //      - the array of names of exercises which are in the routine
     //      - total time to complete (assuming that each rep takes 4 seconds)
     //      - rating [1-5] (any other number is "Unrated")
-    private final int TIME_TO_DO_ONE_REP = 4;
+    private static final int TIME_FOR_1REP = 4;
 
     private String routineName;
     private String routineDescription;
@@ -25,9 +24,9 @@ public class Routine {
         this.routineName = routineName;
         this.routineDescription = routineDescription;
         this.includedExercises = includedExercises;
-        for (Exercise exercise: includedExercises) {
+        for (Exercise exercise : includedExercises) {
             totalExerciseTime += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
-                                + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_TO_DO_ONE_REP;
+                    + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
         }
         this.totalTimeToComplete = totalExerciseTime;
         this.routineRating = routineRating;
@@ -49,30 +48,26 @@ public class Routine {
         }
         outputString += includedExerciseFormatting;
         outputString += "\nTakes " + (totalTimeToComplete / 60) + " minutes to complete,"
-                        + " and the rating of this routine is: " + returnDefinedRating() + ".";
+                + " and the rating of this routine is: " + returnDefinedRating() + ".";
         System.out.println(outputString);
     }
 
     private String returnDefinedRating() {
-        String returnedRating;
-        switch (routineRating) {
-            case 0: returnedRating = "F - Atrocious";
-                break;
-            case 1: returnedRating = "E - Terrible";
-                break;
-            case 2: returnedRating = "D - Ok-ish";
-                break;
-            case 3: returnedRating = "C - Decent";
-                break;
-            case 4: returnedRating = "B - Great";
-                break;
-            case 5: returnedRating = "A - Amazing";
-                break;
-            default:
-                returnedRating = "Unrated";
-                break;
+        if (routineRating == 0) {
+            return "F - Atrocious";
+        } else if (routineRating == 1) {
+            return "E - Terrible";
+        } else if (routineRating == 2) {
+            return "D - Ok-ish";
+        } else if (routineRating == 3) {
+            return "C - Decent";
+        } else if (routineRating == 4) {
+            return "B - Great";
+        } else if (routineRating == 5) {
+            return "A - Amazing";
+        } else {
+            return "Unrated";
         }
-        return returnedRating;
     }
 
     // GETTERS
@@ -93,6 +88,7 @@ public class Routine {
         return totalTimeToComplete;
 
     }
+
     public int getRoutineRating() {
         return routineRating;
     }
@@ -104,15 +100,20 @@ public class Routine {
     }
 
     public void setRoutineDescription(String routineDescription) {
-       this.routineDescription = routineDescription;
+        this.routineDescription = routineDescription;
     }
 
     public void setIncludedExercises(List<Exercise> includedExercises) {
         this.includedExercises = includedExercises;
     }
 
-    public void setTotalTimeToComplete(int totalTimeToComplete) {
-        this.totalTimeToComplete = totalTimeToComplete;
+    public void calculateNewTotalTime() {
+        int totalExerciseTime = 0;
+        for (Exercise exercise : includedExercises) {
+            totalExerciseTime += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
+                    + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
+        }
+        this.totalTimeToComplete = totalExerciseTime;
     }
 
     public void setRoutineRating(int routineRating) {

@@ -12,6 +12,7 @@ import java.util.Scanner;
 public class WorkoutApp {
     private Scanner input;
     private List<Exercise> listOfExercises;
+    private List<Exercise> routineExercises;
     private Routine routine;
     private Routines listOfRoutines;
 
@@ -47,7 +48,6 @@ public class WorkoutApp {
     // EFFECTS:
     private void init() {
         listOfExercises = new ArrayList<>();
-
         listOfExercises.add(kneePushUps);
         listOfExercises.add(normalPushUps);
         listOfExercises.add(inclinedPushUps);
@@ -263,7 +263,132 @@ public class WorkoutApp {
     private void deleteRoutine() {
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editRoutine() {
+        String userInput = null;
+        boolean decisionMade = false;
+        input = new Scanner(System.in);
+        System.out.println("Which routine would you like to edit?");
+        System.out.println("Type [1] to search using the routine number or [2] to search with its name?");
+        while (!decisionMade) {
+            userInput = input.nextLine();
+            if (userInput.equals("1")) {
+                decisionMade = true;
+                editRoutineUsingNumber();
+            } else if (userInput.equals("2")) {
+                decisionMade = true;
+                editRoutineUsingName();
+            }
+        }
+    }
+
+    private void editRoutineUsingNumber() {
+        input = new Scanner(System.in);
+        boolean foundExercise = false;
+        System.out.println("What's the routine number?");
+        int userInput = input.nextInt();
+        if (userInput >= 1 && userInput <= listOfRoutines.size()) {
+            System.out.println("Routine found!");
+            runRoutineEditMenu(listOfRoutines.getRoutine(userInput - 1));
+        } else {
+            System.out.println("Number is out of range!");
+        }
+    }
+
+    private void editRoutineUsingName() {
+        input = new Scanner(System.in);
+        boolean foundRoutine = false;
+        System.out.println("What's the exercise name?");
+        String userInput = input.nextLine();
+        for (int i = 0; i < listOfRoutines.size(); i++) {
+            Routine routine = listOfRoutines.getRoutine(i);
+            if (routine.getRoutineName().equals(userInput)) {
+                System.out.println("Routine found!");
+                foundRoutine = true;
+                runRoutineEditMenu(routine);
+            }
+        }
+        if (foundRoutine) {
+            System.out.println("Exercise not found!");
+        }
+    }
+
+    private void runRoutineEditMenu(Routine routine) {
+        boolean goBack = false;
+        input = new Scanner(System.in);
+        input.useDelimiter("\n");
+        while (!goBack) {
+            showRoutineEditMenu();
+            System.out.print("choice: ");
+            String userInput = input.next();
+
+            if (userInput.equals("b")) {
+                goBack = true;
+                separatorLine();
+            } else {
+                processRoutineEditMenuChoice(userInput, routine);
+            }
+        }
+    }
+
+    private void showRoutineEditMenu() {
+        System.out.println("Select all information which you would like to change");
+        System.out.println("\t[1] - change name");
+        System.out.println("\t[2] - change description");
+        System.out.println("\t[3] - change included exercises");
+        System.out.println("\t[4] - change rating");
+        System.out.println("\t[b] - go back to Exercise menu");
+        System.out.println("e.g. if you want to change the \"Name\" and \"Rating\" -> type 14");
+    }
+
+    private void processRoutineEditMenuChoice(String userInput, Routine routine) {
+        for (int i = 0; i < userInput.length(); i++) {
+            if (userInput.charAt(i) == '1') {
+                editRoutineName(routine);
+            } else if (userInput.charAt(i) == '2') {
+                editRoutineDescription(routine);
+            } else if (userInput.charAt(i) == '3') {
+                editRoutineIncludedExercises(routine);
+            } else if (userInput.charAt(i) == '4') {
+                editRoutineRating(routine);
+            }
+        }
+        System.out.println("\nDone!\n");
+    }
+
+    private void editRoutineName(Routine routine) {
+        System.out.println("Please input the new name: ");
+        input = new Scanner(System.in);
+        String userInput = input.nextLine();
+        routine.setRoutineName(userInput);
+    }
+
+    private void editRoutineDescription(Routine routine) {
+        System.out.println("Please input the new descriptions: ");
+        input = new Scanner(System.in);
+        String userInput = input.nextLine();
+        routine.setRoutineDescription(userInput);
+    }
+
+
+    private void editRoutineIncludedExercises(Routine routine) {
+        routineExercises = new ArrayList<>();
+        System.out.println("Please input the numbers of each corresponding exercise you want to add (in order)");
+        displayAllExerciseNames();
+        input = new Scanner(System.in);
+        String userInput = input.nextLine();
+        routine.setIncludedExercises(buildUpIncludedExerciseList(userInput));
+        routine.calculateNewTotalTime();
+    }
+
+
+    private void editRoutineRating(Routine routine) {
+        System.out.println("Please input the new rating: ");
+        input = new Scanner(System.in);
+        int userInput = input.nextInt();
+        routine.setRoutineRating(userInput);
     }
 
 
@@ -427,7 +552,7 @@ public class WorkoutApp {
         int userInput = input.nextInt();
         if (userInput >= 1 && userInput <= listOfExercises.size()) {
             System.out.println("Exercise found!");
-            runEditMenu(listOfExercises.get(userInput - 1));
+            runExerciseEditMenu(listOfExercises.get(userInput - 1));
         } else {
             System.out.println("Number is out of range!");
         }
@@ -443,7 +568,7 @@ public class WorkoutApp {
             if (exercise.getExerciseName().equals(userInput)) {
                 System.out.println("Exercise found!");
                 foundExercise = true;
-                runEditMenu(exercise);
+                runExerciseEditMenu(exercise);
             }
         }
         if (foundExercise) {
@@ -451,12 +576,12 @@ public class WorkoutApp {
         }
     }
 
-    private void runEditMenu(Exercise exercise) {
+    private void runExerciseEditMenu(Exercise exercise) {
         boolean goBack = false;
         input = new Scanner(System.in);
         input.useDelimiter("\n");
         while (!goBack) {
-            showEditMenu();
+            showExerciseEditMenu();
             System.out.print("choice: ");
             String userInput = input.next();
 
@@ -464,12 +589,12 @@ public class WorkoutApp {
                 goBack = true;
                 separatorLine();
             } else {
-                processEditMenuChoice(userInput, exercise);
+                processExerciseEditMenuChoice(userInput, exercise);
             }
         }
     }
 
-    private void showEditMenu() {
+    private void showExerciseEditMenu() {
         System.out.println("Select all information which you would like to change");
         System.out.println("\t[1] - to change name");
         System.out.println("\t[2] - to change description");
@@ -481,7 +606,7 @@ public class WorkoutApp {
         System.out.println("e.g. if you want to change the \"Name\" and \"Rest time\" -> type 16");
     }
 
-    private void processEditMenuChoice(String userInput, Exercise exercise) {
+    private void processExerciseEditMenuChoice(String userInput, Exercise exercise) {
         for (int i = 0; i < userInput.length(); i++) {
             if (userInput.charAt(i) == '1') {
                 editExerciseName(exercise);
@@ -575,6 +700,8 @@ public class WorkoutApp {
                     + " The goal is to move the weight from point A to point B, so you need to coordinate well"
                     + " but don't stretch out the movement longer than needed.",
             5, 5, 300, 4);
+
+
 
     Routine chestWorkout = new Routine("Chest Workout Hypertrophy", "Starts from easy exersises"
             + " and gets progressively more difficult",
