@@ -16,6 +16,7 @@ public class WorkoutApp {
     private Routine routine;
     private Routines listOfRoutines;
 
+
     // EFFECTS: Runs the Workout application
     public WorkoutApp() {
         runWorkout();
@@ -329,6 +330,7 @@ public class WorkoutApp {
                 separatorLine();
             } else {
                 processRoutineEditMenuChoice(userInput, routine);
+                goBack = true;
             }
         }
     }
