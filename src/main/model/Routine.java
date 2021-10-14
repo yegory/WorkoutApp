@@ -60,7 +60,7 @@ public class Routine {
     // MODIFIES:
     // REQUIRES:
     // EFFECTS:
-    private String returnDefinedRating() {
+    public String returnDefinedRating() {
         if (routineRating == 0) {
             return "F - Atrocious";
         } else if (routineRating == 1) {
@@ -82,6 +82,14 @@ public class Routine {
 
     public String getRoutineName() {
         return routineName;
+    }
+
+    public String getRoutineDescription() {
+        return routineDescription;
+    }
+
+    public List<Exercise> getIncludedExercises() {
+        return includedExercises;
     }
 
     public int getRoutineRating() {
@@ -121,7 +129,7 @@ public class Routine {
     // MODIFIES:
     // REQUIRES:
     // EFFECTS:
-    private String formatTotalTimeToComplete(int time) {
+    public String formatTotalTimeToComplete(int time) {
         int wholeMinutes = Math.floorDiv(time, 60);
         time -= 60 * wholeMinutes;
         return String.format("%d min, %d sec", wholeMinutes, time);

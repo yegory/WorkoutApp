@@ -1,7 +1,5 @@
 package model;
 
-import java.util.List;
-
 // Represents an exercise having:
 //      - a name;
 //      - description;
@@ -56,30 +54,30 @@ public class Exercise {
     // MODIFIES:
     // REQUIRES:
     // EFFECTS:
-    private String returnDefinedRating() {
-        String returnedRating;
-        switch (exerciseRating) {
-            case 0: returnedRating = "F - Atrocious";
-                    break;
-            case 1: returnedRating = "E - Terrible";
-                    break;
-            case 2: returnedRating = "D - Ok-ish";
-                    break;
-            case 3: returnedRating = "C - Decent";
-                    break;
-            case 4: returnedRating = "B - Great";
-                    break;
-            case 5: returnedRating = "A - Amazing";
-                    break;
-            default:
-                returnedRating = "Unrated";
-                break;
+    public String returnDefinedRating() {
+        if (exerciseRating == 0) {
+            return "F - Atrocious";
+        } else if (exerciseRating == 1) {
+            return "E - Terrible";
+        } else if (exerciseRating == 2) {
+            return "D - Ok-ish";
+        } else if (exerciseRating == 3) {
+            return "C - Decent";
+        } else if (exerciseRating == 4) {
+            return "B - Great";
+        } else if (exerciseRating == 5) {
+            return "A - Amazing";
+        } else {
+            return "Unrated";
         }
-        return returnedRating;
     }
 
     public String getExerciseName() {
         return exerciseName;
+    }
+
+    public String getExerciseDescription() {
+        return exerciseDescription;
     }
 
     public int getExerciseNumOfReps() {
