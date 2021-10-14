@@ -17,7 +17,9 @@ public class Routine {
     private int totalTimeToComplete;
     private int routineRating;
 
-
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     public Routine(String routineName, String routineDescription, List<Exercise> includedExercises, int routineRating) {
         int totalExerciseTime = 0;
 
@@ -32,6 +34,9 @@ public class Routine {
         this.routineRating = routineRating;
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     public void printRoutine() {
         String outputString = "[" + routineName + "]: " + routineDescription + ".\nConsists of: ";
         String includedExerciseFormatting = "[";
@@ -47,11 +52,14 @@ public class Routine {
             }
         }
         outputString += includedExerciseFormatting;
-        outputString += "\nTakes " + (totalTimeToComplete / 60) + " minutes to complete,"
+        outputString += "\nTakes " + formatTotalTimeToComplete(this.totalTimeToComplete) + " to complete,"
                 + " and the rating of this routine is: " + returnDefinedRating() + ".";
         System.out.println(outputString);
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private String returnDefinedRating() {
         if (routineRating == 0) {
             return "F - Atrocious";
@@ -76,19 +84,6 @@ public class Routine {
         return routineName;
     }
 
-    public String getRoutineDescription() {
-        return routineDescription;
-    }
-
-    public List<Exercise> getIncludedExercises() {
-        return includedExercises;
-    }
-
-    public int getTotalTimeToComplete() {
-        return totalTimeToComplete;
-
-    }
-
     public int getRoutineRating() {
         return routineRating;
     }
@@ -107,6 +102,13 @@ public class Routine {
         this.includedExercises = includedExercises;
     }
 
+    public void setRoutineRating(int routineRating) {
+        this.routineRating = routineRating;
+    }
+
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     public void calculateNewTotalTime() {
         int totalExerciseTime = 0;
         for (Exercise exercise : includedExercises) {
@@ -116,8 +118,12 @@ public class Routine {
         this.totalTimeToComplete = totalExerciseTime;
     }
 
-    public void setRoutineRating(int routineRating) {
-        this.routineRating = routineRating;
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
+    private String formatTotalTimeToComplete(int time) {
+        int wholeMinutes = Math.floorDiv(time, 60);
+        time -= 60 * wholeMinutes;
+        return String.format("%d min, %d sec", wholeMinutes, time);
     }
-
 }

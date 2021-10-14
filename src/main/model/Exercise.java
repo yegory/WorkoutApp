@@ -17,6 +17,9 @@ public class Exercise {
     private int exerciseRestTime;
     private int exerciseRating;
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     public Exercise(String exsName, String exsDesc, int exsNoR, int exsNoS, int exsRT, int exsRating) {
         this.exerciseName = exsName;
         this.exerciseDescription = exsDesc;
@@ -26,6 +29,9 @@ public class Exercise {
         this.exerciseRating = exsRating;
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     public void printExercise() {
         int maxLineLength = 65;
         String exerciseDescription1 = "[" + exerciseName + "]: " + exerciseDescription;
@@ -47,6 +53,9 @@ public class Exercise {
                 + "Rating        : " + returnDefinedRating());
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private String returnDefinedRating() {
         String returnedRating;
         switch (exerciseRating) {

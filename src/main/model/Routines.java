@@ -21,4 +21,8 @@ public class Routines {
     public Routine getRoutine(int index) {
         return myRoutines.get(index);
     }
+
+    public void removeRoutine(int index) {
+        myRoutines.remove(index);
+    }
 }

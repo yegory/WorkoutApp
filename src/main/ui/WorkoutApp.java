@@ -12,8 +12,6 @@ import java.util.Scanner;
 public class WorkoutApp {
     private Scanner input;
     private List<Exercise> listOfExercises;
-    private List<Exercise> routineExercises;
-    private Routine routine;
     private Routines listOfRoutines;
 
 
@@ -26,14 +24,13 @@ public class WorkoutApp {
     // EFFECTS: processes user input
     private void runWorkout() {
         boolean stopApp = false;
-        String userInput = null;
 
         init();
 
         while (!stopApp) {
             showMainMenu();
             System.out.print("choice: ");
-            userInput = input.next();
+            String userInput = input.next();
 
             if (userInput.equals("q")) {
                 stopApp = true;
@@ -57,6 +54,7 @@ public class WorkoutApp {
 
         listOfRoutines = new Routines();
         listOfRoutines.addRoutine(chestWorkout);
+        listOfRoutines.addRoutine(legDay);
         input = new Scanner(System.in);
         input.useDelimiter("\n");
     }
@@ -158,7 +156,9 @@ public class WorkoutApp {
         System.out.println("[b] - back to main menu");
     }
 
-
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void processRoutineMenuChoice(String userInput) {
         switch (userInput) {
             case "1":
@@ -185,13 +185,19 @@ public class WorkoutApp {
 
     }
 
-
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void viewRoutines() {
         System.out.println("\n");
-        for (int i = 1; i <= listOfRoutines.size(); i++) {
-            separatorLine();
-            System.out.println("Routine " + i + ":");
-            listOfRoutines.getRoutine(i - 1).printRoutine();
+        if (listOfRoutines.size() == 0) {
+            System.out.println("There are no routines. You can add some.");
+        } else {
+            for (int i = 1; i <= listOfRoutines.size(); i++) {
+                separatorLine();
+                System.out.println("Routine " + i + ":");
+                listOfRoutines.getRoutine(i - 1).printRoutine();
+            }
         }
     }
 
@@ -217,7 +223,9 @@ public class WorkoutApp {
 
     }
 
-
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void addRoutine() {
         input = new Scanner(System.in);
 
@@ -240,8 +248,10 @@ public class WorkoutApp {
         System.out.println("Exercise successfully added!");
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private List<Exercise> buildUpIncludedExerciseList(String userInput) {
-        int userInputInt = Integer.parseInt(userInput);
         List<Exercise> includedExercises = new ArrayList<>();
         while (userInput.length() > 0) {
             if (Integer.parseInt(userInput.substring(0, 1)) <= listOfExercises.size()) {
@@ -254,6 +264,9 @@ public class WorkoutApp {
         return includedExercises;
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void displayAllExerciseNames() {
         for (int i = 1; i <= listOfExercises.size(); i++) {
             System.out.println("Exercise " + i + ": " + listOfExercises.get(i - 1).getExerciseName());
@@ -261,20 +274,68 @@ public class WorkoutApp {
     }
 
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void deleteRoutine() {
+        boolean decisionMade = false;
+        input = new Scanner(System.in);
+        System.out.println("Which routine would you like to delete?");
+        System.out.println("Type [1] to search using the routine number or [2] to search with its name?");
+        while (!decisionMade) {
+            String userInput = input.nextLine();
+            if (userInput.equals("1")) {
+                decisionMade = true;
+                deleteRoutineUsingNumber();
+            } else if (userInput.equals("2")) {
+                decisionMade = true;
+                deleteRoutineUsingName();
+            }
+        }
+    }
+
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
+    private void deleteRoutineUsingNumber() {
+        input = new Scanner(System.in);
+        System.out.println("What's the routine number?");
+        int userInput = input.nextInt();
+        listOfRoutines.removeRoutine(userInput - 1);
+    }
+
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
+    private void deleteRoutineUsingName() {
+        input = new Scanner(System.in);
+        boolean foundExercise = false;
+        System.out.println("What's the routine name?");
+        String userInput = input.nextLine();
+        for (int i = 0; i < listOfRoutines.size(); i++) {
+            if (listOfRoutines.getRoutine(i).getRoutineName().equals(userInput)) {
+                listOfRoutines.removeRoutine(i);
+                foundExercise = true;
+                break;
+            }
+        }
+        if (foundExercise) {
+            System.out.println("Routine removed!");
+        } else {
+            System.out.println("Routine not found!");
+        }
     }
 
     // MODIFIES:
     // REQUIRES:
     // EFFECTS:
     private void editRoutine() {
-        String userInput = null;
         boolean decisionMade = false;
         input = new Scanner(System.in);
         System.out.println("Which routine would you like to edit?");
         System.out.println("Type [1] to search using the routine number or [2] to search with its name?");
         while (!decisionMade) {
-            userInput = input.nextLine();
+            String userInput = input.nextLine();
             if (userInput.equals("1")) {
                 decisionMade = true;
                 editRoutineUsingNumber();
@@ -285,9 +346,11 @@ public class WorkoutApp {
         }
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editRoutineUsingNumber() {
         input = new Scanner(System.in);
-        boolean foundExercise = false;
         System.out.println("What's the routine number?");
         int userInput = input.nextInt();
         if (userInput >= 1 && userInput <= listOfRoutines.size()) {
@@ -298,6 +361,9 @@ public class WorkoutApp {
         }
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editRoutineUsingName() {
         input = new Scanner(System.in);
         boolean foundRoutine = false;
@@ -316,6 +382,9 @@ public class WorkoutApp {
         }
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void runRoutineEditMenu(Routine routine) {
         boolean goBack = false;
         input = new Scanner(System.in);
@@ -335,6 +404,9 @@ public class WorkoutApp {
         }
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void showRoutineEditMenu() {
         System.out.println("Select all information which you would like to change");
         System.out.println("\t[1] - change name");
@@ -345,6 +417,9 @@ public class WorkoutApp {
         System.out.println("e.g. if you want to change the \"Name\" and \"Rating\" -> type 14");
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void processRoutineEditMenuChoice(String userInput, Routine routine) {
         for (int i = 0; i < userInput.length(); i++) {
             if (userInput.charAt(i) == '1') {
@@ -360,6 +435,9 @@ public class WorkoutApp {
         System.out.println("\nDone!\n");
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editRoutineName(Routine routine) {
         System.out.println("Please input the new name: ");
         input = new Scanner(System.in);
@@ -367,6 +445,9 @@ public class WorkoutApp {
         routine.setRoutineName(userInput);
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editRoutineDescription(Routine routine) {
         System.out.println("Please input the new descriptions: ");
         input = new Scanner(System.in);
@@ -374,9 +455,10 @@ public class WorkoutApp {
         routine.setRoutineDescription(userInput);
     }
 
-
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editRoutineIncludedExercises(Routine routine) {
-        routineExercises = new ArrayList<>();
         System.out.println("Please input the numbers of each corresponding exercise you want to add (in order)");
         displayAllExerciseNames();
         input = new Scanner(System.in);
@@ -385,7 +467,9 @@ public class WorkoutApp {
         routine.calculateNewTotalTime();
     }
 
-
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editRoutineRating(Routine routine) {
         System.out.println("Please input the new rating: ");
         input = new Scanner(System.in);
@@ -412,7 +496,7 @@ public class WorkoutApp {
                 deleteExercise();
                 break;
             case "5":
-                editExercise();
+                editExerciseExercise();
                 break;
             default:
                 separatorLine();
@@ -422,6 +506,9 @@ public class WorkoutApp {
         }
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void viewExercises() {
         System.out.println("\n");
         for (int i = 1; i <= listOfExercises.size(); i++) {
@@ -436,8 +523,7 @@ public class WorkoutApp {
     // EFFECTS:
     private void viewFavoriteExercises() {
         int exerciseCount = 0;
-        for (int i = 0; i < listOfExercises.size(); i++) {
-            Exercise currentExercise = listOfExercises.get(i);
+        for (Exercise currentExercise : listOfExercises) {
             if (currentExercise.getExerciseRating() == 5) {
                 separatorLine();
                 exerciseCount += 1;
@@ -482,13 +568,12 @@ public class WorkoutApp {
     // REQUIRES:
     // EFFECTS:
     private void deleteExercise() {
-        String userInput = null;
         boolean decisionMade = false;
         input = new Scanner(System.in);
         System.out.println("Which exercise would you like to delete?");
         System.out.println("Type [1] to search using the exercise number or [2] to search with its name?");
         while (!decisionMade) {
-            userInput = input.nextLine();
+            String userInput = input.nextLine();
             if (userInput.equals("1")) {
                 decisionMade = true;
                 deleteExerciseUsingNumber();
@@ -499,6 +584,9 @@ public class WorkoutApp {
         }
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void deleteExerciseUsingNumber() {
         input = new Scanner(System.in);
         System.out.println("What's the exercise number?");
@@ -506,6 +594,9 @@ public class WorkoutApp {
         listOfExercises.remove(userInput - 1);
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void deleteExerciseUsingName() {
         input = new Scanner(System.in);
         boolean foundExercise = false;
@@ -529,27 +620,28 @@ public class WorkoutApp {
     // MODIFIES:
     // REQUIRES:
     // EFFECTS:
-    private void editExercise() {
-        String userInput = null;
+    private void editExerciseExercise() {
         boolean decisionMade = false;
         input = new Scanner(System.in);
         System.out.println("Which exercise would you like to edit?");
         System.out.println("Type [1] to search using the exercise number or [2] to search with its name?");
         while (!decisionMade) {
-            userInput = input.nextLine();
+            String userInput = input.nextLine();
             if (userInput.equals("1")) {
                 decisionMade = true;
-                editUsingNumber();
+                editExerciseUsingNumber();
             } else if (userInput.equals("2")) {
                 decisionMade = true;
-                editUsingName();
+                editExerciseUsingName();
             }
         }
     }
 
-    private void editUsingNumber() {
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
+    private void editExerciseUsingNumber() {
         input = new Scanner(System.in);
-        boolean foundExercise = false;
         System.out.println("What's the exercise number?");
         int userInput = input.nextInt();
         if (userInput >= 1 && userInput <= listOfExercises.size()) {
@@ -560,13 +652,15 @@ public class WorkoutApp {
         }
     }
 
-    private void editUsingName() {
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
+    private void editExerciseUsingName() {
         input = new Scanner(System.in);
         boolean foundExercise = false;
         System.out.println("What's the exercise name?");
         String userInput = input.nextLine();
-        for (int i = 0; i < listOfExercises.size(); i++) {
-            Exercise exercise = listOfExercises.get(i);
+        for (Exercise exercise : listOfExercises) {
             if (exercise.getExerciseName().equals(userInput)) {
                 System.out.println("Exercise found!");
                 foundExercise = true;
@@ -578,6 +672,9 @@ public class WorkoutApp {
         }
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void runExerciseEditMenu(Exercise exercise) {
         boolean goBack = false;
         input = new Scanner(System.in);
@@ -592,6 +689,7 @@ public class WorkoutApp {
                 separatorLine();
             } else {
                 processExerciseEditMenuChoice(userInput, exercise);
+                goBack = true;
             }
         }
     }
@@ -608,6 +706,9 @@ public class WorkoutApp {
         System.out.println("e.g. if you want to change the \"Name\" and \"Rest time\" -> type 16");
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void processExerciseEditMenuChoice(String userInput, Exercise exercise) {
         for (int i = 0; i < userInput.length(); i++) {
             if (userInput.charAt(i) == '1') {
@@ -626,6 +727,9 @@ public class WorkoutApp {
         }
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editExerciseName(Exercise exercise) {
         System.out.println("Please input the new name: ");
         input = new Scanner(System.in);
@@ -633,6 +737,9 @@ public class WorkoutApp {
         exercise.setExerciseName(userInput);
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editExerciseDescription(Exercise exercise) {
         System.out.println("Please input the new descriptions: ");
         input = new Scanner(System.in);
@@ -640,6 +747,9 @@ public class WorkoutApp {
         exercise.setExerciseDescription(userInput);
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editExerciseNoR(Exercise exercise) {
         System.out.println("Please input the new number of reps: ");
         input = new Scanner(System.in);
@@ -647,6 +757,9 @@ public class WorkoutApp {
         exercise.setExerciseNumOfReps(userInput);
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editExerciseNoS(Exercise exercise) {
         System.out.println("Please input the new number of sets: ");
         input = new Scanner(System.in);
@@ -654,6 +767,9 @@ public class WorkoutApp {
         exercise.setExerciseNumOfSets(userInput);
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editExerciseRestTime(Exercise exercise) {
         System.out.println("Please input the new rest time: ");
         input = new Scanner(System.in);
@@ -661,6 +777,9 @@ public class WorkoutApp {
         exercise.setExerciseRestTime(userInput);
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void editExerciseRating(Exercise exercise) {
         System.out.println("Please input the new rating: ");
         input = new Scanner(System.in);
@@ -668,12 +787,14 @@ public class WorkoutApp {
         exercise.setExerciseRating(userInput);
     }
 
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
     private void separatorLine() {
         System.out.println("---------------------------------------------");
     }
 
-
-    // SOME PRE-MADE EXERCISES
+    // SOME PRE-MADE EXERCISES & ROUTINES
 
     Exercise kneePushUps = new Exercise("Knee push ups",
             "Start with your knees and hands on the floor. Adjust the distance between your knees and "
@@ -703,9 +824,24 @@ public class WorkoutApp {
                     + " but don't stretch out the movement longer than needed.",
             5, 5, 300, 4);
 
+    Exercise bodyweightSquats = new Exercise("Bodyweight squats", "No equipment needed,"
+            + " bring hips at or below knee level.", 20, 2, 30, 3);
 
+    Exercise barbellSquats = new Exercise("Barbell squats", "Load the bar with the weight you"
+            + " are comfortable with.", 8, 4, 50, 4);
 
-    Routine chestWorkout = new Routine("Chest Workout Hypertrophy", "Starts from easy exersises"
-            + " and gets progressively more difficult",
+    Exercise stiffLegDeadlift = new Exercise("Stiff leg deadlift", "Good exercise for hamstrings.",
+            15, 3, 45, 5);
+
+    Exercise calfRaises = new Exercise("Calf raises", "Load up the calves heavy and use ankle"
+            + "extension to grow dem chicken legs. Low rest time so that you feel the burn.",
+            15, 3, 15, 5);
+
+    Routine chestWorkout = new Routine("Chest Workout Hypertrophy",
+            "Starts from easy exercises and gets progressively more difficult.",
             Arrays.asList(kneePushUps, normalPushUps, inclinedPushUps, benchPressHypertrophy), 5);
+
+    Routine legDay = new Routine("Leg day", "Hardest part about this routine is overcoming"
+            + " the urge to skip it.", Arrays.asList(bodyweightSquats, barbellSquats, stiffLegDeadlift,
+            calfRaises), 5);
 }
