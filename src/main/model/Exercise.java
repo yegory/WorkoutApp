@@ -53,6 +53,7 @@ public class Exercise {
         for (String word : outputArrayList) {
             descriptionBuilder += word + " ";
             charCount += word.length();
+
             if (charCount > CONSOLE_OUTPUT_LINE_LENGTH) {
                 descriptionBuilder += "\n";
                 charCount = 0;

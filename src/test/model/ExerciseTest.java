@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import static model.Routine.TIME_FOR_1REP;
+
 public class ExerciseTest {
     private Exercise testExercise;
     private Exercise testExercise2;
@@ -50,7 +52,19 @@ public class ExerciseTest {
 
         assertEquals(testExerciseOutput, testExercise.printExercise());
         assertEquals(testExercise2Output, testExercise2.printExercise());
+
+        testExercise.setExerciseDescription("This is a very long description. Hopefully it is longer than the"
+                + " TIME_FOR_1_REP constant which is set at: " + TIME_FOR_1REP + " characters long.");
+
+        String testExerciseLongOutput = "[" + testExercise.getExerciseName() + "]\n"
+                + "This is a very long description. Hopefully it is longer than the"
+                + " TIME_FOR_1_REP constant which is \nset at: "
+                + TIME_FOR_1REP + " characters long." + "\nNumber of reps: " + testExercise.getExerciseNumOfReps()
+                + "\nNumber of sets: " + testExercise.getExerciseNumOfSets() + "\nRest time     : "
+                + testExercise.getExerciseRestTime() + " seconds\nRating        : " + testExercise.returnDefinedRating();
+        assertEquals(testExerciseLongOutput, testExercise.printExercise());
     }
+
 
     @Test
     void testReturnDefinedRating() {
