@@ -51,10 +51,15 @@ public class WorkoutApp {
         listOfExercises.add(inclinedPushUps);
         listOfExercises.add(benchPressHypertrophy);
         listOfExercises.add(benchPressStrength);
+        listOfExercises.add(bodyweightSquats);
+        listOfExercises.add(barbellSquats);
+        listOfExercises.add(stiffLegDeadlift);
+        listOfExercises.add(calfRaises);
 
         listOfRoutines = new Routines();
-        listOfRoutines.addRoutine(chestWorkout);
+        listOfRoutines.addRoutine(chestDay);
         listOfRoutines.addRoutine(legDay);
+        listOfRoutines.addRoutine(mixedDay);
         input = new Scanner(System.in);
         input.useDelimiter("\n");
     }
@@ -513,8 +518,7 @@ public class WorkoutApp {
         System.out.println("\n");
         for (int i = 1; i <= listOfExercises.size(); i++) {
             separatorLine();
-            System.out.println("Exercise " + i + ":");
-            listOfExercises.get(i - 1).printExercise();
+            System.out.println("Exercise " + i + ": " + listOfExercises.get(i - 1).printExercise());
         }
     }
 
@@ -797,51 +801,47 @@ public class WorkoutApp {
     // SOME PRE-MADE EXERCISES & ROUTINES
 
     Exercise kneePushUps = new Exercise("Knee push ups",
-            "Start with your knees and hands on the floor. Adjust the distance between your knees and "
-                    + "hands so that your body becomes straight. Execute the exercise by lowering and pushing up "
-                    + "yourself with your hands. Make sure to keep your body straight.",
-            10, 3, 60, 3);
+            "Start with your knees and hands on the floor. Adjust the distance between your knees and"
+                    + " hands so that your body becomes straight. Execute the exercise by lowering and pushing up"
+                    + " yourself with your hands. Make sure to keep your body straight.", 10, 3, 60, 3);
 
     Exercise normalPushUps = new Exercise("Normal push ups",
-            "A bodyweight exercise where one pushes their body up starting from a prone position using "
-                    + "their arms. Only the toes and hands must be in contact with the ground.",
-            15, 3, 45, 4);
+            "A bodyweight exercise where one pushes their body up starting from a prone position using"
+                    + " their arms. Only the toes and hands must be in contact with the ground.", 15, 3, 45, 4);
 
     Exercise inclinedPushUps = new Exercise("Inclined push ups",
             "Similar to the normal push up, this is a bodyweight exercise where one pushes their body up."
-                    + " However, the difference here is that you want to raise the feet above the body using a "
-                    + "block or bench. This exercise requires more strength as more weight is put on the hands.",
-            15, 3, 45, 5);
+                    + " However, the difference here is that you want to raise the feet above the body using a block or"
+                    + " bench. This exercise requires more strength as more weight is put on the hands.", 15, 3, 45, 5);
 
     Exercise benchPressHypertrophy = new Exercise("Bench press hypertrophy",
-            "Load the bench press with medium weights to tire out"
-                    + " the muscle. Make sure to control the weight on the on the way down, and up.",
-            15, 2, 60, 4);
+            "Load the bench press with medium weights to tire out the muscle."
+                    + " Make sure to control the weight on the on the way down, and up.", 15, 2, 60, 4);
 
     Exercise benchPressStrength = new Exercise("Bench press for strength",
             "Load the bench press with a heavy load for maximum muscle activation."
                     + " The goal is to move the weight from point A to point B, so you need to coordinate well"
-                    + " but don't stretch out the movement longer than needed.",
-            5, 5, 300, 5);
+                    + " but don't stretch out the movement longer than needed.", 5, 5, 300, 5);
 
     Exercise bodyweightSquats = new Exercise("Bodyweight squats", "No equipment needed,"
             + " bring hips at or below knee level.", 20, 2, 30, 3);
 
     Exercise barbellSquats = new Exercise("Barbell squats", "Load the bar with the weight you"
-            + " are comfortable with.", 8, 4, 50, 4);
+            + " are comfortable with. Move your knees out in the direction of your feet", 8, 4, 50, 4);
 
-    Exercise stiffLegDeadlift = new Exercise("Stiff leg deadlift", "Good exercise for hamstrings.",
-            15, 3, 45, 5);
+    Exercise stiffLegDeadlift = new Exercise("Stiff leg deadlift", "Good exercise for hamstrings."
+            + " Try not to bend too much at the knees. Keep your back straight.", 15, 3, 45, 5);
 
     Exercise calfRaises = new Exercise("Calf raises", "Load up the calves heavy and use ankle"
-            + "extension to grow dem chicken legs. Low rest time so that you feel the burn.",
-            15, 3, 15, 5);
+            + " extension for maximum results. Low rest time so that you feel the burn.", 15, 3, 15, 5);
 
-    Routine chestWorkout = new Routine("Chest Workout Hypertrophy",
+    Routine chestDay = new Routine("Chest Workout Hypertrophy",
             "Starts from easy exercises and gets progressively more difficult.",
-            Arrays.asList(kneePushUps, normalPushUps, inclinedPushUps, benchPressHypertrophy), 5);
+            Arrays.asList(kneePushUps, normalPushUps, inclinedPushUps, benchPressHypertrophy), 4);
 
-    Routine legDay = new Routine("Leg day", "Hardest part about this routine is overcoming"
-            + " the urge to skip it.", Arrays.asList(bodyweightSquats, barbellSquats, stiffLegDeadlift,
-            calfRaises), 5);
+    Routine legDay = new Routine("Leg day", "Hardest part about this routine is overcoming the urge to skip it.",
+            Arrays.asList(bodyweightSquats, barbellSquats, stiffLegDeadlift, calfRaises), 4);
+
+    Routine mixedDay = new Routine("Chest/Legs mix", "Great for when you only have time for 1 gym visit per week.",
+            Arrays.asList(bodyweightSquats, normalPushUps, barbellSquats, benchPressHypertrophy, calfRaises), 5);
 }
