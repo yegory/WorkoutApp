@@ -74,6 +74,8 @@ public class RoutineTest {
 
     @Test
     void testReturnDefinedRating() {
+        testRoutine.setRoutineRating(-1);
+        assertEquals("Unrated", testRoutine.returnDefinedRating());
         testRoutine.setRoutineRating(0);
         assertEquals("F - Atrocious", testRoutine.returnDefinedRating());
         testRoutine.setRoutineRating(1);
@@ -105,5 +107,14 @@ public class RoutineTest {
                 + "Takes " + testRoutine.formatTotalTimeToComplete(testRoutine.getTotalTimeToComplete())
                 + " to complete, and the rating of this routine is: " + testRoutine.returnDefinedRating() + ".";
         assertEquals(testExerciseOutput, testRoutine.printRoutine());
+
+        testRoutine.setIncludedExercises(Arrays.asList(exercise1));
+
+        String testExerciseOutput2 = "[" + testRoutine.getRoutineName() + "]: "
+                + testRoutine.getRoutineDescription() + "\nConsists of: [" + exercise1.getExerciseName() + "]\n"
+                + "Takes " + testRoutine.formatTotalTimeToComplete(testRoutine.getTotalTimeToComplete())
+                + " to complete, and the rating of this routine is: " + testRoutine.returnDefinedRating() + ".";
+        assertEquals(testExerciseOutput2, testRoutine.printRoutine());
+
     }
 }

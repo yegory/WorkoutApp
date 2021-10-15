@@ -42,7 +42,7 @@ public class Routine {
                 + "\nConsists of: ";
         String includedExerciseFormatting = "[";
         if (includedExercises.size() == 1) {
-            includedExerciseFormatting += includedExercises.get(0).getExerciseName() + "], ";
+            includedExerciseFormatting += includedExercises.get(0).getExerciseName() + "]";
         } else {
             for (int i = 0; i < includedExercises.size(); i++) {
                 if ((i + 1) != includedExercises.size()) {

@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Arrays;
+import java.util.List;
+
 // Represents an exercise having:
 //      - a name;
 //      - description;
@@ -8,7 +11,7 @@ package model;
 //      - rest time in seconds (>= 0); and
 //      - rating [1-5] (any other number is "Unrated")
 public class Exercise {
-    private static final int CONSOLE_OUTPUT_LINE_LENGTH = 85;
+    private static final int CONSOLE_OUTPUT_LINE_LENGTH = 80;
 
     private String exerciseName;
     private String exerciseDescription;
@@ -40,26 +43,24 @@ public class Exercise {
     // EFFECTS:
     public String printExercise() {
         String returnedString = "[" + exerciseName + "]\n";
-        int maxLineLength = CONSOLE_OUTPUT_LINE_LENGTH;
+
         String descriptionContainer = exerciseDescription;
-        String returnedDescription = "";
+        String[] exerciseDescriptionAsArray = descriptionContainer.split(" ");
+        List<String> outputArrayList = Arrays.asList(exerciseDescriptionAsArray);
 
-        while (descriptionContainer.length() > maxLineLength) {
-            try {
-                while (!(" ".equals(descriptionContainer.substring(maxLineLength, maxLineLength + 1)))) {
-                    maxLineLength += 1;
-                }
-                returnedDescription += descriptionContainer.substring(0, maxLineLength).trim() + "\n";
-
-                descriptionContainer = descriptionContainer.substring(maxLineLength);
-                maxLineLength = CONSOLE_OUTPUT_LINE_LENGTH;
-            } catch (StringIndexOutOfBoundsException exception) {
-                break;
+        String descriptionBuilder = "";
+        int charCount = 0;
+        for (String word : outputArrayList) {
+            descriptionBuilder += word + " ";
+            charCount += word.length();
+            if (charCount > CONSOLE_OUTPUT_LINE_LENGTH) {
+                descriptionBuilder += "\n";
+                charCount = 0;
             }
         }
 
-        returnedString += returnedDescription + descriptionContainer.trim() + "\n"
-                + "Number of reps: " + exerciseNumOfReps + "\n"
+        returnedString += descriptionBuilder.trim()
+                + "\nNumber of reps: " + exerciseNumOfReps + "\n"
                 + "Number of sets: " + exerciseNumOfSets + "\n"
                 + "Rest time     : " + exerciseRestTime + " seconds\n"
                 + "Rating        : " + returnDefinedRating();
