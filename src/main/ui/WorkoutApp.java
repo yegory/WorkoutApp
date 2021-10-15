@@ -290,14 +290,15 @@ public class WorkoutApp {
     private void processAddRoutine() {
         input = new Scanner(System.in);
 
-        System.out.println("Please input the routine name");
+        System.out.print("Please input the routine name: ");
         String name = input.nextLine();
 
-        System.out.println("Please input the routine description");
+        System.out.print("Please input the routine description: ");
         String description = input.nextLine();
 
-        System.out.println("Please input the numbers of each corresponding exercise you want to add (in order)");
+        System.out.println("\nPlease input the numbers of each corresponding exercise you want to add (in order)");
         displayAllExerciseNames();
+        System.out.print("choice: ");
         String userInput = input.nextLine();
         List<Exercise> includedExercises = buildUpIncludedExerciseList(userInput);
 
@@ -571,9 +572,11 @@ public class WorkoutApp {
     private void deleteExerciseUsingNumber() {
         input = new Scanner(System.in);
         System.out.println("What's the exercise number?");
+        displayAllExerciseNames();
         int userInput = input.nextInt();
         try {
             listOfExercises.remove(userInput - 1);
+            System.out.println("Exercise removed");
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Could not find the exercise associated with that number!");
         }
@@ -586,6 +589,7 @@ public class WorkoutApp {
         input = new Scanner(System.in);
         boolean foundExercise = false;
         System.out.println("What's the exercise name?");
+        displayAllExerciseNames();
         String userInput = input.nextLine();
         for (int i = 0; i < listOfExercises.size(); i++) {
             if (listOfExercises.get(i).getExerciseName().equals(userInput)) {
@@ -636,7 +640,7 @@ public class WorkoutApp {
                 runExerciseEditMenu(exercise);
             }
         }
-        if (foundExercise) {
+        if (!foundExercise) {
             System.out.println("Exercise not found!");
         }
     }

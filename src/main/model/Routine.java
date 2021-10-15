@@ -17,9 +17,12 @@ public class Routine {
     private int totalTimeToComplete;
     private int routineRating;
 
-    // MODIFIES:
-    // REQUIRES:
-    // EFFECTS:
+    // EFFECTS: Constructs the exercise
+    //          routineName is initialized to user input (can be empty)
+    //          sets routineDescription to user input (can be empty)
+    //          sets includedExercise to user input (can be empty)
+    //          calculates and sets the totalTimeToComplete for that routine
+    //          sets routineRating to user input (any integer)
     public Routine(String routineName, String routineDescription, List<Exercise> includedExercises, int routineRating) {
         int totalExerciseTime = 0;
 
@@ -34,9 +37,7 @@ public class Routine {
         this.routineRating = routineRating;
     }
 
-    // MODIFIES:
-    // REQUIRES:
-    // EFFECTS:
+    // EFFECTS: a helper method to print a string representation of exercise.
     public String printRoutine() {
         String outputString = "[" + routineName + "]: " + routineDescription
                 + "\nConsists of: ";
@@ -58,9 +59,7 @@ public class Routine {
         return outputString;
     }
 
-    // MODIFIES:
-    // REQUIRES:
-    // EFFECTS:
+    // EFFECTS: returns a string equivalent of a numeric rating from 0-5. Any other number is "Unrated"
     public String returnDefinedRating() {
         if (routineRating == 0) {
             return "F - Atrocious";
@@ -78,8 +77,6 @@ public class Routine {
             return "Unrated";
         }
     }
-
-    // GETTERS
 
     public String getRoutineName() {
         return routineName;
@@ -101,31 +98,37 @@ public class Routine {
         return routineRating;
     }
 
-    // SETTERS
-
+    // MODIFIES: this
+    // EFFECTS: sets exerciseRating to the input
     public void setRoutineName(String routineName) {
         this.routineName = routineName;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets exerciseDescription to the input
     public void setRoutineDescription(String routineDescription) {
         this.routineDescription = routineDescription;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets exerciseIncludedExercises to the provided listOfExercise
     public void setIncludedExercises(List<Exercise> includedExercises) {
         this.includedExercises = includedExercises;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets exerciseRating to the input
     public void setTotalTimeToComplete(int totalTimeToComplete) {
         this.totalTimeToComplete = totalTimeToComplete;
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets routineRating to the input
     public void setRoutineRating(int routineRating) {
         this.routineRating = routineRating;
     }
 
-    // MODIFIES:
-    // REQUIRES:
-    // EFFECTS:
+    // EFFECTS: helper to format time, e.g.: "# min, # sec"
     public String formatTotalTimeToComplete(int time) {
         int wholeMinutes = Math.floorDiv(time, 60);
         time -= 60 * wholeMinutes;

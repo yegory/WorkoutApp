@@ -13,7 +13,7 @@ their *ideal** workout routine. This application will have:
   stretches, endurance workout, strength workout, etc.)
 * the functionality of adding a custom exercise not included with the pre-made exercises, adding a description for it.
 * the ability to rate the workouts (perhaps different categories like difficulty, fat burn, does it require a lot of
-  equipment? )
+  equipment?)
 
 > Disclaimer:
 > *Although my ambition with this application is to give the person enough room to customize their routine, ultimately the range of customization will be limited and due to this being worked on solely by myself, thus some may find it useful while others may not. Nevertheless, this is something I thought would be fun to make.
@@ -41,13 +41,11 @@ In the summer, when I was 16, I went to the gym for the first time ever. I had l
 exercises, I was overwhelmed. I learned my way through educating myself to YouTube channels like ATHLEAN-X, watching a
 bunch of bodybuilder gym-vlogs, vids of powerlifting meets, and science based videos on nutrition. Gym was almost like a
 passion of mine for 2 years. I haven't been to a gym since COVID-19 started :(, and I really miss the day when I hit 120
-kg on a bench press at 75 kg bodyweight (according to https://strengthlevel.com/strength-standards/bench-press/kg, this
-bench press implies that I achieved advanced mark at that point in time - which made me stronger than 80% of lifters).
+kg on a bench press at 75 kg bodyweight.
 
 > Either way, I decided to make this app because:
 >1. I have some experience in this area; and
->2. It seems like a challenging project from which I can learn a lot because in terms of programming as well as facilitating my understanding of a good gym program (because, to be real, I will get back on the gym grind eventually, and who knows, maybe this program could actually help me plan my workout).
-
+>2. It seems like a challenging project from which I can learn a lot because in terms of programming as well as facilitating my understanding of a good gym program.
 ---
 
 # User Stories
@@ -56,12 +54,9 @@ bench press implies that I achieved advanced mark at that point in time - which 
 
 Here is a list of the goals of my app for the first phase:
 
-- As a user, I want to be able to **view the list of exercises**
-- As a user, I want to be able to **read the descriptions of all existing exercises**
-- As a user, I want to be able to **add an exercise** to my current list of exercises
-- As a user, I want to be able to **delete an exercise** from the current list of exercises
-- As a user, I want to be able to **favorite an exercise** and **give a rating** it based on some criteria
-- As a user, I want to be able to create a list of exercises (call it a **routine**) and **give the routine a name** 
-e.g. "Shoulder Workout 25 min"
-- As a user, I want to be able to **edit existing exercises and routines**.
-- As a user, I want to be able to calculate the total time a routine would take to complete.
+- As a user, I want to be able to **view the list of all exercises and favorite exercises**.
+- As a user, I want to be able to **view the list of all routines and favorite routines**.
+- As a user, I want to be able to **add, delete and edit** my **exercises**.
+- As a user, I want to be able to **add, delete and edit** my **routines**.
+- As a user, I want to be able to **add any number of existing exercises to a routine**.
+- As a user, I want to be able to **see the total time a routine would take to complete**.

@@ -20,9 +20,13 @@ public class Exercise {
     private int exerciseRestTime;
     private int exerciseRating;
 
-    // MODIFIES:
-    // REQUIRES:
-    // EFFECTS:
+    // EFFECTS: Constructs the routine
+    //          exerciseName is initialized to a temporary name with (hopefully) a unique number combination.
+    //          sets exerciseDescription to user input (can be empty)
+    //          sets exerciseNumOfReps to whichever integer is greatest ( user input or 1)
+    //          sets exerciseNumOfSets to whichever integer is greatest ( user input or 1)
+    //          sets exerciseRestTime to whichever integer is greatest ( user input or 0)
+    //          sets exerciseRating to any integer
     public Exercise(String exerciseName, String exerciseDescription, int exerciseNumberOfReps, int exerciseNumberOfSets,
                     int exerciseRestTime, int exerciseRating) {
         this.exerciseDescription = exerciseDescription;
@@ -38,9 +42,7 @@ public class Exercise {
         }
     }
 
-    // MODIFIES:
-    // REQUIRES:
-    // EFFECTS:
+    // EFFECTS: a helper method to print a string representation of exercise.
     public String printExercise() {
         String returnedString = "[" + exerciseName + "]\n";
 
@@ -68,9 +70,7 @@ public class Exercise {
         return returnedString;
     }
 
-    // MODIFIES:
-    // REQUIRES:
-    // EFFECTS:
+    // EFFECTS: returns a string equivalent of a numeric rating from 0-5. Any other number is "Unrated"
     public String returnDefinedRating() {
         if (exerciseRating == 0) {
             return "F - Atrocious";
@@ -113,6 +113,8 @@ public class Exercise {
         return exerciseRating;
     }
 
+    // EFFECTS: sets exerciseName to passed name parameter if length of the parameter is > 0
+    //          otherwise assigns a temporary name
     public void setExerciseName(String name) {
         if (name.equals("")) {
             this.exerciseName = "temporary name - " + exerciseNumOfReps + exerciseNumOfSets
@@ -122,22 +124,32 @@ public class Exercise {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets exerciseDescription to input
     public void setExerciseDescription(String exerciseDescription) {
         this.exerciseDescription = exerciseDescription;
     }
 
+    // MODIFIES: this
+    // EFFECTS:  sets exerciseNumOfReps to whichever integer is greatest ( user input or 1)
     public void setExerciseNumOfReps(int exerciseNumOfReps) {
         this.exerciseNumOfReps = Math.max(1, exerciseNumOfReps);
     }
 
+    // MODIFIES: this
+    // EFFECTS:  sets exerciseNumOfSets to whichever integer is greatest ( user input or 1)
     public void setExerciseNumOfSets(int exerciseNumOfSets) {
         this.exerciseNumOfSets = Math.max(1, exerciseNumOfSets);
     }
 
+    // MODIFIES: this
+    // EFFECTS:  sets exerciseRestTime to whichever integer is greatest ( user input or 0)
     public void setExerciseRestTime(int exerciseRestTime) {
         this.exerciseRestTime = Math.max(0, exerciseRestTime);
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets exerciseRating to the input
     public void setExerciseRating(int exerciseRating) {
         this.exerciseRating = exerciseRating;
     }
