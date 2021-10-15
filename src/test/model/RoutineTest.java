@@ -3,31 +3,89 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import static model.Routine.TIME_FOR_1REP;
 
 public class RoutineTest {
     private Routine testRoutine;
     private Exercise exercise1;
     private Exercise exercise2;
+    private Exercise exercise3;
 
     @BeforeEach
     void runBefore() {
-        exercise1 = new Exercise("exercise1", "Description1",
-                1, 2, 3, -1);
-        exercise2 = new Exercise("exercise2", "Description2",
-                4, 5, 6, 5);
+        exercise1 = new Exercise("exercise1", "Description1", 1, 2, 3, -1);
+        exercise2 = new Exercise("exercise2", "Description2", 4, 5, 6, 5);
+
+        exercise3 = new Exercise("exercise2", "Description3", 5, 5, 5, 1);
         testRoutine = new Routine("Routine name", "Routine description",
                 Arrays.asList(exercise1, exercise2), 1);
     }
 
     @Test
     void testConstructor() {
+        int totalExerciseTime = 0;
+        for (Exercise exercise : testRoutine.getIncludedExercises()) {
+            totalExerciseTime += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
+                    + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
+        }
         assertEquals("Routine name", testRoutine.getRoutineName());
         assertEquals("Routine description", testRoutine.getRoutineDescription());
         assertEquals(Arrays.asList(exercise1, exercise2), testRoutine.getIncludedExercises());
         assertEquals(1, testRoutine.getRoutineRating());
+        assertEquals(totalExerciseTime, testRoutine.getTotalTimeToComplete());
+    }
+
+    @Test
+    void testSetRoutineName() {
+        testRoutine.setRoutineName("Modified routine name");
+        assertEquals("Modified routine name", testRoutine.getRoutineName());
+    }
+
+    @Test
+    void testSetRoutineDescription() {
+        testRoutine.setRoutineDescription("Modified routine description");
+        assertEquals("Modified routine description", testRoutine.getRoutineDescription());
+    }
+
+    @Test
+    void testSetIncludedExercises() {
+        List<Exercise> exerciseList = new ArrayList<>();
+        exerciseList.add(exercise1);
+        exerciseList.add(exercise2);
+        exerciseList.add(exercise3);
+
+        assertEquals(2, testRoutine.getIncludedExercises().size());
+        testRoutine.setIncludedExercises(exerciseList);
+        assertEquals(3, testRoutine.getIncludedExercises().size());
+    }
+
+    @Test
+    void testSetTotalTimeToComplete() {
+        testRoutine.setTotalTimeToComplete(5);
+        assertEquals(5, testRoutine.getTotalTimeToComplete());
+    }
+
+
+    @Test
+    void testReturnDefinedRating() {
+        testRoutine.setRoutineRating(0);
+        assertEquals("F - Atrocious", testRoutine.returnDefinedRating());
+        testRoutine.setRoutineRating(1);
+        assertEquals("E - Terrible", testRoutine.returnDefinedRating());
+        testRoutine.setRoutineRating(2);
+        assertEquals("D - Ok-ish", testRoutine.returnDefinedRating());
+        testRoutine.setRoutineRating(3);
+        assertEquals("C - Decent", testRoutine.returnDefinedRating());
+        testRoutine.setRoutineRating(4);
+        assertEquals("B - Great", testRoutine.returnDefinedRating());
+        testRoutine.setRoutineRating(5);
+        assertEquals("A - Amazing", testRoutine.returnDefinedRating());
     }
 
     @Test
@@ -37,5 +95,15 @@ public class RoutineTest {
         assertEquals("1 min, 0 sec", testRoutine.formatTotalTimeToComplete(60));
         assertEquals("1 min, 1 sec", testRoutine.formatTotalTimeToComplete(61));
         assertEquals("2 min, 5 sec", testRoutine.formatTotalTimeToComplete(125));
+    }
+
+    @Test
+    void testPrintRoutine() {
+        String testExerciseOutput = "[" + testRoutine.getRoutineName() + "]: "
+                + testRoutine.getRoutineDescription() + "\nConsists of: [" + exercise1.getExerciseName()
+                + ", followed by " + exercise2.getExerciseName() + "]\n"
+                + "Takes " + testRoutine.formatTotalTimeToComplete(testRoutine.getTotalTimeToComplete())
+                + " to complete, and the rating of this routine is: " + testRoutine.returnDefinedRating() + ".";
+        assertEquals(testExerciseOutput, testRoutine.printRoutine());
     }
 }

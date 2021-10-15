@@ -9,7 +9,7 @@ public class Routine {
     //      - the array of names of exercises which are in the routine
     //      - total time to complete (assuming that each rep takes 4 seconds)
     //      - rating [1-5] (any other number is "Unrated")
-    private static final int TIME_FOR_1REP = 4;
+    public static final int TIME_FOR_1REP = 4;
 
     private String routineName;
     private String routineDescription;
@@ -37,8 +37,9 @@ public class Routine {
     // MODIFIES:
     // REQUIRES:
     // EFFECTS:
-    public void printRoutine() {
-        String outputString = "[" + routineName + "]: " + routineDescription + ".\nConsists of: ";
+    public String printRoutine() {
+        String outputString = "[" + routineName + "]: " + routineDescription
+                + "\nConsists of: ";
         String includedExerciseFormatting = "[";
         if (includedExercises.size() == 1) {
             includedExerciseFormatting += includedExercises.get(0).getExerciseName() + "], ";
@@ -54,7 +55,7 @@ public class Routine {
         outputString += includedExerciseFormatting;
         outputString += "\nTakes " + formatTotalTimeToComplete(this.totalTimeToComplete) + " to complete,"
                 + " and the rating of this routine is: " + returnDefinedRating() + ".";
-        System.out.println(outputString);
+        return outputString;
     }
 
     // MODIFIES:
@@ -92,6 +93,10 @@ public class Routine {
         return includedExercises;
     }
 
+    public int getTotalTimeToComplete() {
+        return totalTimeToComplete;
+    }
+
     public int getRoutineRating() {
         return routineRating;
     }
@@ -110,20 +115,12 @@ public class Routine {
         this.includedExercises = includedExercises;
     }
 
-    public void setRoutineRating(int routineRating) {
-        this.routineRating = routineRating;
+    public void setTotalTimeToComplete(int totalTimeToComplete) {
+        this.totalTimeToComplete = totalTimeToComplete;
     }
 
-    // MODIFIES:
-    // REQUIRES:
-    // EFFECTS:
-    public void calculateNewTotalTime() {
-        int totalExerciseTime = 0;
-        for (Exercise exercise : includedExercises) {
-            totalExerciseTime += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
-                    + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
-        }
-        this.totalTimeToComplete = totalExerciseTime;
+    public void setRoutineRating(int routineRating) {
+        this.routineRating = routineRating;
     }
 
     // MODIFIES:

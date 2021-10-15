@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import static model.Routine.TIME_FOR_1REP;
+
 public class WorkoutApp {
     private Scanner input;
     private List<Exercise> listOfExercises;
@@ -201,7 +203,7 @@ public class WorkoutApp {
             for (int i = 1; i <= listOfRoutines.size(); i++) {
                 separatorLine();
                 System.out.println("Routine " + i + ":");
-                listOfRoutines.getRoutine(i - 1).printRoutine();
+                System.out.println(listOfRoutines.getRoutine(i - 1).printRoutine());
             }
         }
     }
@@ -469,7 +471,19 @@ public class WorkoutApp {
         input = new Scanner(System.in);
         String userInput = input.nextLine();
         routine.setIncludedExercises(buildUpIncludedExerciseList(userInput));
-        routine.calculateNewTotalTime();
+        calculateNewTotalTime(routine);
+    }
+
+    // MODIFIES:
+    // REQUIRES:
+    // EFFECTS:
+    public void calculateNewTotalTime(Routine routine) {
+        int totalExerciseTime = 0;
+        for (Exercise exercise : routine.getIncludedExercises()) {
+            totalExerciseTime += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
+                    + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
+        }
+        routine.setTotalTimeToComplete(totalExerciseTime);
     }
 
     // MODIFIES:
