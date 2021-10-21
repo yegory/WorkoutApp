@@ -1,5 +1,8 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -152,5 +155,16 @@ public class Exercise {
     // EFFECTS: sets exerciseRating to the input
     public void setExerciseRating(int exerciseRating) {
         this.exerciseRating = exerciseRating;
+    }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("exerciseName", exerciseName);
+        json.put("exerciseDescription", exerciseDescription);
+        json.put("exerciseNumOfReps", exerciseNumOfReps);
+        json.put("exerciseNumOfSets", exerciseNumOfSets);
+        json.put("exerciseRestTime", exerciseRestTime);
+        json.put("exerciseRating", exerciseRating);
+        return json;
     }
 }

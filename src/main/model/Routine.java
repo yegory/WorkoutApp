@@ -1,5 +1,7 @@
 package model;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 public class Routine {
@@ -134,4 +136,12 @@ public class Routine {
         time -= 60 * wholeMinutes;
         return String.format("%d min, %d sec", wholeMinutes, time);
     }
+
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("routineName", routineName);
+        json.put("routineDescription", routineDescription);
+        json.put("includedExercises", includedExercises);
+        json.put("routineRating", routineRating);
+        return json;
 }

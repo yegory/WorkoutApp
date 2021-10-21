@@ -1,0 +1,203 @@
+{
+  "listOfExercises": [
+    {
+      "exerciseName": "Knee push ups",
+      "exerciseDescription": "Start with your knees and hands on the floor. Adjust the distance between your knees and hands so that your body becomes straight. Execute the exercise by lowering and pushing up.",
+      "exerciseNumOfReps": 10,
+      "exerciseNumOfSets": 3,
+      "exerciseRestTime": 60,
+      "exerciseRating": 3
+    },
+    {
+      "exerciseName": "Normal push ups",
+      "exerciseDescription": "A bodyweight exercise where one pushes their body up starting from a prone position using their arms. Only the toes and hands must be in contact with the ground.",
+      "exerciseNumOfReps": 15,
+      "exerciseNumOfSets": 3,
+      "exerciseRestTime": 45,
+      "exerciseRating": 4
+    },
+    {
+      "exerciseName": "Inclined push ups",
+      "exerciseDescription": "Similar to the normal push up, this is a bodyweight exercise where one pushes their body up. However, the difference here is that you want to raise the feet above the body using a block or bench. This exercise requires more strength as more weight is put on the hands.",
+      "exerciseNumOfReps": 15,
+      "exerciseNumOfSets": 3,
+      "exerciseRestTime": 45,
+      "exerciseRating": 5
+    },
+    {
+      "exerciseName": "Bench press hypertrophy",
+      "exerciseDescription": "Load the bench press with medium weights to tire out the muscle. Make sure to control the weight on the on the way down, and up.",
+      "exerciseNumOfReps": 15,
+      "exerciseNumOfSets": 2,
+      "exerciseRestTime": 60,
+      "exerciseRating": 4
+    },
+    {
+      "exerciseName": "Bench press for strength",
+      "exerciseDescription": "Load the bench press with a heavy load for maximum muscle activation. The goal is to move the weight from point A to point B, so you need to coordinate well but don't stretch out the movement longer than needed.",
+      "exerciseNumOfReps": 5,
+      "exerciseNumOfSets": 5,
+      "exerciseRestTime": 300,
+      "exerciseRating": 5
+    },
+    {
+      "exerciseName": "Bodyweight squats",
+      "exerciseDescription": "No equipment needed, bring hips at or below knee level.",
+      "exerciseNumOfReps": 20,
+      "exerciseNumOfSets": 2,
+      "exerciseRestTime": 30,
+      "exerciseRating": 3
+    },
+    {
+      "exerciseName": "Barbell squats",
+      "exerciseDescription": "Load the bar with the weight you.",
+      "exerciseNumOfReps": 8,
+      "exerciseNumOfSets": 4,
+      "exerciseRestTime": 50,
+      "exerciseRating": 4
+    },
+    {
+      "exerciseName": "Stiff leg deadlift",
+      "exerciseDescription": "Good exercise for hamstrings.",
+      "exerciseNumOfReps": 15,
+      "exerciseNumOfSets": 3,
+      "exerciseRestTime": 45,
+      "exerciseRating": 5
+    },
+    {
+      "exerciseName": "Calf raises",
+      "exerciseDescription": "Load up the calves heavy and use ankle extension for maximum results. Low rest time so that you feel the burn.",
+      "exerciseNumOfReps": 15,
+      "exerciseNumOfSets": 3,
+      "exerciseRestTime": 15,
+      "exerciseRating": 5
+    }
+  ],
+  "listOfRoutines": [
+    {
+      "routineName": "Chest Workout Hypertrophy",
+      "routineDescription": "Starts from easy exercises and gets progressively more difficult.",
+      "includedExercises": [
+        {
+          "exerciseName": "Knee push ups",
+          "exerciseDescription": "Start with your knees and hands on the floor. Adjust the distance between your knees and hands so that your body becomes straight. Execute the exercise by lowering and pushing up.",
+          "exerciseNumOfReps": 10,
+          "exerciseNumOfSets": 3,
+          "exerciseRestTime": 60,
+          "exerciseRating": 3
+        },
+        {
+          "exerciseName": "Normal push ups",
+          "exerciseDescription": "A bodyweight exercise where one pushes their body up starting from a prone position using their arms. Only the toes and hands must be in contact with the ground.",
+          "exerciseNumOfReps": 15,
+          "exerciseNumOfSets": 3,
+          "exerciseRestTime": 45,
+          "exerciseRating": 4
+        },
+        {
+          "exerciseName": "Inclined push ups",
+          "exerciseDescription": "Similar to the normal push up, this is a bodyweight exercise where one pushes their body up. However, the difference here is that you want to raise the feet above the body using a block or bench. This exercise requires more strength as more weight is put on the hands.",
+          "exerciseNumOfReps": 15,
+          "exerciseNumOfSets": 3,
+          "exerciseRestTime": 45,
+          "exerciseRating": 5
+        },
+        {
+          "exerciseName": "Bench press hypertrophy",
+          "exerciseDescription": "Load the bench press with medium weights to tire out the muscle. Make sure to control the weight on the on the way down, and up.",
+          "exerciseNumOfReps": 15,
+          "exerciseNumOfSets": 2,
+          "exerciseRestTime": 60,
+          "exerciseRating": 4
+        }
+      ],
+      "routineRating": 4
+    },
+    {
+      "routineName": "Leg day",
+      "routineDescription": "Hardest part about this routine is overcoming the urge to skip it.",
+      "includedExercises": [
+        {
+          "exerciseName": "Bodyweight squats",
+          "exerciseDescription": "No equipment needed, bring hips at or below knee level.",
+          "exerciseNumOfReps": 20,
+          "exerciseNumOfSets": 2,
+          "exerciseRestTime": 30,
+          "exerciseRating": 3
+        },
+        {
+          "exerciseName": "Barbell squats",
+          "exerciseDescription": "Load the bar with the weight you.",
+          "exerciseNumOfReps": 8,
+          "exerciseNumOfSets": 4,
+          "exerciseRestTime": 50,
+          "exerciseRating": 4
+        },
+        {
+          "exerciseName": "Stiff leg deadlift",
+          "exerciseDescription": "Good exercise for hamstrings.",
+          "exerciseNumOfReps": 15,
+          "exerciseNumOfSets": 3,
+          "exerciseRestTime": 45,
+          "exerciseRating": 5
+        },
+        {
+          "exerciseName": "Calf raises",
+          "exerciseDescription": "Load up the calves heavy and use ankle extension for maximum results. Low rest time so that you feel the burn.",
+          "exerciseNumOfReps": 15,
+          "exerciseNumOfSets": 3,
+          "exerciseRestTime": 15,
+          "exerciseRating": 5
+        }
+      ],
+      "routineRating": 4
+    },
+    {
+      "routineName": "Chest/Legs mix",
+      "routineDescription": "Great for when you only have time for 1 gym visit per week.",
+      "includedExercises": [
+        {
+          "exerciseName": "Bodyweight squats",
+          "exerciseDescription": "No equipment needed, bring hips at or below knee level.",
+          "exerciseNumOfReps": 20,
+          "exerciseNumOfSets": 2,
+          "exerciseRestTime": 30,
+          "exerciseRating": 3
+        },
+        {
+          "exerciseName": "Normal push ups",
+          "exerciseDescription": "A bodyweight exercise where one pushes their body up starting from a prone position using their arms. Only the toes and hands must be in contact with the ground.",
+          "exerciseNumOfReps": 15,
+          "exerciseNumOfSets": 3,
+          "exerciseRestTime": 45,
+          "exerciseRating": 4
+        },
+        {
+          "exerciseName": "Barbell squats",
+          "exerciseDescription": "Load the bar with the weight you.",
+          "exerciseNumOfReps": 8,
+          "exerciseNumOfSets": 4,
+          "exerciseRestTime": 50,
+          "exerciseRating": 4
+        },
+        {
+          "exerciseName": "Bench press hypertrophy",
+          "exerciseDescription": "Load the bench press with medium weights to tire out the muscle. Make sure to control the weight on the on the way down, and up.",
+          "exerciseNumOfReps": 15,
+          "exerciseNumOfSets": 2,
+          "exerciseRestTime": 60,
+          "exerciseRating": 4
+        },
+        {
+          "exerciseName": "Calf raises",
+          "exerciseDescription": "Load up the calves heavy and use ankle extension for maximum results. Low rest time so that you feel the burn.",
+          "exerciseNumOfReps": 15,
+          "exerciseNumOfSets": 3,
+          "exerciseRestTime": 15,
+          "exerciseRating": 5
+        }
+      ],
+      "routineRating": 5
+    }
+  ]
+}
