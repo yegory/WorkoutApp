@@ -60,3 +60,15 @@ Here is a list of the goals of my app for the first phase:
 - As a user, I want to be able to **add, delete and edit** my **routines**.
 - As a user, I want to be able to **add any number of existing exercises to a routine**.
 - As a user, I want to be able to **see the total time a routine would take to complete**.
+
+## Second phase
+
+Here is a list of the goals for the second phase:
+
+- As a user, when I start the application, I want to start with a fresh start where there are still no exercises or routines. 
+the application should ask if I want to load some particular save.
+- As a user, I want to be able to save all the exercises and routines I have created and given the option to choose to either create a new
+save file, or to overwrite an existing save.
+- As a user, At any point in my application, from the main menu, I should be able to save, load, or quit my app.
+In the case of the last two, the app should have a confirmation screen if any changes were made after the last save/load were performed
+(as data could be lost if not saved).
