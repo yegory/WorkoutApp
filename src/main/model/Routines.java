@@ -1,5 +1,9 @@
 package model;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +30,14 @@ public class Routines {
         return myRoutines.get(index);
     }
 
-    // MODIFIES: this
-    // REQUIRES: index is not out of range for myRoutines
-    // EFFECTS: removes the Routine at position equal to index.
-    public void removeRoutine(int index) {
-        myRoutines.remove(index);
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray routinesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Routine routine : myRoutines) {
+            jsonArray.put(routine.toJson());
+        }
+
+        return jsonArray;
     }
 }

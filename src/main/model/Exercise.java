@@ -2,6 +2,7 @@ package model;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import persistence.Writable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.List;
 //      - # of sets;
 //      - rest time in seconds (>= 0); and
 //      - rating [1-5] (any other number is "Unrated")
-public class Exercise {
+public class Exercise implements Writable {
+
     private static final int CONSOLE_OUTPUT_LINE_LENGTH = 80;
 
     private String exerciseName;

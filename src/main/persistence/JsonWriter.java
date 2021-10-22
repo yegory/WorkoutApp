@@ -1,8 +1,11 @@
 package persistence;
 
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import model.Exercise;
 import model.Routine;
+import model.Workout;
 import org.json.JSONObject;
+import ui.WorkoutApp;
 
 import java.io.*;
 import java.util.List;
@@ -26,18 +29,9 @@ public class JsonWriter {
 
     // MODIFIES: this
     // EFFECTS: writes JSON representation of workroom to file
-    public void write(List<Exercise> listOfExercise) {
-        for (Exercise exercise: listOfExercise) {
-            JSONObject json = exercise.toJson();
-            saveToFile(json.toString(TAB));
-        }
-    }
-
-    public void write(List<Routine> listOfRoutines) {
-        for (Routine routine: listOfRoutines) {
-            JSONObject json = routine.toJson();
-            saveToFile(json.toString(TAB));
-        }
+    public void write(Workout workout) {
+        JSONObject json = workout.toJson();
+        saveToFile(json.toString(TAB));
     }
 
     // MODIFIES: this

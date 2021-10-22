@@ -1,10 +1,12 @@
 package model;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+import persistence.Writable;
 
 import java.util.List;
 
-public class Routine {
+public class Routine implements Writable {
     // Represents a list of exercise having:
     //      - a name;
     //      - a description (could be considered like "notes")
@@ -141,7 +143,19 @@ public class Routine {
         JSONObject json = new JSONObject();
         json.put("routineName", routineName);
         json.put("routineDescription", routineDescription);
-        json.put("includedExercises", includedExercises);
+        json.put("includedExercises", includedExercisesToJson());
         json.put("routineRating", routineRating);
+
         return json;
+    }
+
+    public JSONArray includedExercisesToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Exercise exercise : includedExercises) {
+            jsonArray.put(exercise.toJson());
+        }
+
+        return jsonArray;
+    }
 }

@@ -3,10 +3,12 @@ package ui;
 import model.Exercise;
 import model.Routine;
 import model.Routines;
+import model.Workout;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,13 +20,14 @@ import static model.Routine.TIME_FOR_1REP;
 public class WorkoutApp {
     private static final String JSON_STORE = "./data/WorkoutAppData.json";
     private Scanner input;
-    private List<Exercise> listOfExercises;
-    private Routines listOfRoutines;
+    private Workout workout;
     private JsonReader jsonReader;
     private JsonWriter jsonWriter;
 
     // EFFECTS: Runs the Workout application
-    public WorkoutApp() {
+    public WorkoutApp() throws FileNotFoundException {
+
+        workout = new Workout("Your workout profile");
         jsonReader = new JsonReader(JSON_STORE);
         jsonWriter = new JsonWriter(JSON_STORE);
         runWorkout();
@@ -35,8 +38,9 @@ public class WorkoutApp {
     // EFFECTS: processes user input on the Main menu screen
     private void runWorkout() {
         boolean stopApp = false;
+        input = new Scanner(System.in);
+        input.useDelimiter("\n");
 
-        init();
 
         while (!stopApp) {
             showMainMenu();
@@ -135,16 +139,6 @@ public class WorkoutApp {
                 goBack = true;
             }
         }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: Initializes the ListOfExercises and ListOfRoutines and adds pre-made
-    //          exercises/routines that are found at the bottom of this file.
-    private void init() {
-        listOfExercises = new ArrayList<>();
-        listOfRoutines = new Routines();
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
     }
 
     // EFFECTS: Displays the main menu.
@@ -274,7 +268,7 @@ public class WorkoutApp {
         System.out.print("Please assign a rating [1-5 or -1 for N/A]: ");
         int rating = input.nextInt();
         Exercise exercise = new Exercise(name, description, reps, sets, restTime, rating);
-        listOfExercises.add(exercise);
+        workout.getExercises().add(exercise);
 
         System.out.println("\nExercise successfully added!");
     }
@@ -301,7 +295,7 @@ public class WorkoutApp {
         int routineRating = input.nextInt();
 
         Routine routine = new Routine(name, description, includedExercises, routineRating);
-        listOfRoutines.addRoutine(routine);
+        workout.addRoutine(routine);
         System.out.println("Exercise successfully added!");
     }
 
@@ -433,22 +427,22 @@ public class WorkoutApp {
     // EFFECTS: outputs all the exercise information in order as they appear in listOfExercises
     private void viewExercises() {
         System.out.println("\n");
-        for (int i = 1; i <= listOfExercises.size(); i++) {
+        for (int i = 1; i <= workout.exercisesSize(); i++) {
             separatorLine();
-            System.out.println("Exercise " + i + ": " + listOfExercises.get(i - 1).printExercise());
+            System.out.println("Exercise " + i + ": " + workout.getExercises().get(i - 1).printExercise());
         }
     }
 
     // EFFECTS: outputs all the routine information in order as they appear in listOfRoutines
     private void viewRoutines() {
         System.out.println("\n");
-        if (listOfRoutines.size() == 0) {
+        if (workout.routinesSize() == 0) {
             System.out.println("There are no routines. You can add some.");
         } else {
-            for (int i = 1; i <= listOfRoutines.size(); i++) {
+            for (int i = 1; i <= workout.routinesSize(); i++) {
                 separatorLine();
                 System.out.println("Routine " + i + ":");
-                System.out.println(listOfRoutines.getRoutine(i - 1).printRoutine());
+                System.out.println(workout.getRoutines().get(i - 1).printRoutine());
             }
         }
     }
@@ -457,12 +451,12 @@ public class WorkoutApp {
     //          outputs all the exercise information in order as they appear in listOfExercises
     private void viewFavoriteExercises() {
         int exerciseCount = 0;
-        for (Exercise currentExercise : listOfExercises) {
-            if (currentExercise.getExerciseRating() == 5) {
+        for (Exercise exercise : workout.getExercises()) {
+            if (exercise.getExerciseRating() == 5) {
                 separatorLine();
                 exerciseCount += 1;
                 System.out.println("Exercise " + exerciseCount + ":");
-                System.out.println(currentExercise.printExercise());
+                System.out.println(exercise.printExercise());
             }
         }
         if (exerciseCount == 0) {
@@ -476,8 +470,8 @@ public class WorkoutApp {
     //          outputs all the routine information in order as they appear in listOfRoutines
     private void viewFavoriteRoutines() {
         int routineCount = 0;
-        for (int i = 0; i < listOfRoutines.size(); i++) {
-            Routine currentRoutine = listOfRoutines.getRoutine(i);
+        for (int i = 0; i < workout.routinesSize(); i++) {
+            Routine currentRoutine = workout.getRoutines().get(i);;
             if (currentRoutine.getRoutineRating() == 5) {
                 separatorLine();
                 routineCount += 1;
@@ -531,7 +525,7 @@ public class WorkoutApp {
         displayAllRoutineNames();
         int userInput = input.nextInt();
         try {
-            listOfRoutines.removeRoutine(userInput - 1);
+            workout.removeRoutine(userInput - 1);
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Could not find the routine associated with that number!");
         }
@@ -546,9 +540,9 @@ public class WorkoutApp {
         System.out.println("What's the routine name?");
         displayAllRoutineNames();
         String userInput = input.nextLine();
-        for (int i = 0; i < listOfRoutines.size(); i++) {
-            if (listOfRoutines.getRoutine(i).getRoutineName().equals(userInput)) {
-                listOfRoutines.removeRoutine(i);
+        for (int i = 0; i < workout.routinesSize(); i++) {
+            if (workout.getRoutines().get(i).getRoutineName().equals(userInput)) {
+                workout.removeRoutine(i);
                 foundExercise = true;
                 break;
             }
@@ -570,7 +564,7 @@ public class WorkoutApp {
         displayAllExerciseNames();
         int userInput = input.nextInt();
         try {
-            listOfExercises.remove(userInput - 1);
+            workout.removeExercise(userInput - 1);
             System.out.println("Exercise removed");
         } catch (IndexOutOfBoundsException e) {
             System.out.println("Could not find the exercise associated with that number!");
@@ -586,9 +580,9 @@ public class WorkoutApp {
         System.out.println("What's the exercise name?");
         displayAllExerciseNames();
         String userInput = input.nextLine();
-        for (int i = 0; i < listOfExercises.size(); i++) {
-            if (listOfExercises.get(i).getExerciseName().equals(userInput)) {
-                listOfExercises.remove(i);
+        for (int i = 0; i < workout.exercisesSize(); i++) {
+            if (workout.getExercises().get(i).getExerciseName().equals(userInput)) {
+                workout.removeExercise(i);
                 foundExercise = true;
                 break;
             }
@@ -610,9 +604,9 @@ public class WorkoutApp {
         System.out.println("What's the exercise number?");
         displayAllExerciseNames();
         int userInput = input.nextInt();
-        if (userInput >= 1 && userInput <= listOfExercises.size()) {
+        if (userInput >= 1 && userInput <= workout.exercisesSize()) {
             System.out.println("Exercise found!");
-            runExerciseEditMenu(listOfExercises.get(userInput - 1));
+            runExerciseEditMenu(workout.getExercises().get(userInput - 1));
         } else {
             System.out.println("Number is out of range!");
         }
@@ -628,7 +622,7 @@ public class WorkoutApp {
         displayAllExerciseNames();
         System.out.print("choice: ");
         String userInput = input.nextLine();
-        for (Exercise exercise : listOfExercises) {
+        for (Exercise exercise : workout.getExercises()) {
             if (exercise.getExerciseName().equals(userInput)) {
                 System.out.println("Exercise found!");
                 foundExercise = true;
@@ -649,9 +643,9 @@ public class WorkoutApp {
         System.out.println("What's the routine number?");
         displayAllRoutineNames();
         int userInput = input.nextInt();
-        if (userInput >= 1 && userInput <= listOfRoutines.size()) {
+        if (userInput >= 1 && userInput <= workout.routinesSize()) {
             System.out.println("Routine found!");
-            runRoutineEditMenu(listOfRoutines.getRoutine(userInput - 1));
+            runRoutineEditMenu(workout.getRoutines().get(userInput - 1));
         } else {
             System.out.println("Number is out of range!");
         }
@@ -667,8 +661,8 @@ public class WorkoutApp {
         displayAllRoutineNames();
         System.out.print("choice: ");
         String userInput = input.nextLine();
-        for (int i = 0; i < listOfRoutines.size(); i++) {
-            Routine routine = listOfRoutines.getRoutine(i);
+        for (int i = 0; i < workout.routinesSize(); i++) {
+            Routine routine = workout.getRoutines().get(i);
             if (routine.getRoutineName().equals(userInput)) {
                 System.out.println("Routine found!");
                 foundRoutine = true;
@@ -802,8 +796,8 @@ public class WorkoutApp {
     private List<Exercise> buildUpIncludedExerciseList(String userInput) {
         List<Exercise> includedExercises = new ArrayList<>();
         while (userInput.length() > 0) {
-            if (Integer.parseInt(userInput.substring(0, 1)) <= listOfExercises.size()) {
-                includedExercises.add(listOfExercises.get(Integer.parseInt(userInput.substring(0, 1)) - 1));
+            if (Integer.parseInt(userInput.substring(0, 1)) <= workout.exercisesSize()) {
+                includedExercises.add(workout.getExercises().get(Integer.parseInt(userInput.substring(0, 1)) - 1));
                 userInput = userInput.substring(1);
             } else {
                 System.out.println("Error, exercise number specified outside the range!");
@@ -816,8 +810,8 @@ public class WorkoutApp {
     // EFFECTS: displays all the exercise name
     //          example of possible output: "Routine 2: Routine 2 Name"
     private void displayAllExerciseNames() {
-        for (int i = 1; i <= listOfExercises.size(); i++) {
-            System.out.println("Exercise " + i + ": " + listOfExercises.get(i - 1).getExerciseName());
+        for (int i = 1; i <= workout.exercisesSize(); i++) {
+            System.out.println("Exercise " + i + ": " + workout.getExercises().get(i - 1).getExerciseName());
         }
     }
 
@@ -825,8 +819,8 @@ public class WorkoutApp {
     // EFFECTS: displays all the routine names in order as they appear in
     //          example of possible output: "Routine 2: Routine 2 Name"
     private void displayAllRoutineNames() {
-        for (int i = 1; i <= listOfRoutines.size(); i++) {
-            System.out.println("Routine " + i + ": " + listOfRoutines.getRoutine(i - 1).getRoutineName());
+        for (int i = 1; i <= workout.routinesSize(); i++) {
+            System.out.println("Routine " + i + ": " + workout.getRoutines().get(i - 1).getRoutineName());
         }
     }
 
@@ -837,15 +831,25 @@ public class WorkoutApp {
     }
 
     // EFFECTS: saves the workroom to file
-    private void saveWorkoutProfile() {
+    private void saveWorkout() {
         try {
             jsonWriter.open();
-            jsonWriter.write(listOfExercises);
-            jsonWriter.write(listOfRoutines);
+            jsonWriter.write(workout);
             jsonWriter.close();
-            System.out.println("Saved exercises to " + JSON_STORE);
+            System.out.println("Saved " + workout.getName() + " to " + JSON_STORE);
         } catch (FileNotFoundException e) {
             System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadWorkRoom() {
+        try {
+            workout = jsonReader.read();
+            System.out.println("Loaded " + workout.getName() + " from " + JSON_STORE);
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
         }
     }
 }

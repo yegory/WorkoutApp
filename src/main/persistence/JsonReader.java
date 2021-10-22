@@ -6,7 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import model.Exercise;
+import model.Workout;
 import org.json.*;
+import ui.WorkoutApp;
 
 public class JsonReader {
     private String source;
@@ -15,10 +18,10 @@ public class JsonReader {
         this.source = source;
     }
 
-    public WorkRoom read() throws IOException {
+    public Workout read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
-        return parseWorkRoom(jsonObject);
+        return parseWorkout(jsonObject);
     }
 
     private String readFile(String source) throws IOException {
@@ -32,25 +35,31 @@ public class JsonReader {
     }
 
     // EFFECTS: parses workroom from JSON object and returns it
-    private WorkRoom parseWorkRoom(JSONObject jsonObject) {
+    private Workout parseWorkout(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
-        WorkRoom wr = new WorkRoom(name);
-        addThingies(wr, jsonObject);
-        return wr;
+        Workout workout = new Workout(name);
+        addThingies(workout, jsonObject);
+        return workout;
     }
 
-    private void addThingies(WorkRoom wr, JSONObject jsonObject) {
+    private void addExercises(Workout workout, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("thingies");
         for (Object json : jsonArray) {
             JSONObject nextThingy = (JSONObject) json;
-            addThingy(wr, nextThingy);
+            addExercise(workout, nextThingy);
         }
     }
 
-    private void addThingy(WorkRoom wr, JSONObject jsonObject) {
-        String name = jsonObject.getString("name");
-        Category category = Category.valueOf(jsonObject.getString("category"));
-        Thingy thingy = new Thingy(name, category);
-        wr.addThingy(thingy);
+    private void addExercise(Workout workout, JSONObject jsonObject) {
+        String exerciseName = jsonObject.getString("exerciseName");
+        String exerciseDescription = jsonObject.getString("exerciseDescription");
+        int exerciseNumOfReps = jsonObject.getInt("exerciseNumOfReps");
+        int exerciseNumOfSets = jsonObject.getInt("exerciseNumOfSets");
+        int exerciseRestTime = jsonObject.getInt("exerciseRestTime");
+        int exerciseRating = jsonObject.getInt("exerciseRating");
+
+        Exercise exercise = Exercise.valueOf(jsonObject.getString("exercise"));
+        Exercise exercise = new Exercise(exerciseName, category);
+        workout.addThingy(thingy);
     }
 }
