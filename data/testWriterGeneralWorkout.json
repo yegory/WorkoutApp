@@ -1,0 +1,77 @@
+{
+    "name": "Workout Writer Test 2",
+    "listOfExercises": [
+        {
+            "exerciseName": "testExercise1",
+            "exerciseRestTime": 3,
+            "exerciseDescription": "Desc1",
+            "exerciseNumOfSets": 2,
+            "exerciseRating": 4,
+            "exerciseNumOfReps": 1
+        },
+        {
+            "exerciseName": "testExercise2",
+            "exerciseRestTime": 33,
+            "exerciseDescription": "Desc2",
+            "exerciseNumOfSets": 22,
+            "exerciseRating": 44,
+            "exerciseNumOfReps": 11
+        }
+    ],
+    "listOfRoutines": [
+        {
+            "routineDescription": "Desc1",
+            "includedExercises": [
+                {
+                    "exerciseName": "testExercise1",
+                    "exerciseRestTime": 3,
+                    "exerciseDescription": "Desc1",
+                    "exerciseNumOfSets": 2,
+                    "exerciseRating": 4,
+                    "exerciseNumOfReps": 1
+                },
+                {
+                    "exerciseName": "testExercise2",
+                    "exerciseRestTime": 33,
+                    "exerciseDescription": "Desc2",
+                    "exerciseNumOfSets": 22,
+                    "exerciseRating": 44,
+                    "exerciseNumOfReps": 11
+                }
+            ],
+            "routineName": "testRoutine1",
+            "routineRating": 4
+        },
+        {
+            "routineDescription": "Desc2",
+            "includedExercises": [
+                {
+                    "exerciseName": "testExercise2",
+                    "exerciseRestTime": 33,
+                    "exerciseDescription": "Desc2",
+                    "exerciseNumOfSets": 22,
+                    "exerciseRating": 44,
+                    "exerciseNumOfReps": 11
+                },
+                {
+                    "exerciseName": "testExercise1",
+                    "exerciseRestTime": 3,
+                    "exerciseDescription": "Desc1",
+                    "exerciseNumOfSets": 2,
+                    "exerciseRating": 4,
+                    "exerciseNumOfReps": 1
+                },
+                {
+                    "exerciseName": "testExercise2",
+                    "exerciseRestTime": 33,
+                    "exerciseDescription": "Desc2",
+                    "exerciseNumOfSets": 22,
+                    "exerciseRating": 44,
+                    "exerciseNumOfReps": 11
+                }
+            ],
+            "routineName": "testRoutine2",
+            "routineRating": 5
+        }
+    ]
+}

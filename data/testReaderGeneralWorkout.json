@@ -1,0 +1,149 @@
+{
+  "listOfExercises": [
+    {
+      "exerciseName": "Knee push ups",
+      "exerciseRestTime": 60,
+      "exerciseDescription": "Start with your knees and hands on the floor. Adjust the distance between your knees and hands so that your body becomes straight. Execute the exercise by lowering and pushing up.",
+      "exerciseNumOfSets": 3,
+      "exerciseRating": 3,
+      "exerciseNumOfReps": 10
+    },
+    {
+      "exerciseName": "Normal push ups",
+      "exerciseRestTime": 45,
+      "exerciseDescription": "A bodyweight exercise where one pushes their body up starting from a prone position using their arms. Only the toes and hands must be in contact with the ground.",
+      "exerciseNumOfSets": 3,
+      "exerciseRating": 4,
+      "exerciseNumOfReps": 15
+    },
+    {
+      "exerciseName": "Inclined push ups",
+      "exerciseRestTime": 45,
+      "exerciseDescription": "Similar to the normal push up, this is a bodyweight exercise where one pushes their body up. However, the difference here is that you want to raise the feet above the body using a block or bench. This exercise requires more strength as more weight is put on the hands.",
+      "exerciseNumOfSets": 3,
+      "exerciseRating": 5,
+      "exerciseNumOfReps": 15
+    },
+    {
+      "exerciseName": "Bench press hypertrophy",
+      "exerciseRestTime": 60,
+      "exerciseDescription": "Load the bench press with medium weights to tire out the muscle. Make sure to control the weight on the on the way down, and up.",
+      "exerciseNumOfSets": 2,
+      "exerciseRating": 4,
+      "exerciseNumOfReps": 15
+    },
+    {
+      "exerciseName": "Bodyweight squats",
+      "exerciseRestTime": 30,
+      "exerciseDescription": "No equipment needed, bring hips at or below knee level.",
+      "exerciseNumOfSets": 2,
+      "exerciseRating": 3,
+      "exerciseNumOfReps": 20
+    },
+    {
+      "exerciseName": "Barbell squats",
+      "exerciseRestTime": 50,
+      "exerciseDescription": "Load the bar with the weight you.",
+      "exerciseNumOfSets": 4,
+      "exerciseRating": 4,
+      "exerciseNumOfReps": 8
+    },
+    {
+      "exerciseName": "Stiff leg deadlift",
+      "exerciseRestTime": 45,
+      "exerciseDescription": "Good exercise for hamstrings.",
+      "exerciseNumOfSets": 3,
+      "exerciseRating": 5,
+      "exerciseNumOfReps": 15
+    },
+    {
+      "exerciseName": "Calf raises",
+      "exerciseRestTime": 15,
+      "exerciseDescription": "Load up the calves heavy and use ankle extension for maximum results. Low rest time so that you feel the burn.",
+      "exerciseNumOfSets": 3,
+      "exerciseRating": 5,
+      "exerciseNumOfReps": 15
+    }
+  ],
+  "listOfRoutines": [
+    {
+      "routineDescription": "Starts from easy exercises and gets progressively more difficult.",
+      "includedExercises": [
+        {
+          "exerciseName": "Knee push ups",
+          "exerciseRestTime": 60,
+          "exerciseDescription": "Start with your knees and hands on the floor. Adjust the distance between your knees and hands so that your body becomes straight. Execute the exercise by lowering and pushing up.",
+          "exerciseNumOfSets": 3,
+          "exerciseRating": 3,
+          "exerciseNumOfReps": 10
+        },
+        {
+          "exerciseName": "Normal push ups",
+          "exerciseRestTime": 45,
+          "exerciseDescription": "A bodyweight exercise where one pushes their body up starting from a prone position using their arms. Only the toes and hands must be in contact with the ground.",
+          "exerciseNumOfSets": 3,
+          "exerciseRating": 4,
+          "exerciseNumOfReps": 15
+        },
+        {
+          "exerciseName": "Inclined push ups",
+          "exerciseRestTime": 45,
+          "exerciseDescription": "Similar to the normal push up, this is a bodyweight exercise where one pushes their body up. However, the difference here is that you want to raise the feet above the body using a block or bench. This exercise requires more strength as more weight is put on the hands.",
+          "exerciseNumOfSets": 3,
+          "exerciseRating": 5,
+          "exerciseNumOfReps": 15
+        },
+        {
+          "exerciseName": "Bench press hypertrophy",
+          "exerciseRestTime": 60,
+          "exerciseDescription": "Load the bench press with medium weights to tire out the muscle. Make sure to control the weight on the on the way down, and up.",
+          "exerciseNumOfSets": 2,
+          "exerciseRating": 4,
+          "exerciseNumOfReps": 15
+        }
+      ],
+      "routineName": "Chest Workout Hypertrophy",
+      "routineRating": 4
+    },
+    {
+      "routineDescription": "Hardest part about this routine is overcoming the urge to skip it.",
+      "includedExercises": [
+        {
+          "exerciseName": "Bodyweight squats",
+          "exerciseRestTime": 30,
+          "exerciseDescription": "No equipment needed, bring hips at or below knee level.",
+          "exerciseNumOfSets": 2,
+          "exerciseRating": 3,
+          "exerciseNumOfReps": 20
+        },
+        {
+          "exerciseName": "Barbell squats",
+          "exerciseRestTime": 50,
+          "exerciseDescription": "Load the bar with the weight you.",
+          "exerciseNumOfSets": 4,
+          "exerciseRating": 4,
+          "exerciseNumOfReps": 8
+        },
+        {
+          "exerciseName": "Stiff leg deadlift",
+          "exerciseRestTime": 45,
+          "exerciseDescription": "Good exercise for hamstrings.",
+          "exerciseNumOfSets": 3,
+          "exerciseRating": 5,
+          "exerciseNumOfReps": 15
+        },
+        {
+          "exerciseName": "Calf raises",
+          "exerciseRestTime": 15,
+          "exerciseDescription": "Load up the calves heavy and use ankle extension for maximum results. Low rest time so that you feel the burn.",
+          "exerciseNumOfSets": 3,
+          "exerciseRating": 5,
+          "exerciseNumOfReps": 15
+        }
+      ],
+      "routineName": "Leg day",
+      "routineRating": 4
+    }
+  ],
+  "name": "testReaderGeneralWorkout"
+}
