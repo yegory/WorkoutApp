@@ -4,10 +4,8 @@ import model.Exercise;
 import model.Routine;
 import model.Workout;
 import org.junit.jupiter.api.Test;
-import org.opentest4j.AssertionFailedError;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

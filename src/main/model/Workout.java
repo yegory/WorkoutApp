@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import persistence.Writable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Workout implements Writable {
@@ -38,8 +37,16 @@ public class Workout implements Writable {
         return exercises;
     }
 
+    public Exercise getExercise(int index) {
+        return exercises.get(index);
+    }
+
     public List<Routine> getRoutines() {
         return routines;
+    }
+
+    public Routine getRoutine(int index) {
+        return routines.get(index);
     }
 
     // EFFECTS: returns number of thingies in this workroom

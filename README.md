@@ -1,4 +1,9 @@
-# Workout Planner Application
+# Workout Tracker Application
+
+---
+
+Implementation of save/load using Json, JsonWriteTests and JsonReadTests inspired by: 
+https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 
 ---
 
@@ -65,8 +70,8 @@ Here is a list of the goals of my app for the first phase:
 
 Here is a list of the goals for the second phase:
 
-- As a user, when I start the application, I want to start with a fresh start where there are still no exercises or routines. 
-the application should ask if I want to load some particular save.
+- As a user, when I start the application, I want to start with a fresh start where there are still no exercises or routines.
+The application should ask if I want to load some particular save.
 - As a user, I want to be able to save all the exercises and routines I have created and given the option to choose to either create a new
 save file, or to overwrite an existing save.
 - As a user, At any point in my application, from the main menu, I should be able to save, load, or quit my app.

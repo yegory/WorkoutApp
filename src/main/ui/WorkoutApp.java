@@ -8,10 +8,7 @@ import persistence.JsonWriter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 
 import static model.Routine.TIME_FOR_1REP;
@@ -63,16 +60,22 @@ public class WorkoutApp {
 
         input = new Scanner(System.in);
         input.useDelimiter("\n");
+
         while (!goBack) {
             showExerciseMenu();
             System.out.print("choice: ");
             String userInput = input.next();
 
+            input.useDelimiter("\n");
             if (userInput.equals("b")) {
                 goBack = true;
                 separatorLine();
             } else {
-                processExerciseMenuChoice(userInput);
+                try {
+                    processExerciseMenuChoice(userInput);
+                } catch (InputMismatchException e) {
+                    System.out.println("Your input was of incorrect type, your action was aborted");
+                }
             }
         }
     }
@@ -258,25 +261,41 @@ public class WorkoutApp {
     // REQUIRES: the input to exercise reps, sets, rest time, and rating are all integers
     // EFFECTS: ask user inputs for each field in exercise,
     //          then create new exercise object and add it to the list of exercises
-    private void processAddExercise() {
+    private void processAddExercise() throws InputMismatchException {
         input = new Scanner(System.in);
-
         System.out.print("Please input the exercise name: ");
         String name = input.nextLine();
         System.out.print("Please input the exercise description: ");
         String description = input.nextLine();
         System.out.print("Please input the number of reps: ");
-        int reps = input.nextInt();
+
+        int reps = ensureIntInput();
         System.out.print("Please input the number of sets: ");
-        int sets = input.nextInt();
+        int sets = ensureIntInput();
         System.out.print("Please input the rest time in seconds: ");
-        int restTime = input.nextInt();
+        int restTime = ensureIntInput();
         System.out.print("Please assign a rating [1-5 or -1 for N/A]: ");
-        int rating = input.nextInt();
+        int rating = ensureIntInput();
+
         Exercise exercise = new Exercise(name, description, reps, sets, restTime, rating);
-        workout.getExercises().add(exercise);
+        workout.addExercise(exercise);
 
         System.out.println("\nExercise successfully added!");
+    }
+
+    private int ensureIntInput() {
+        input = new Scanner(System.in);
+        int userInput = 1;
+        boolean intInput = false;
+        while (!intInput) {
+            try {
+                userInput = Integer.parseInt(input.nextLine());
+                intInput = true;
+            } catch (NumberFormatException e) {
+                System.out.println("Input must be an integer");
+            }
+        }
+        return userInput;
     }
 
     // MODIFIES: this and listOfRoutines
@@ -435,7 +454,7 @@ public class WorkoutApp {
         System.out.println("\n");
         for (int i = 1; i <= workout.exercisesSize(); i++) {
             separatorLine();
-            System.out.println("Exercise " + i + ": " + workout.getExercises().get(i - 1).printExercise());
+            System.out.println("Exercise " + i + ": " + workout.getExercise(i - 1).printExercise());
         }
     }
 
@@ -448,7 +467,7 @@ public class WorkoutApp {
             for (int i = 1; i <= workout.routinesSize(); i++) {
                 separatorLine();
                 System.out.println("Routine " + i + ":");
-                System.out.println(workout.getRoutines().get(i - 1).printRoutine());
+                System.out.println(workout.getRoutine(i - 1).printRoutine());
             }
         }
     }
@@ -477,7 +496,7 @@ public class WorkoutApp {
     private void viewFavoriteRoutines() {
         int routineCount = 0;
         for (int i = 0; i < workout.routinesSize(); i++) {
-            Routine currentRoutine = workout.getRoutines().get(i);
+            Routine currentRoutine = workout.getRoutine(i);
             if (currentRoutine.getRoutineRating() == 5) {
                 separatorLine();
                 routineCount += 1;
@@ -547,7 +566,7 @@ public class WorkoutApp {
         displayAllRoutineNames();
         String userInput = input.nextLine();
         for (int i = 0; i < workout.routinesSize(); i++) {
-            if (workout.getRoutines().get(i).getRoutineName().equals(userInput)) {
+            if (workout.getRoutine(i).getRoutineName().equals(userInput)) {
                 workout.removeRoutine(i);
                 foundExercise = true;
                 break;
@@ -587,7 +606,7 @@ public class WorkoutApp {
         displayAllExerciseNames();
         String userInput = input.nextLine();
         for (int i = 0; i < workout.exercisesSize(); i++) {
-            if (workout.getExercises().get(i).getExerciseName().equals(userInput)) {
+            if (workout.getExercise(i).getExerciseName().equals(userInput)) {
                 workout.removeExercise(i);
                 foundExercise = true;
                 break;
@@ -612,7 +631,7 @@ public class WorkoutApp {
         int userInput = input.nextInt();
         if (userInput >= 1 && userInput <= workout.exercisesSize()) {
             System.out.println("Exercise found!");
-            runExerciseEditMenu(workout.getExercises().get(userInput - 1));
+            runExerciseEditMenu(workout.getExercise(userInput - 1));
         } else {
             System.out.println("Number is out of range!");
         }
@@ -651,7 +670,7 @@ public class WorkoutApp {
         int userInput = input.nextInt();
         if (userInput >= 1 && userInput <= workout.routinesSize()) {
             System.out.println("Routine found!");
-            runRoutineEditMenu(workout.getRoutines().get(userInput - 1));
+            runRoutineEditMenu(workout.getRoutine(userInput - 1));
         } else {
             System.out.println("Number is out of range!");
         }
@@ -668,7 +687,7 @@ public class WorkoutApp {
         System.out.print("choice: ");
         String userInput = input.nextLine();
         for (int i = 0; i < workout.routinesSize(); i++) {
-            Routine routine = workout.getRoutines().get(i);
+            Routine routine = workout.getRoutine(i);
             if (routine.getRoutineName().equals(userInput)) {
                 System.out.println("Routine found!");
                 foundRoutine = true;
@@ -803,7 +822,7 @@ public class WorkoutApp {
         List<Exercise> includedExercises = new ArrayList<>();
         while (userInput.length() > 0) {
             if (Integer.parseInt(userInput.substring(0, 1)) <= workout.exercisesSize()) {
-                includedExercises.add(workout.getExercises().get(Integer.parseInt(userInput.substring(0, 1)) - 1));
+                includedExercises.add(workout.getExercise(Integer.parseInt(userInput.substring(0, 1)) - 1));
                 userInput = userInput.substring(1);
             } else {
                 System.out.println("Error, exercise number specified outside the range!");
@@ -817,7 +836,7 @@ public class WorkoutApp {
     //          example of possible output: "Routine 2: Routine 2 Name"
     private void displayAllExerciseNames() {
         for (int i = 1; i <= workout.exercisesSize(); i++) {
-            System.out.println("Exercise " + i + ": " + workout.getExercises().get(i - 1).getExerciseName());
+            System.out.println("Exercise " + i + ": " + workout.getExercise(i - 1).getExerciseName());
         }
     }
 
@@ -826,7 +845,7 @@ public class WorkoutApp {
     //          example of possible output: "Routine 2: Routine 2 Name"
     private void displayAllRoutineNames() {
         for (int i = 1; i <= workout.routinesSize(); i++) {
-            System.out.println("Routine " + i + ": " + workout.getRoutines().get(i - 1).getRoutineName());
+            System.out.println("Routine " + i + ": " + workout.getRoutine(i - 1).getRoutineName());
         }
     }
 
