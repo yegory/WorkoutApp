@@ -2,7 +2,6 @@ package ui;
 
 import model.Exercise;
 import model.Routine;
-import model.Routines;
 import model.Workout;
 import persistence.JsonReader;
 import persistence.JsonWriter;
@@ -17,6 +16,7 @@ import java.util.Scanner;
 
 import static model.Routine.TIME_FOR_1REP;
 
+// save and load functionality inspired/borrowed from JsonSerializationDemo (link in README)
 public class WorkoutApp {
     private static final String JSON_STORE = "./data/WorkoutAppData.json";
     private Scanner input;
@@ -146,6 +146,8 @@ public class WorkoutApp {
         System.out.println("\nMain menu, select one of:");
         System.out.println("\t[1] - view exercise menu");
         System.out.println("\t[2] - view routine menu");
+        System.out.println("\t[3] - load a workout preset file");
+        System.out.println("\t[4] - save current workout preset");
         System.out.println("\t[q] - quit");
     }
 
@@ -201,6 +203,10 @@ public class WorkoutApp {
             runExerciseMenu();
         } else if (userInput.equals("2")) {
             runRoutinesMenu();
+        } else if (userInput.equals("3")) {
+            loadWorkRoom();
+        } else if (userInput.equals("4")) {
+            saveWorkout();
         } else {
             separatorLine();
             System.out.println("\t\t\tSelection not valid");
@@ -471,7 +477,7 @@ public class WorkoutApp {
     private void viewFavoriteRoutines() {
         int routineCount = 0;
         for (int i = 0; i < workout.routinesSize(); i++) {
-            Routine currentRoutine = workout.getRoutines().get(i);;
+            Routine currentRoutine = workout.getRoutines().get(i);
             if (currentRoutine.getRoutineRating() == 5) {
                 separatorLine();
                 routineCount += 1;
@@ -831,6 +837,7 @@ public class WorkoutApp {
     }
 
     // EFFECTS: saves the workroom to file
+    // borrowed from JsonSerializationDemo (link in README)
     private void saveWorkout() {
         try {
             jsonWriter.open();
@@ -844,6 +851,7 @@ public class WorkoutApp {
 
     // MODIFIES: this
     // EFFECTS: loads workroom from file
+    // borrowed from JsonSerializationDemo (link in README)
     private void loadWorkRoom() {
         try {
             workout = jsonReader.read();

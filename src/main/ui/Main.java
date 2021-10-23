@@ -2,6 +2,7 @@ package ui;
 
 import java.io.FileNotFoundException;
 
+// exception inspired by JsonSerializationDemo (link in README)
 public class Main {
     public static void main(String[] args) {
         try {
