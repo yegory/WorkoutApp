@@ -4,16 +4,18 @@ import model.Exercise;
 import model.Routine;
 import model.Workout;
 import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class JsonWriterTest extends JsonTest{
+/*
+    Modelled off of JsonSerializationDemo
+    https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+ */
 
+public class JsonWriterTest extends JsonTest{
 
     @Test
     void testWriterInvalidFile() {

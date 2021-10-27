@@ -3,68 +3,88 @@ package model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+    !!! I created this class so that I could save/load to the same file, got the idea from
+    https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo,
+    where a workroom contained all the information that needed to be saved.
+ */
+
+// Represents a workout profile having a name, and list of already existing exercises and workout routines.
 public class Workout implements Writable {
 
     private String name;
     private List<Exercise> exercises;
     private List<Routine> routines;
 
+    // EFFECTS: constructs a new workout with name as provided with empty exercises and routines lists.
     public Workout(String name) {
         this.name = name;
         exercises = new ArrayList<>();
         routines = new ArrayList<>();
     }
 
+    // EFFECTS: returns the name of the workout profile
     public String getName() {
         return name;
     }
 
     // MODIFIES: this
-    // EFFECTS: adds thingy to this workroom
+    // EFFECTS: adds exercise to this workroom
     public void addExercise(Exercise exercise) {
         exercises.add(exercise);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds routine to this workout
     public void addRoutine(Routine routine) {
         routines.add(routine);
     }
 
+    // EFFECT: returns a list of the all the exercises
     public List<Exercise> getExercises() {
         return exercises;
     }
 
+    // REQUIRES: index is not out of range for exercises
+    // EFFECT: returns the exercise at position equal to index
     public Exercise getExercise(int index) {
         return exercises.get(index);
     }
 
+    // EFFECT: returns a list of the all the routines
     public List<Routine> getRoutines() {
         return routines;
     }
 
+    // REQUIRES: index is not out of range for routines
+    // EFFECT: returns the routine at position equal to index
     public Routine getRoutine(int index) {
         return routines.get(index);
     }
 
-    // EFFECTS: returns number of thingies in this workroom
+    // EFFECTS: returns number of exercises in this workout
     public int exercisesSize() {
         return exercises.size();
     }
 
+    // EFFECTS: returns number of routines in this workout
     public int routinesSize() {
         return routines.size();
     }
 
+    // MODIFIES: this
+    // REQUIRES: index is not out of range for exercises
+    // EFFECTS: removes the Routine at position equal to index
     public void removeExercise(int index) {
         exercises.remove(index);
     }
 
     // MODIFIES: this
-    // REQUIRES: index is not out of range for myRoutines
-    // EFFECTS: removes the Routine at position equal to index.
+    // REQUIRES: index is not out of range for routines
+    // EFFECTS: removes the Routine at position equal to index
     public void removeRoutine(int index) {
         routines.remove(index);
     }
@@ -99,5 +119,4 @@ public class Workout implements Writable {
 
         return jsonArray;
     }
-
 }

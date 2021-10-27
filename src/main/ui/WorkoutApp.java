@@ -5,15 +5,16 @@ import model.Routine;
 import model.Workout;
 import persistence.JsonReader;
 import persistence.JsonWriter;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
-
-
 import static model.Routine.TIME_FOR_1REP;
 
-// save and load functionality inspired/borrowed from JsonSerializationDemo (link in README)
+/*
+    !!! save and load functionality inspired/borrowed from JsonSerializationDemo
+    https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+ */
+
 public class WorkoutApp {
     private static final String JSON_STORE = "./data/WorkoutAppData.json";
     private Scanner input;
@@ -21,7 +22,7 @@ public class WorkoutApp {
     private JsonReader jsonReader;
     private JsonWriter jsonWriter;
 
-    // EFFECTS: Runs the Workout application
+    // EFFECTS: Constructs a workout profile and runs the Workout application
     public WorkoutApp() throws FileNotFoundException {
 
         workout = new Workout("Your workout profile");
@@ -30,14 +31,12 @@ public class WorkoutApp {
         runWorkout();
     }
 
-
     // MODIFIES: this
     // EFFECTS: processes user input on the Main menu screen
     private void runWorkout() {
         boolean stopApp = false;
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-
 
         while (!stopApp) {
             showMainMenu();
@@ -50,7 +49,6 @@ public class WorkoutApp {
                 processMenuChoice(userInput);
             }
         }
-
     }
 
     // MODIFIES: this
@@ -257,7 +255,7 @@ public class WorkoutApp {
         }
     }
 
-    // MODIFIES: this and listOfExercises, creates a new exercise
+    // MODIFIES: this, workout.exercises
     // REQUIRES: the input to exercise reps, sets, rest time, and rating are all integers
     // EFFECTS: ask user inputs for each field in exercise,
     //          then create new exercise object and add it to the list of exercises
@@ -298,7 +296,7 @@ public class WorkoutApp {
         return userInput;
     }
 
-    // MODIFIES: this and listOfRoutines
+    // MODIFIES: this, workout.routines
     // REQUIRES: the included Exercises prompt needs integers
     // EFFECTS: constructs a new routine
     private void processAddRoutine() {
@@ -427,11 +425,11 @@ public class WorkoutApp {
         boolean decisionMade = false;
 
         separatorLine();
-        System.out.println("Which routine would you like to edit?");
-        System.out.println("\tType [1] to search using the routine number");
-        System.out.println("\tType [2] to search using the routine name");
-        System.out.println("\tType [b] to go back");
-        System.out.print("choice: ");
+        System.out.print("\nWhich routine would you like to edit?"
+                        + "\n\tType [1] to search using the routine number"
+                        + "\n\tType [2] to search using the routine name"
+                        + "\n\tType [b] to go back"
+                        + "\nchoice: ");
         input = new Scanner(System.in);
         while (!decisionMade) {
             String userInput = input.nextLine();
@@ -449,7 +447,7 @@ public class WorkoutApp {
         }
     }
 
-    // EFFECTS: outputs all the exercise information in order as they appear in listOfExercises
+    // EFFECTS: outputs all the exercise information in order as they appear in workout.exercises
     private void viewExercises() {
         System.out.println("\n");
         for (int i = 1; i <= workout.exercisesSize(); i++) {
@@ -458,7 +456,7 @@ public class WorkoutApp {
         }
     }
 
-    // EFFECTS: outputs all the routine information in order as they appear in listOfRoutines
+    // EFFECTS: outputs all the routine information in order as they appear in workout.routines
     private void viewRoutines() {
         System.out.println("\n");
         if (workout.routinesSize() == 0) {
@@ -473,7 +471,7 @@ public class WorkoutApp {
     }
 
     // EFFECTS: for each exercise that has a rating of 5,
-    //          outputs all the exercise information in order as they appear in listOfExercises
+    //          outputs all the exercise information in order as they appear in workout.exercises
     private void viewFavoriteExercises() {
         int exerciseCount = 0;
         for (Exercise exercise : workout.getExercises()) {
@@ -492,7 +490,7 @@ public class WorkoutApp {
     }
 
     // EFFECTS: for each routine that has a rating of 5,
-    //          outputs all the routine information in order as they appear in listOfRoutines
+    //          outputs all the routine information in order as they appear in workout.routines
     private void viewFavoriteRoutines() {
         int routineCount = 0;
         for (int i = 0; i < workout.routinesSize(); i++) {
@@ -581,7 +579,7 @@ public class WorkoutApp {
 
     // MODIFIES: this
     // REQUIRES: the userInput is an integer
-    // EFFECTS: prompts the user to select the exercise number as listed in the viewExercises,
+    // EFFECTS: prompts the user to select the exercise numbers listed in the viewExercises,
     //          if the user input is out of bounds (not one of the exercise numbers, prints an error)
     private void deleteExerciseUsingNumber() {
         input = new Scanner(System.in);
@@ -597,7 +595,7 @@ public class WorkoutApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: if exercise found, removes the selected exercise from listOfExercises
+    // EFFECTS: if exercise found, removes the selected exercise from workout.exercises
     //          else prints a message to the user
     private void deleteExerciseUsingName() {
         input = new Scanner(System.in);
@@ -619,11 +617,10 @@ public class WorkoutApp {
         }
     }
 
-    // MODIFIES: this and exercise
+    // MODIFIES: this, exercise
     // REQUIRES: the input is an integer
-    // EFFECTS: if the inputted integer is found in the listOfExercise list, the runExerciseEditMenu is run with the
-    //          corresponding exercise that was selected by the user.
-    //
+    // EFFECTS: if the inputted exercise number is found in workout.exercises,
+    //          the runExerciseEditMenu is run with the corresponding exercise that was selected by the user.
     private void editExerciseUsingNumber() {
         input = new Scanner(System.in);
         System.out.println("What's the exercise number?");
@@ -637,7 +634,7 @@ public class WorkoutApp {
         }
     }
 
-    // MODIFIES: this and exercise
+    // MODIFIES: this, exercise
     // EFFECTS: processes user input to select preferable edit method
     private void editExerciseUsingName() {
         input = new Scanner(System.in);
@@ -659,7 +656,7 @@ public class WorkoutApp {
         }
     }
 
-    // MODIFIES: this and routine
+    // MODIFIES: this, routine
     // REQUIRES: user input is an integer
     // EFFECTS: processes user to edit using the routine number
     private void editRoutineUsingNumber() {
@@ -676,7 +673,7 @@ public class WorkoutApp {
         }
     }
 
-    // MODIFIES: this and routine
+    // MODIFIES: this, routine
     // EFFECTS: processes user to edit using the routine name
     private void editRoutineUsingName() {
         input = new Scanner(System.in);
@@ -817,7 +814,7 @@ public class WorkoutApp {
     }
 
     // REQUIRES: user input is a String of integers only
-    // EFFECTS: returns an Array List of exercises that were chosen by the user. (helper for add routine etc)
+    // EFFECTS: returns an Array List of exercises that were chosen by the user. (helper for add routine etc.)
     private List<Exercise> buildUpIncludedExerciseList(String userInput) {
         List<Exercise> includedExercises = new ArrayList<>();
         while (userInput.length() > 0) {
@@ -855,8 +852,8 @@ public class WorkoutApp {
         System.out.println("---------------------------------------------------");
     }
 
+    // !!! inspired by JsonSerializationDemo (link in README)
     // EFFECTS: saves the workroom to file
-    // borrowed from JsonSerializationDemo (link in README)
     private void saveWorkout() {
         try {
             jsonWriter.open();
@@ -868,9 +865,9 @@ public class WorkoutApp {
         }
     }
 
+    // !!! inspired by JsonSerializationDemo (link in README)
     // MODIFIES: this
     // EFFECTS: loads workroom from file
-    // borrowed from JsonSerializationDemo (link in README)
     private void loadWorkRoom() {
         try {
             workout = jsonReader.read();

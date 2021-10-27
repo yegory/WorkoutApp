@@ -11,6 +11,12 @@ import model.Routine;
 import model.Workout;
 import org.json.*;
 
+/*
+    Modelled off of JsonSerializationDemo
+    https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+ */
+
+// Represents a reader that reads workout from JSON data stored in file
 public class JsonReader {
     private String source;
 
@@ -18,20 +24,23 @@ public class JsonReader {
         this.source = source;
     }
 
-    // borrowed from JsonSerializationDemo (link in README)
+    // !!! borrowed from JsonSerializationDemo (link in README)
+    // EFFECTS: reads workout from file and returns it;
+    // throws IOException if an error occurs reading data from file
     public Workout read() throws IOException {
         String jsonData = readFile(source);
         JSONObject jsonObject = new JSONObject(jsonData);
         return parseWorkout(jsonObject);
     }
 
-    // borrowed from: https://devqa.io/java-read-json-file-as-string/
+    // !!! borrowed from: https://devqa.io/java-read-json-file-as-string/
+    // EFFECTS: reads source file as string and returns it
     public static String readFile(String file) throws IOException {
         return new String(Files.readAllBytes(Paths.get(file)));
     }
 
+    // !!! borrowed from JsonSerializationDemo (link in README)
     // EFFECTS: parses workroom from JSON object and returns it
-    // borrowed from JsonSerializationDemo (link in README)
     private Workout parseWorkout(JSONObject jsonObject) {
         String name = jsonObject.getString("name");
         Workout workout = new Workout(name);
@@ -40,7 +49,9 @@ public class JsonReader {
         return workout;
     }
 
-    // inspired by JsonSerializationDemo (link in README)
+    // !!! inspired by JsonSerializationDemo (link in README)
+    // MODIFIES: workout
+    // EFFECTS: parses exercises from JSON object and adds it to workout
     private void addExercises(Workout workout, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("listOfExercises");
         for (Object json : jsonArray) {
@@ -49,7 +60,9 @@ public class JsonReader {
         }
     }
 
-    // inspired by JsonSerializationDemo (link in README)
+    // !!! inspired by JsonSerializationDemo (link in README)
+    // MODIFIES: workout
+    // EFFECTS: parses exercises from JSON object and adds them to workroom
     private void addExercise(Workout workout, JSONObject jsonObject) {
         String exerciseName = jsonObject.getString("exerciseName");
         String exerciseDescription = jsonObject.getString("exerciseDescription");
@@ -64,7 +77,9 @@ public class JsonReader {
         workout.addExercise(exercise);
     }
 
-    // inspired by JsonSerializationDemo (link in README)
+    // !!! inspired by JsonSerializationDemo (link in README)
+    // MODIFIES: workout
+    // EFFECTS: parses routines from JSON object and adds them to workroom
     private void addRoutines(Workout workout, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("listOfRoutines");
         for (Object json : jsonArray) {
@@ -73,7 +88,9 @@ public class JsonReader {
         }
     }
 
-    // inspired by JsonSerializationDemo (link in README)
+    // !!! inspired by JsonSerializationDemo (link in README)
+    // MODIFIES: workout
+    // EFFECTS: parses routine from JSON object and adds it to workout
     private void addRoutine(Workout workout, JSONObject jsonObject) {
         List<Exercise> exerciseList = new ArrayList<>();
 

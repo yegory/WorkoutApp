@@ -3,8 +3,12 @@ package model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
-
 import java.util.List;
+
+/*
+    Json stuff borrowed from  JsonSerializationDemo
+    https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+ */
 
 public class Routine implements Writable {
     // Represents a list of exercise having:
@@ -139,6 +143,8 @@ public class Routine implements Writable {
         return String.format("%d min, %d sec", wholeMinutes, time);
     }
 
+    // EFFECTS: converts routine to a Json object
+    @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("routineName", routineName);
@@ -149,6 +155,7 @@ public class Routine implements Writable {
         return json;
     }
 
+    // EFFECTS: converts exercises to an array of individual Json objects
     public JSONArray includedExercisesToJson() {
         JSONArray jsonArray = new JSONArray();
 

@@ -1,11 +1,14 @@
 package model;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
-
 import java.util.Arrays;
 import java.util.List;
+
+/*
+    Json stuff borrowed from  JsonSerializationDemo
+    https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+ */
 
 // Represents an exercise having:
 //      - a name;
@@ -52,8 +55,7 @@ public class Exercise implements Writable {
         String returnedString = "[" + exerciseName + "]\n";
 
         String descriptionContainer = exerciseDescription;
-        String[] exerciseDescriptionAsArray = descriptionContainer.split(" ");
-        List<String> outputArrayList = Arrays.asList(exerciseDescriptionAsArray);
+        String[] outputArrayList = descriptionContainer.split(" ");
 
         String descriptionBuilder = "";
         int charCount = 0;
@@ -159,6 +161,8 @@ public class Exercise implements Writable {
         this.exerciseRating = exerciseRating;
     }
 
+    // EFFECTS: converts exercise to Json object
+    @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("exerciseName", exerciseName);
