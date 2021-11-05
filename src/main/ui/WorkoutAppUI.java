@@ -72,6 +72,7 @@ public class WorkoutAppUI extends JFrame {
      * @param theMenu  menu to which new item is added
      * @param action   handler for new menu item
      * @param accelerator    keystroke accelerator for this menu item
+     *                       copied from alarm project :(
      */
     private void addMenuItem(JMenu theMenu, AbstractAction action, KeyStroke accelerator) {
         JMenuItem menuItem = new JMenuItem(action);
