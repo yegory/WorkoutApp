@@ -2,18 +2,22 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class HomePanel extends JInternalFrame {
+public class HomePanel extends WorkoutPanelPrototype implements ActionListener {
+
+    private boolean isOpen;
 
     public HomePanel() {
-        this.setLayout(new BorderLayout());
+        super();
         this.setTitle("Home Panel");
-        this.setResizable(true);
-        this.setClosable(true);
-        this.setMaximizable(true);
-        this.setBackground(new Color(0xED4245));
-        this.setIconifiable(true);
+        this.setBackground(WorkoutAppUI.WorkoutPanelColor);
         this.setBounds(25, 25, 300, 300);
-        this.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }

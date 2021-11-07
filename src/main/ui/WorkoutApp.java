@@ -28,7 +28,7 @@ public class WorkoutApp {
         workout = new Workout("Your workout profile");
         jsonReader = new JsonReader(JSON_STORE);
         jsonWriter = new JsonWriter(JSON_STORE);
-        runWorkout();
+
     }
 
     // MODIFIES: this
@@ -205,7 +205,7 @@ public class WorkoutApp {
         } else if (userInput.equals("2")) {
             runRoutinesMenu();
         } else if (userInput.equals("3")) {
-            loadWorkRoom();
+            loadWorkout();
         } else if (userInput.equals("4")) {
             saveWorkout();
         } else {
@@ -853,8 +853,8 @@ public class WorkoutApp {
     }
 
     // !!! inspired by JsonSerializationDemo (link in README)
-    // EFFECTS: saves the workroom to file
-    private void saveWorkout() {
+    // EFFECTS: saves the workout to file
+    protected void saveWorkout() {
         try {
             jsonWriter.open();
             jsonWriter.write(workout);
@@ -867,8 +867,8 @@ public class WorkoutApp {
 
     // !!! inspired by JsonSerializationDemo (link in README)
     // MODIFIES: this
-    // EFFECTS: loads workroom from file
-    private void loadWorkRoom() {
+    // EFFECTS: loads workout from file
+    protected void loadWorkout() {
         try {
             workout = jsonReader.read();
             System.out.println("Loaded " + workout.getName() + " from " + JSON_STORE);

@@ -2,18 +2,22 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class RoutinePanel extends JInternalFrame {
+public class RoutinePanel extends WorkoutPanelPrototype implements ActionListener {
+
+    JFrame frame = new JFrame();
+    JButton myButton = new JButton();
 
     public RoutinePanel() {
-        this.setLayout(new BorderLayout());
         this.setTitle("Routine Panel");
-        this.setResizable(true);
-        this.setClosable(true);
-        this.setMaximizable(true);
-        this.setIconifiable(true);
+        this.setBackground(WorkoutAppUI.WorkoutPanelColor);
         this.setBounds(775, 25, 400, 750);
-        //exercisePanel.setSize(300,500);
-        this.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
     }
 }

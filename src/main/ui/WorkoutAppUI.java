@@ -1,45 +1,67 @@
 package ui;
 
+
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
+import com.sun.java.swing.action.OpenAction;
+import model.Workout;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 // exception inspired by JsonSerializationDemo (link in README)
 
-public class WorkoutAppUI extends JFrame {
+public class WorkoutAppUI extends JFrame implements ActionListener {
 
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 900;
-    private static final Color MAIN_BACKGROUND_COLOR = new Color(0x7289DA);
+    public static final Color MAIN_BACKGROUND_COLOR = new Color(0xB07000);
+    public static final Color WorkoutPanelColor = new Color(0x6D7EB0);
 
-    private WorkoutApp workoutApp;
-    JDesktopPane mainWindow;
-    JInternalFrame homePanel;
-    JInternalFrame filePanel;
-    JInternalFrame exercisePanel;
-    JInternalFrame routinePanel;
+
+    private JDesktopPane mainWindow;
+    private JInternalFrame homePanel;
+    private JInternalFrame filePanel;
+    private JInternalFrame exercisePanel;
+    private JInternalFrame routinePanel;
+
+    private JMenuItem homeMenuItem;
+    private JMenuItem fileMenuItem;
+    private JMenuItem exerciseMenuItem;
+    private JMenuItem routineMenuItem;
+
+    private static WorkoutApp workoutApp;
+
+    public static WorkoutApp getWorkoutApp() {
+        return workoutApp;
+    }
+
 
     public WorkoutAppUI() {
-        //try {
-        //    workoutApp = new WorkoutApp();
-        //} catch (FileNotFoundException e) {
-        //    System.out.println("File not found");
-        //}
+        try {
+            workoutApp = new WorkoutApp();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
         mainWindow = new JDesktopPane();
         mainWindow.addMouseListener(new DesktopFocusAction());
         setContentPane(mainWindow);
         setSize(WIDTH, HEIGHT);
         setTitle("Workout App");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setBackground(MAIN_BACKGROUND_COLOR);
+        mainWindow.setBackground(MAIN_BACKGROUND_COLOR);
 
         homePanel = new HomePanel();
         filePanel = new FilePanel();
         exercisePanel = new ExercisePanel();
         routinePanel = new RoutinePanel();
+
         mainWindow.add(homePanel);
         mainWindow.add(filePanel);
         mainWindow.add(exercisePanel);
@@ -51,20 +73,26 @@ public class WorkoutAppUI extends JFrame {
         setVisible(true);
     }
 
+
     private void addMenu() {
         JMenuBar menuBar = new JMenuBar();
-
-        JMenu homeMenu = new JMenu("Home");
-        JMenu fileMenu = new JMenu("File");
-        JMenu exerciseMenu = new JMenu("Exercise Menu");
-        JMenu routineMenu = new JMenu("Routine Menu");
-
-        menuBar.add(homeMenu);
-        menuBar.add(fileMenu);
-        menuBar.add(exerciseMenu);
-        menuBar.add(routineMenu);
-
         setJMenuBar(menuBar);
+        JMenu mainMenu = new JMenu("Menu");
+        menuBar.add(mainMenu);
+
+        homeMenuItem = new JMenuItem("Open Home panel");
+        fileMenuItem = new JMenuItem("Open File panel");
+        exerciseMenuItem = new JMenuItem("Open Exercise panel");
+        routineMenuItem = new JMenuItem("Open Routine panel");
+        mainMenu.add(homeMenuItem);
+        mainMenu.add(fileMenuItem);
+        mainMenu.add(exerciseMenuItem);
+        mainMenu.add(routineMenuItem);
+
+        homeMenuItem.addActionListener(this);
+        fileMenuItem.addActionListener(this);
+        exerciseMenuItem.addActionListener(this);
+        routineMenuItem.addActionListener(this);
     }
 
     /**
@@ -90,6 +118,30 @@ public class WorkoutAppUI extends JFrame {
         setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
     }
 
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == homeMenuItem) {
+            if (homePanel.isClosed()) {
+                homePanel = new HomePanel();
+                mainWindow.add(homePanel);
+            }
+        } else if (e.getSource() == fileMenuItem) {
+            if (filePanel.isClosed()) {
+                filePanel = new FilePanel();
+                mainWindow.add(filePanel);
+            }
+        } else if (e.getSource() == exerciseMenuItem) {
+            if (exercisePanel.isClosed()) {
+                mainWindow.add(new ExercisePanel());
+            }
+        } else if (e.getSource() == routineMenuItem) {
+            if (filePanel.isClosed()) {
+                mainWindow.add(new RoutinePanel());
+            }
+        }
+    }
+
     /**
      * Represents action to be taken when user clicks desktop
      * to switch focus. (Needed for key handling.)
@@ -102,7 +154,6 @@ public class WorkoutAppUI extends JFrame {
     }
 
     public static void main(String[] args) {
-        new ExerciseMenu();
         new WorkoutAppUI();
     }
 }
