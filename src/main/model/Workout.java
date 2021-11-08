@@ -89,6 +89,15 @@ public class Workout implements Writable {
         routines.remove(index);
     }
 
+    public boolean findExercise(String exerciseName) {
+        for (Exercise exercise : exercises) {
+            if (exercise.getExerciseName().equals(exerciseName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

@@ -13,7 +13,7 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
     public RoutinePanel() {
         this.setTitle("Routine Panel");
         this.setBackground(WorkoutAppUI.WorkoutPanelColor);
-        this.setBounds(775, 25, 400, 750);
+        this.setBounds(350, 450, 825, 400);
     }
 
     @Override

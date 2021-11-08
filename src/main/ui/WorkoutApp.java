@@ -5,9 +5,11 @@ import model.Routine;
 import model.Workout;
 import persistence.JsonReader;
 import persistence.JsonWriter;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+
 import static model.Routine.TIME_FOR_1REP;
 
 /*
@@ -24,235 +26,13 @@ public class WorkoutApp {
 
     // EFFECTS: Constructs a workout profile and runs the Workout application
     public WorkoutApp() throws FileNotFoundException {
-
         workout = new Workout("Your workout profile");
         jsonReader = new JsonReader(JSON_STORE);
         jsonWriter = new JsonWriter(JSON_STORE);
-
     }
 
-    // MODIFIES: this
-    // EFFECTS: processes user input on the Main menu screen
-    private void runWorkout() {
-        boolean stopApp = false;
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
-
-        while (!stopApp) {
-            showMainMenu();
-            System.out.print("choice: ");
-            String userInput = input.next();
-
-            if (userInput.equals("q")) {
-                stopApp = true;
-            } else {
-                processMenuChoice(userInput);
-            }
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: processes user input on the Exercise screen
-    private void runExerciseMenu() {
-        boolean goBack = false;
-
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
-
-        while (!goBack) {
-            showExerciseMenu();
-            System.out.print("choice: ");
-            String userInput = input.next();
-
-            input.useDelimiter("\n");
-            if (userInput.equals("b")) {
-                goBack = true;
-                separatorLine();
-            } else {
-                try {
-                    processExerciseMenuChoice(userInput);
-                } catch (InputMismatchException e) {
-                    System.out.println("Your input was of incorrect type, your action was aborted");
-                }
-            }
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: processes the user input on the Routine menu screen
-    private void runRoutinesMenu() {
-        boolean goBack = false;
-
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
-        while (!goBack) {
-            showRoutineMenu();
-            System.out.print("choice: ");
-            String userInput = input.next();
-
-            if (userInput.equals("b")) {
-                goBack = true;
-                separatorLine();
-            } else {
-                processRoutineMenuChoice(userInput);
-            }
-        }
-        showRoutineMenu();
-    }
-
-    // MODIFIES: this
-    // EFFECTS: processes the user input on the Exercise edit menu screen
-    private void runExerciseEditMenu(Exercise exercise) {
-        boolean goBack = false;
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
-        while (!goBack) {
-            showExerciseEditMenu();
-            System.out.print("choice: ");
-            String userInput = input.next();
-
-            if (userInput.equals("b")) {
-                goBack = true;
-                separatorLine();
-            } else {
-                processExerciseEditMenuChoice(userInput, exercise);
-                goBack = true;
-            }
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: processes the user input on the Routine edit menu screen
-    private void runRoutineEditMenu(Routine routine) {
-        boolean goBack = false;
-        input = new Scanner(System.in);
-        input.useDelimiter("\n");
-        while (!goBack) {
-            showRoutineEditMenu();
-            System.out.print("choice: ");
-            String userInput = input.next();
-
-            if (userInput.equals("b")) {
-                goBack = true;
-                separatorLine();
-            } else {
-                processRoutineEditMenuChoice(userInput, routine);
-                goBack = true;
-            }
-        }
-    }
-
-    // EFFECTS: Displays the main menu.
-    private void showMainMenu() {
-        System.out.println("\nMain menu, select one of:");
-        System.out.println("\t[1] - view exercise menu");
-        System.out.println("\t[2] - view routine menu");
-        System.out.println("\t[3] - load a workout preset file");
-        System.out.println("\t[4] - save current workout preset");
-        System.out.println("\t[q] - quit");
-    }
-
-    // EFFECTS: displays Exercise menu options
-    private void showExerciseMenu() {
-        System.out.println("\nExercise menu, select one of:");
-        System.out.println("\t[1] - view all exercise");
-        System.out.println("\t[2] - view favorite exercises");
-        System.out.println("\t[3] - add a new exercise");
-        System.out.println("\t[4] - delete an exercise");
-        System.out.println("\t[5] - edit an exercise");
-        System.out.println("\t[b] - back to main menu");
-    }
-
-    // EFFECTS: Displays the Routine menu.
-    private void showRoutineMenu() {
-        System.out.println("\nRoutine menu, select one of:");
-        System.out.println("\t[1] - view routines");
-        System.out.println("\t[2] - view favorite routines");
-        System.out.println("\t[3] - create a new routine");
-        System.out.println("\t[4] - delete an existing routine");
-        System.out.println("\t[5] - edit an existing routine");
-        System.out.println("\t[b] - back to main menu");
-    }
-
-    // EFFECTS: Displays the Exercise edit menu.
-    private void showExerciseEditMenu() {
-        System.out.println("Select all information that you want to change a single string");
-        System.out.println("\t[1] - to change name");
-        System.out.println("\t[2] - to change description");
-        System.out.println("\t[3] - to change number of reps");
-        System.out.println("\t[4] - to change number of sets");
-        System.out.println("\t[5] - to change rest time");
-        System.out.println("\t[6] - to change rating");
-        System.out.println("\t[b] - to go back to Exercise menu");
-    }
-
-    // EFFECTS: Displays the Routine edit menu.
-    private void showRoutineEditMenu() {
-        System.out.println("Select all information that you want to change a single string");
-        System.out.println("\t[1] - change name");
-        System.out.println("\t[2] - change description");
-        System.out.println("\t[3] - change included exercises");
-        System.out.println("\t[4] - change rating");
-        System.out.println("\t[b] - go back to routine menu");
-    }
-
-    // MODIFIES: this
-    // EFFECTS: processes the user's choice from main menu screen
-    private void processMenuChoice(String userInput) {
-        if (userInput.equals("1")) {
-            separatorLine();
-            runExerciseMenu();
-        } else if (userInput.equals("2")) {
-            runRoutinesMenu();
-        } else if (userInput.equals("3")) {
-            loadWorkout();
-        } else if (userInput.equals("4")) {
-            saveWorkout();
-        } else {
-            separatorLine();
-            System.out.println("\t\t\tSelection not valid");
-            separatorLine();
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: processes the user's choice from exercise menu screen
-    private void processExerciseMenuChoice(String userInput) {
-        if (userInput.equals("1")) {
-            viewExercises();
-        } else if (userInput.equals("2")) {
-            viewFavoriteExercises();
-        } else if (userInput.equals("3")) {
-            processAddExercise();
-        } else if (userInput.equals("4")) {
-            processDeleteExercise();
-        } else if (userInput.equals("5")) {
-            processEditExercise();
-        } else {
-            separatorLine();
-            System.out.println("\t\t\tSelection not valid");
-            separatorLine();
-        }
-    }
-
-    // MODIFIES: this
-    // EFFECTS: processes the user's choice from routine menu screen
-    private void processRoutineMenuChoice(String userInput) {
-        if (userInput.equals("1")) {
-            viewRoutines();
-        } else if (userInput.equals("2")) {
-            viewFavoriteRoutines();
-        } else if (userInput.equals("3")) {
-            processAddRoutine();
-        } else if (userInput.equals("4")) {
-            deleteRoutine();
-        } else if (userInput.equals("5")) {
-            processEditRoutine();
-        } else {
-            separatorLine();
-            System.out.println("\t\t\tSelection not valid");
-            separatorLine();
-        }
+    public Workout getWorkout() {
+        return workout;
     }
 
     // MODIFIES: this, workout.exercises
@@ -426,10 +206,10 @@ public class WorkoutApp {
 
         separatorLine();
         System.out.print("\nWhich routine would you like to edit?"
-                        + "\n\tType [1] to search using the routine number"
-                        + "\n\tType [2] to search using the routine name"
-                        + "\n\tType [b] to go back"
-                        + "\nchoice: ");
+                + "\n\tType [1] to search using the routine number"
+                + "\n\tType [2] to search using the routine name"
+                + "\n\tType [b] to go back"
+                + "\nchoice: ");
         input = new Scanner(System.in);
         while (!decisionMade) {
             String userInput = input.nextLine();
@@ -628,7 +408,7 @@ public class WorkoutApp {
         int userInput = input.nextInt();
         if (userInput >= 1 && userInput <= workout.exercisesSize()) {
             System.out.println("Exercise found!");
-            runExerciseEditMenu(workout.getExercise(userInput - 1));
+            //runExerciseEditMenu(workout.getExercise(userInput - 1));
         } else {
             System.out.println("Number is out of range!");
         }
@@ -648,7 +428,7 @@ public class WorkoutApp {
             if (exercise.getExerciseName().equals(userInput)) {
                 System.out.println("Exercise found!");
                 foundExercise = true;
-                runExerciseEditMenu(exercise);
+                //runExerciseEditMenu(exercise);
             }
         }
         if (!foundExercise) {
@@ -667,7 +447,7 @@ public class WorkoutApp {
         int userInput = input.nextInt();
         if (userInput >= 1 && userInput <= workout.routinesSize()) {
             System.out.println("Routine found!");
-            runRoutineEditMenu(workout.getRoutine(userInput - 1));
+            //runRoutineEditMenu(workout.getRoutine(userInput - 1));
         } else {
             System.out.println("Number is out of range!");
         }
@@ -688,7 +468,7 @@ public class WorkoutApp {
             if (routine.getRoutineName().equals(userInput)) {
                 System.out.println("Routine found!");
                 foundRoutine = true;
-                runRoutineEditMenu(routine);
+                //runRoutineEditMenu(routine);
             }
         }
         if (!foundRoutine) {
@@ -854,26 +634,16 @@ public class WorkoutApp {
 
     // !!! inspired by JsonSerializationDemo (link in README)
     // EFFECTS: saves the workout to file
-    protected void saveWorkout() {
-        try {
-            jsonWriter.open();
-            jsonWriter.write(workout);
-            jsonWriter.close();
-            System.out.println("Saved " + workout.getName() + " to " + JSON_STORE);
-        } catch (FileNotFoundException e) {
-            System.out.println("Unable to write to file: " + JSON_STORE);
-        }
+    protected void saveWorkout() throws IOException {
+        jsonWriter.open();
+        jsonWriter.write(workout);
+        jsonWriter.close();
     }
 
     // !!! inspired by JsonSerializationDemo (link in README)
     // MODIFIES: this
     // EFFECTS: loads workout from file
-    protected void loadWorkout() {
-        try {
-            workout = jsonReader.read();
-            System.out.println("Loaded " + workout.getName() + " from " + JSON_STORE);
-        } catch (IOException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
-        }
+    protected void loadWorkout() throws IOException {
+        workout = jsonReader.read();
     }
 }

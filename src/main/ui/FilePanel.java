@@ -5,6 +5,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class FilePanel extends WorkoutPanelPrototype implements ActionListener {
 
@@ -69,12 +70,28 @@ public class FilePanel extends WorkoutPanelPrototype implements ActionListener {
         saveButton.addActionListener(this);
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loadButton) {
-            wa.loadWorkout();
+            try {
+                wa.loadWorkout();
+                WorkoutAppUI.updateExercisePanel();
+                JOptionPane.showMessageDialog(loadButton, "Successfully loaded file", "Information",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException loadError) {
+                JOptionPane.showMessageDialog(loadButton, "Could not load file", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         } else if (e.getSource() == saveButton) {
-            wa.saveWorkout();
+            try {
+                wa.saveWorkout();
+                JOptionPane.showMessageDialog(saveButton, "Successfully saved file", "Information",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException saveError) {
+                JOptionPane.showMessageDialog(saveButton, "Could not save to file", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ package ui;
 
 import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import com.sun.java.swing.action.OpenAction;
+import model.Exercise;
 import model.Workout;
 
 import javax.swing.*;
@@ -28,7 +29,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     private JDesktopPane mainWindow;
     private JInternalFrame homePanel;
     private JInternalFrame filePanel;
-    private JInternalFrame exercisePanel;
+    private static JInternalFrame exercisePanel;
     private JInternalFrame routinePanel;
 
     private JMenuItem homeMenuItem;
@@ -73,6 +74,9 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
+    public static void updateExercisePanel() {
+        ExercisePanel.displayAllExercises();
+    }
 
     private void addMenu() {
         JMenuBar menuBar = new JMenuBar();
@@ -93,20 +97,6 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         fileMenuItem.addActionListener(this);
         exerciseMenuItem.addActionListener(this);
         routineMenuItem.addActionListener(this);
-    }
-
-    /**
-     * Adds an item with given handler to the given menu
-     * @param theMenu  menu to which new item is added
-     * @param action   handler for new menu item
-     * @param accelerator    keystroke accelerator for this menu item
-     *                       copied from alarm project :(
-     */
-    private void addMenuItem(JMenu theMenu, AbstractAction action, KeyStroke accelerator) {
-        JMenuItem menuItem = new JMenuItem(action);
-        menuItem.setMnemonic(menuItem.getText().charAt(0));
-        menuItem.setAccelerator(accelerator);
-        theMenu.add(menuItem);
     }
 
     /**
