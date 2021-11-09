@@ -7,6 +7,7 @@ public class WorkoutPanelPrototype extends JInternalFrame {
 
     public WorkoutPanelPrototype() {
         this.setLayout(new BorderLayout());
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setResizable(true);
         this.setClosable(true);
         this.setMaximizable(false);

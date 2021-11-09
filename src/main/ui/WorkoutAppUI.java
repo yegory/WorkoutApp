@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -26,7 +27,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     public static final Color WorkoutPanelColor = new Color(0x6D7EB0);
 
 
-    private JDesktopPane mainWindow;
+    private static JDesktopPane mainWindow;
     private JInternalFrame homePanel;
     private JInternalFrame filePanel;
     private static JInternalFrame exercisePanel;
@@ -74,9 +75,9 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-    public static void updateExercisePanel() {
-        ExercisePanel.displayAllExercises();
-    }
+//    public static void updateExercisePanel() {
+//        ExercisePanel.displayAllExercises();
+//    }
 
     private void addMenu() {
         JMenuBar menuBar = new JMenuBar();
@@ -130,6 +131,11 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
                 mainWindow.add(new RoutinePanel());
             }
         }
+    }
+
+    public static void updateExercisePanel(Object[][] data) {
+        mainWindow.remove(exercisePanel);
+        mainWindow.add(new ExercisePanel(data));
     }
 
     /**
