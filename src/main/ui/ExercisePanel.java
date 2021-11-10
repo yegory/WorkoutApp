@@ -12,6 +12,7 @@ import java.util.List;
 
 public class ExercisePanel extends WorkoutPanelPrototype implements ActionListener {
 
+    private boolean favoriteView = false;
     private JButton toggleFavoriteExercisesButton;
     private JButton addExerciseButton;
     private JButton deleteExerciseButton;
@@ -49,8 +50,7 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
 
 
     private static List<Exercise> exercises;
-    private static Workout workout;
-
+    public Workout workout = WorkoutAppUI.getWorkoutApp().getWorkout();
 
     public ExercisePanel() {
         super();
@@ -58,7 +58,6 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
         this.setBackground(WorkoutAppUI.WorkoutPanelColor);
         this.setBounds(350, 25, 825, 400);
 
-        workout = WorkoutAppUI.getWorkoutApp().getWorkout();
         exercises = workout.getExercises();
 
         updateExerciseTable(workout);
@@ -74,9 +73,9 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
         this.add(gridPanel, BorderLayout.SOUTH);
 
         addExerciseButton.addActionListener(event -> addExercise());
-//        deleteExerciseButton.addActionListener(event -> deleteExercise());
-//        editExerciseButton.addActionListener(event -> exitApplication ());
-//        toggleFavoriteExercisesButton.addActionListener(event -> deleteStudent ());
+        deleteExerciseButton.addActionListener(event -> deleteExercise());
+        editExerciseButton.addActionListener(event -> editExercise());
+        toggleFavoriteExercisesButton.addActionListener(event -> repopulateWithFavorites(favoriteView));
     }
 
     private void setUpTable() {
@@ -161,6 +160,73 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
         }
     }
 
+    public void deleteExercise() {
+        try {
+            String exerciseName = exerciseNameTextField.getText();
+            exercises = WorkoutAppUI.getWorkoutApp().getWorkout().getExercises();
+            for (Exercise exercise : exercises) {
+                if (exercise.getExerciseName().equals(exerciseName)) {
+                    exercises.remove(exercise);
+                    updateExerciseTable(WorkoutAppUI.getWorkoutApp().getWorkout());
+                    break;
+                }
+            }
+        } catch (Exception error) {
+            JOptionPane.showMessageDialog(null, error.toString());
+        }
+    }
+
+    private void editExercise() {
+        try {
+            String exerciseName = exerciseNameTextField.getText();
+
+            exercises = WorkoutAppUI.getWorkoutApp().getWorkout().getExercises();
+            for (Exercise exercise : exercises) {
+                if (exercise.getExerciseName().equals(exerciseName)) {
+                    exercise.setExerciseDescription(exerciseDescriptionTextField.getText());
+                    exercise.setExerciseNumOfReps(Integer.parseInt(exerciseNumberOfRepsTextField.getText()));
+                    exercise.setExerciseNumOfSets(Integer.parseInt(exerciseNumberOfSetsTextField.getText()));
+                    exercise.setExerciseRestTime(Integer.parseInt(exerciseRestTimeTextField.getText()));
+                    exercise.setExerciseRating(Integer.parseInt(exerciseRatingTextField.getText()));
+
+                    updateExerciseTable(WorkoutAppUI.getWorkoutApp().getWorkout());
+                    break;
+                }
+            }
+        } catch (Exception error) {
+            JOptionPane.showMessageDialog(null, error.toString());
+        }
+    }
+
+
+    public void repopulateWithFavorites(boolean isFavoriteView) {
+        if (!isFavoriteView) {
+            workout = WorkoutAppUI.getWorkoutApp().getWorkout();
+            defaultTableModel.setRowCount(0);
+
+            defaultTableModel.addRow(exerciseEntries);
+            for (int i = 0; i < workout.exercisesSize(); i++) {
+                if (workout.getExercise(i).getExerciseRating() == 5) {
+                    defaultTableModel.addRow(exerciseToStringObject(workout.getExercise(i)));
+                }
+            }
+            favoriteView = true;
+        } else {
+            workout = WorkoutAppUI.getWorkoutApp().getWorkout();
+            updateExerciseTable(workout);
+            favoriteView = false;
+        }
+    }
+
+    public static void updateExerciseTable(Workout workout) {
+        defaultTableModel.setRowCount(0);
+
+        defaultTableModel.addRow(exerciseEntries);
+        for (int i = 0; i < workout.exercisesSize(); i++) {
+            defaultTableModel.addRow(exerciseToStringObject(workout.getExercise(i)));
+        }
+    }
+
     public static String[] exerciseToStringObject(Exercise exercise) {
         String[] data = new String[6];
 
@@ -172,15 +238,6 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
         data[5] = exercise.returnDefinedRating();
 
         return data;
-    }
-
-    public static void updateExerciseTable(Workout workout) {
-        defaultTableModel.setRowCount(0);
-
-        defaultTableModel.addRow(exerciseEntries);
-        for (int i = 0; i < workout.exercisesSize(); i++) {
-            defaultTableModel.addRow(exerciseToStringObject(workout.getExercise(i)));
-        }
     }
 
     private void resetTextFields() {
