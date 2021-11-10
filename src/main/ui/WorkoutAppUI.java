@@ -124,7 +124,8 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
             }
         } else if (e.getSource() == exerciseMenuItem) {
             if (exercisePanel.isClosed()) {
-                mainWindow.add(new ExercisePanel());
+                exercisePanel = new ExercisePanel();
+                mainWindow.add(exercisePanel);
             }
         } else if (e.getSource() == routineMenuItem) {
             if (filePanel.isClosed()) {
@@ -133,9 +134,8 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         }
     }
 
-    public static void updateExercisePanel(Object[][] data) {
-        mainWindow.remove(exercisePanel);
-        mainWindow.add(new ExercisePanel(data));
+    public static void updateExercisePanel(Workout workout) {
+        ExercisePanel.updateExerciseTable(workout);
     }
 
     /**

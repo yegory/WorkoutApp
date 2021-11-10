@@ -76,7 +76,8 @@ public class FilePanel extends WorkoutPanelPrototype implements ActionListener {
         if (e.getSource() == loadButton) {
             try {
                 wa.loadWorkout();
-                //WorkoutAppUI.updateExercisePanel();
+                System.out.println("load worked");
+                WorkoutAppUI.updateExercisePanel(wa.getWorkout());
                 JOptionPane.showMessageDialog(loadButton, "Successfully loaded file", "Information",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException loadError) {
@@ -86,6 +87,7 @@ public class FilePanel extends WorkoutPanelPrototype implements ActionListener {
         } else if (e.getSource() == saveButton) {
             try {
                 wa.saveWorkout();
+                System.out.println("save worked");
                 JOptionPane.showMessageDialog(saveButton, "Successfully saved file", "Information",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException saveError) {
