@@ -1,9 +1,6 @@
 package ui;
 
-
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
-import com.sun.java.swing.action.OpenAction;
-import model.Exercise;
+import model.Routine;
 import model.Workout;
 
 import javax.swing.*;
@@ -28,6 +25,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
 
 
     private static JDesktopPane mainWindow;
+    private static ExerciseTable exerciseTable;
     private JInternalFrame homePanel;
     private JInternalFrame filePanel;
     private static JInternalFrame exercisePanel;
@@ -75,9 +73,13 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-//    public static void updateExercisePanel() {
-//        ExercisePanel.displayAllExercises();
-//    }
+    public static ExerciseTable getExerciseTable() {
+        return exerciseTable;
+    }
+
+    public static void setExerciseTable(ExerciseTable exerciseTable) {
+        WorkoutAppUI.exerciseTable = exerciseTable;
+    }
 
     private void addMenu() {
         JMenuBar menuBar = new JMenuBar();
@@ -128,14 +130,24 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
                 mainWindow.add(exercisePanel);
             }
         } else if (e.getSource() == routineMenuItem) {
-            if (filePanel.isClosed()) {
-                mainWindow.add(new RoutinePanel());
+            if (routinePanel.isClosed()) {
+                routinePanel = new RoutinePanel();
+                mainWindow.add(routinePanel);
             }
         }
     }
 
     public static void updateExercisePanel(Workout workout) {
         ExercisePanel.updateExerciseTable(workout);
+    }
+
+    public static void updateRoutinePanel(Workout workout) {
+        RoutinePanel.updateRoutineTable(workout);
+    }
+
+    public static void displayIncludedExercises(int routinePos) {
+        Routine routine = workoutApp.getWorkout().getRoutine(routinePos);
+        new ExerciseTable(routine);
     }
 
     /**

@@ -77,6 +77,7 @@ public class FilePanel extends WorkoutPanelPrototype implements ActionListener {
             try {
                 wa.loadWorkout();
                 WorkoutAppUI.updateExercisePanel(wa.getWorkout());
+                WorkoutAppUI.updateRoutinePanel(wa.getWorkout());
                 JOptionPane.showMessageDialog(loadButton, "Successfully loaded file", "Information",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException loadError) {

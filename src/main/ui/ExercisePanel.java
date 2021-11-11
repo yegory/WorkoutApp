@@ -45,12 +45,12 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
 
     static DefaultTableModel defaultTableModel = new DefaultTableModel(tableHeader, 0);
 
-    ExerciseJTable mainJTable = new ExerciseJTable(defaultTableModel);
-    JScrollPane exerciseScrollPane = new JScrollPane(mainJTable);
+    NonEditableJTable mainJTable = new NonEditableJTable(defaultTableModel);
+    JScrollPane scrollPane = new JScrollPane(mainJTable);
 
 
     private static List<Exercise> exercises;
-    public Workout workout = WorkoutAppUI.getWorkoutApp().getWorkout();
+    private Workout workout = WorkoutAppUI.getWorkoutApp().getWorkout();
 
     public ExercisePanel() {
         super();
@@ -58,10 +58,7 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
         this.setBackground(WorkoutAppUI.WorkoutPanelColor);
         this.setBounds(350, 25, 825, 400);
 
-        exercises = workout.getExercises();
-
         updateExerciseTable(workout);
-
 
         setUpJLabelsAndTextFields();
         setUpButton();
@@ -69,7 +66,7 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
 
         setUpTable();
 
-        this.add(exerciseScrollPane, BorderLayout.CENTER);
+        this.add(scrollPane, BorderLayout.CENTER);
         this.add(gridPanel, BorderLayout.SOUTH);
 
         addExerciseButton.addActionListener(event -> addExercise());
@@ -79,8 +76,8 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
     }
 
     private void setUpTable() {
-        exerciseScrollPane.setPreferredSize(new Dimension(500,300));
-        exerciseScrollPane.setVisible(true);
+        scrollPane.setPreferredSize(new Dimension(500,300));
+        scrollPane.setVisible(true);
 
         mainJTable.getColumnModel().getColumn(0).setPreferredWidth(50);
         mainJTable.getColumnModel().getColumn(1).setPreferredWidth(250);
@@ -141,9 +138,11 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
         deleteExerciseButton = new JButton("-");
         editExerciseButton = new JButton("Edit");
         toggleFavoriteExercisesButton = new JButton("View favorite exercises");
+        toggleFavoriteExercisesButton.setPreferredSize(new Dimension(200,25));
     }
 
     private void addExercise() {
+        workout = WorkoutAppUI.getWorkoutApp().getWorkout();
         try {
             Exercise exercise = new Exercise(exerciseNameTextField.getText(),
                     exerciseDescriptionTextField.getText(),
@@ -151,7 +150,7 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
                     Integer.parseInt(exerciseNumberOfSetsTextField.getText()),
                     Integer.parseInt(exerciseRestTimeTextField.getText()),
                     Integer.parseInt(exerciseRatingTextField.getText()));
-            exercises.add(exercise);
+            workout.addExercise(exercise);
             //updateExerciseTable(workout);
             defaultTableModel.addRow(exerciseToStringObject(exercise));
             resetTextFields();
@@ -211,10 +210,12 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
                 }
             }
             favoriteView = true;
+            toggleFavoriteExercisesButton.setText("View all exercises");
         } else {
             workout = WorkoutAppUI.getWorkoutApp().getWorkout();
             updateExerciseTable(workout);
             favoriteView = false;
+            toggleFavoriteExercisesButton.setText("View favorite exercises");
         }
     }
 
