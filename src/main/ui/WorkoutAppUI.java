@@ -1,7 +1,10 @@
 package ui;
 
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import model.Routine;
 import model.Workout;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,42 +16,44 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Scanner;
 
-// exception inspired by JsonSerializationDemo (link in README)
+/*
+    !!! save and load functionality inspired/borrowed from JsonSerializationDemo
+    https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+ */
 
 public class WorkoutAppUI extends JFrame implements ActionListener {
+
+    private static final String JSON_STORE = "./data/WorkoutAppData.json";
+    private static Workout workout;
+    private static JsonReader jsonReader;
+    private static JsonWriter jsonWriter;
 
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 900;
     public static final Color MAIN_BACKGROUND_COLOR = new Color(0xB07000);
     public static final Color WorkoutPanelColor = new Color(0x6D7EB0);
 
+     static JDesktopPane mainWindow;
+     static ExerciseTable exerciseTable;
+     JInternalFrame homePanel;
+     JInternalFrame filePanel;
+     static JInternalFrame exercisePanel;
+     JInternalFrame routinePanel;
 
-    private static JDesktopPane mainWindow;
-    private static ExerciseTable exerciseTable;
-    private JInternalFrame homePanel;
-    private JInternalFrame filePanel;
-    private static JInternalFrame exercisePanel;
-    private JInternalFrame routinePanel;
-
-    private JMenuItem homeMenuItem;
-    private JMenuItem fileMenuItem;
-    private JMenuItem exerciseMenuItem;
-    private JMenuItem routineMenuItem;
-
-    private static WorkoutApp workoutApp;
-
-    public static WorkoutApp getWorkoutApp() {
-        return workoutApp;
-    }
+     JMenuItem homeMenuItem;
+     JMenuItem fileMenuItem;
+     JMenuItem exerciseMenuItem;
+     JMenuItem routineMenuItem;
 
 
     public WorkoutAppUI() {
-        try {
-            workoutApp = new WorkoutApp();
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found");
-        }
+        jsonReader = new JsonReader(JSON_STORE);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        workout = new Workout("Your workout profile");
+
         mainWindow = new JDesktopPane();
         mainWindow.addMouseListener(new DesktopFocusAction());
         setContentPane(mainWindow);
@@ -146,7 +151,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     }
 
     public static void displayIncludedExercises(int routinePos) {
-        Routine routine = workoutApp.getWorkout().getRoutine(routinePos);
+        Routine routine = workout.getRoutine(routinePos);
         new ExerciseTable(routine);
     }
 
@@ -159,6 +164,26 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         public void mouseClicked(MouseEvent e) {
             WorkoutAppUI.this.requestFocusInWindow();
         }
+    }
+
+
+    public static Workout getWorkout() {
+        return workout;
+    }
+
+    // !!! inspired by JsonSerializationDemo (link in README)
+    // EFFECTS: saves the workout to file
+    protected static void saveWorkout() throws IOException {
+        jsonWriter.open();
+        jsonWriter.write(workout);
+        jsonWriter.close();
+    }
+
+    // !!! inspired by JsonSerializationDemo (link in README)
+    // MODIFIES: this
+    // EFFECTS: loads workout from file
+    protected static void loadWorkout() throws IOException {
+        workout = jsonReader.read();
     }
 
     public static void main(String[] args) {

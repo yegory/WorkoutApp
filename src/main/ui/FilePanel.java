@@ -1,7 +1,8 @@
 package ui;
 
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
+
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +16,6 @@ public class FilePanel extends WorkoutPanelPrototype implements ActionListener {
     JLabel fileLocationLabelBottom;
     JButton loadButton;
     JButton saveButton;
-    WorkoutApp wa = WorkoutAppUI.getWorkoutApp();
 
     public FilePanel() {
         super();
@@ -75,9 +75,9 @@ public class FilePanel extends WorkoutPanelPrototype implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loadButton) {
             try {
-                wa.loadWorkout();
-                WorkoutAppUI.updateExercisePanel(wa.getWorkout());
-                WorkoutAppUI.updateRoutinePanel(wa.getWorkout());
+                WorkoutAppUI.loadWorkout();
+                WorkoutAppUI.updateExercisePanel(WorkoutAppUI.getWorkout());
+                WorkoutAppUI.updateRoutinePanel(WorkoutAppUI.getWorkout());
                 JOptionPane.showMessageDialog(loadButton, "Successfully loaded file", "Information",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException loadError) {
@@ -86,7 +86,7 @@ public class FilePanel extends WorkoutPanelPrototype implements ActionListener {
             }
         } else if (e.getSource() == saveButton) {
             try {
-                wa.saveWorkout();
+                WorkoutAppUI.saveWorkout();
                 JOptionPane.showMessageDialog(saveButton, "Successfully saved file", "Information",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException saveError) {

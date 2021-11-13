@@ -9,17 +9,15 @@ import java.awt.*;
 
 public class ExerciseTable extends JFrame {
 
-    String[] tableHeader =
-            {"Exercise name", "Description", "# of Reps", "# of Sets", "Rest time (sec)", "Rating"};
+    String[] tableHeader = {"Exercise name", "Description", "# of Reps", "# of Sets", "Rest time (sec)", "Rating"};
 
-    String[] exerciseEntries =
-            {"Exercise name", "Description", "# of Reps", "# of Sets", "Rest time (sec)", "Rating"};
+    String[] exerciseEntries = {"Exercise name", "Description", "# of Reps", "# of Sets", "Rest time (sec)", "Rating"};
 
     DefaultTableModel defaultTableModel = new DefaultTableModel(tableHeader, 0);
 
-    NonEditableJTable mainJTable = new NonEditableJTable(defaultTableModel);
+    NonEditableJTable table = new NonEditableJTable(defaultTableModel);
 
-    JScrollPane scrollPane = new JScrollPane(mainJTable);
+    JScrollPane scrollPane = new JScrollPane(table);
 
     public ExerciseTable(Routine routine) {
         super();
@@ -40,12 +38,12 @@ public class ExerciseTable extends JFrame {
         scrollPane.setPreferredSize(new Dimension(500,300));
         scrollPane.setVisible(true);
 
-        mainJTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-        mainJTable.getColumnModel().getColumn(1).setPreferredWidth(250);
-        mainJTable.getColumnModel().getColumn(2).setPreferredWidth(15);
-        mainJTable.getColumnModel().getColumn(3).setPreferredWidth(15);
-        mainJTable.getColumnModel().getColumn(4).setPreferredWidth(25);
-        mainJTable.getColumnModel().getColumn(5).setPreferredWidth(20);
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        table.getColumnModel().getColumn(1).setPreferredWidth(250);
+        table.getColumnModel().getColumn(2).setPreferredWidth(15);
+        table.getColumnModel().getColumn(3).setPreferredWidth(15);
+        table.getColumnModel().getColumn(4).setPreferredWidth(25);
+        table.getColumnModel().getColumn(5).setPreferredWidth(20);
     }
 
     public void updateExerciseTableLocal(Routine routine) {

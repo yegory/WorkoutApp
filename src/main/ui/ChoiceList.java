@@ -17,7 +17,7 @@ public class ChoiceList implements ItemListener {
     private List list;
     private static ArrayList<String> finalList = new ArrayList<String>();
 
-    private static java.util.List<Exercise> exercises = WorkoutAppUI.getWorkoutApp().getWorkout().getExercises();
+    private static java.util.List<Exercise> exercises = WorkoutAppUI.getWorkout().getExercises();
 
     public ChoiceList() {
         frame = new JFrame("Exercise Selector");

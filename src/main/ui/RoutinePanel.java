@@ -13,41 +13,36 @@ import java.util.List;
 
 public class RoutinePanel extends WorkoutPanelPrototype implements ActionListener {
 
-    private boolean isfavoriteView = false;
-    private JButton toggleFavoriteRoutinesButton;
-    private JButton addRoutineButton;
-    private JButton deleteRoutineButton;
-    private JButton editRoutineButton;
+    private boolean favoriteView = false;
+    JButton toggleFavoriteRoutinesButton;
+    JButton addRoutineButton;
+    JButton deleteRoutineButton;
+    JButton editRoutineButton;
     JButton routineIncludedExercisesButton;
 
-    private JLabel routineNameLabel;
-    private JLabel routineDescriptionLabel;
-    private JLabel routineIncludedExercisesLabel;
-    private JLabel routineRatingLabel;
+    JLabel routineNameLabel;
+    JLabel routineDescriptionLabel;
+    JLabel routineIncludedExercisesLabel;
+    JLabel routineRatingLabel;
 
-    private JTextField routineNameTextField;
-    private JTextField routineDescriptionTextField;
-    private JTextField routineRatingTextField;
+    JTextField routineNameTextField;
+    JTextField routineDescriptionTextField;
+    JTextField routineRatingTextField;
 
-    private JPanel topFlowPanel;
-    private JPanel centerFlowPanel;
-    private JPanel bottomFlowPanel;
-    private JPanel gridPanel;
+    JPanel topFlowPanel;
+    JPanel centerFlowPanel;
+    JPanel bottomFlowPanel;
+    JPanel gridPanel;
 
     static String[] tableHeader = {"Routine name", "Description", "Button", "Total time (sec)"};
     static String[] routineEntries = {"Routine name", "Description", "Included exercises", "Total time (sec)"};
 
     static DefaultTableModel defaultTableModel = new DefaultTableModel(tableHeader, 0);
-    NonEditableJTableForRoutinePanel mainJTable = new NonEditableJTableForRoutinePanel(defaultTableModel);
-    JScrollPane scrollPane = new JScrollPane(mainJTable);
+    JTable table = new JTable(defaultTableModel);
+    JScrollPane scrollPane = new JScrollPane(table);
 
-    ExerciseTable exerciseTable;
-
-    private ChoiceList choiceList;
-
-    private Workout workout = WorkoutAppUI.getWorkoutApp().getWorkout();
-    private List<Exercise> exercises = workout.getExercises();
-
+    private Workout workout = WorkoutAppUI.getWorkout();
+    private List<Routine> routines;
 
     public RoutinePanel() {
         this.setTitle("Routine Panel");
@@ -56,10 +51,10 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
 
         updateRoutineTable(workout);
 
-        mainJTable.getColumn("Button").setCellRenderer(new ButtonRenderer());
-        mainJTable.getColumn("Button").setCellEditor(new ButtonEditor(new JCheckBox()));
-        mainJTable.setPreferredScrollableViewportSize(mainJTable.getPreferredSize());
-        mainJTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+        table.getColumn("Button").setCellRenderer(new ButtonRenderer());
+        table.getColumn("Button").setCellEditor(new ButtonEditor(new JCheckBox()));
+        table.setPreferredScrollableViewportSize(table.getPreferredSize());
+        table.getColumnModel().getColumn(0).setPreferredWidth(100);
 
         setUpJLabelsAndTextFields();
         setUpButton();
@@ -73,18 +68,18 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
         addRoutineButton.addActionListener(event -> addRoutine());
         deleteRoutineButton.addActionListener(event -> deleteRoutine());
         editRoutineButton.addActionListener(event -> editRoutine());
-        toggleFavoriteRoutinesButton.addActionListener(event -> repopulateWithFavorites(isfavoriteView));
-        routineIncludedExercisesButton.addActionListener(event -> selectExercises());
+        toggleFavoriteRoutinesButton.addActionListener(event -> repopulateWithFavorites(favoriteView));
+        routineIncludedExercisesButton.addActionListener(event -> new ChoiceList());
     }
 
     private void setUpTable() {
-        scrollPane.setPreferredSize(new Dimension(500,300));
+        scrollPane.setPreferredSize(new Dimension(500, 300));
         scrollPane.setVisible(true);
 
-        mainJTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-        mainJTable.getColumnModel().getColumn(1).setPreferredWidth(250);
-        mainJTable.getColumnModel().getColumn(2).setPreferredWidth(15);
-        mainJTable.getColumnModel().getColumn(3).setPreferredWidth(15);
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        table.getColumnModel().getColumn(1).setPreferredWidth(250);
+        table.getColumnModel().getColumn(2).setPreferredWidth(15);
+        table.getColumnModel().getColumn(3).setPreferredWidth(15);
     }
 
     private void setUpFlowPanels() {
@@ -131,15 +126,13 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
         deleteRoutineButton = new JButton("-");
         editRoutineButton = new JButton("Edit");
         toggleFavoriteRoutinesButton = new JButton("View favorite routines");
-        toggleFavoriteRoutinesButton.setPreferredSize(new Dimension(200,25));
+        toggleFavoriteRoutinesButton.setPreferredSize(new Dimension(200, 25));
 
         routineIncludedExercisesButton = new JButton("select exercises");
     }
 
     private void addRoutine() {
-
-        Workout workout = WorkoutAppUI.getWorkoutApp().getWorkout();
-
+        Workout workout = WorkoutAppUI.getWorkout();
         try {
             List<Exercise> chosenExercises = ChoiceList.createListExercise();
             Routine routine = new Routine(routineNameTextField.getText(),
@@ -154,16 +147,45 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
     }
 
     private void deleteRoutine() {
+        try {
+            String routineName = routineNameTextField.getText();
+            workout = WorkoutAppUI.getWorkout();
+            routines = workout.getRoutines();
+            for (Routine routine : routines) {
+                if (routine.getRoutineName().equals(routineName)) {
+                    routines.remove(routine);
+                    updateRoutineTable(workout);
+                    break;
+                }
+            }
+        } catch (Exception error) {
+            JOptionPane.showMessageDialog(null, error.toString());
+        }
     }
 
     private void editRoutine() {
+        try {
+            String routineName = routineNameTextField.getText();
+            workout = WorkoutAppUI.getWorkout();
+            routines = workout.getRoutines();
+            for (Routine routine : routines) {
+                if (routine.getRoutineName().equals(routineName)) {
+                    List<Exercise> chosenExercises = ChoiceList.createListExercise();
+                    routine.setRoutineDescription(routineDescriptionTextField.getText());
+                    routine.setIncludedExercises(chosenExercises);
+                    routine.setRoutineRating(Integer.parseInt(routineRatingTextField.getText()));
+                    routine.updateTotalTimeToComplete();
+                    updateRoutineTable(workout);
+                    break;
+                }
+            }
+        } catch (Exception error) {
+            JOptionPane.showMessageDialog(null, error.toString());
+        }
     }
 
-
     public void repopulateWithFavorites(boolean isFavoriteView) {
-
-        Workout workout = WorkoutAppUI.getWorkoutApp().getWorkout();
-
+        Workout workout = WorkoutAppUI.getWorkout();
         if (!isFavoriteView) {
             defaultTableModel.setRowCount(0);
 
@@ -173,19 +195,14 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
                     defaultTableModel.addRow(routineToStringObject(workout.getRoutine(i)));
                 }
             }
-            isfavoriteView = true;
+            favoriteView = true;
             toggleFavoriteRoutinesButton.setText("View all routines");
         } else {
             updateRoutineTable(workout);
-            isfavoriteView = false;
+            favoriteView = false;
             toggleFavoriteRoutinesButton.setText("View favorite routines");
         }
     }
-
-    private void selectExercises() {
-        ChoiceList choiceList = new ChoiceList();
-    }
-
 
     public static void updateRoutineTable(Workout workout) {
         defaultTableModel.setRowCount(0);

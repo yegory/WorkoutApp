@@ -136,6 +136,14 @@ public class Routine implements Writable {
         this.routineRating = routineRating;
     }
 
+    public void updateTotalTimeToComplete() {
+        totalTimeToComplete = 0;
+        for (Exercise exercise : includedExercises) {
+            totalTimeToComplete += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
+                    + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
+        }
+    }
+
     // EFFECTS: helper to format time, e.g.: "# min, # sec"
     public String formatTotalTimeToComplete(int time) {
         int wholeMinutes = Math.floorDiv(time, 60);

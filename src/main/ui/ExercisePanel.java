@@ -13,29 +13,29 @@ import java.util.List;
 public class ExercisePanel extends WorkoutPanelPrototype implements ActionListener {
 
     private boolean favoriteView = false;
-    private JButton toggleFavoriteExercisesButton;
-    private JButton addExerciseButton;
-    private JButton deleteExerciseButton;
-    private JButton editExerciseButton;
+    JButton toggleFavoriteExercisesButton;
+    JButton addExerciseButton;
+    JButton deleteExerciseButton;
+    JButton editExerciseButton;
 
-    private JLabel exerciseNameLabel;
-    private JLabel exerciseDescriptionLabel;
-    private JLabel exerciseNumberOfRepsLabel;
-    private JLabel exerciseNumberOfSetsLabel;
-    private JLabel exerciseRestTimeLabel;
-    private JLabel exerciseRatingLabel;
+    JLabel exerciseNameLabel;
+    JLabel exerciseDescriptionLabel;
+    JLabel exerciseNumberOfRepsLabel;
+    JLabel exerciseNumberOfSetsLabel;
+    JLabel exerciseRestTimeLabel;
+    JLabel exerciseRatingLabel;
 
-    private JTextField exerciseNameTextField;
-    private JTextField exerciseDescriptionTextField;
-    private JTextField exerciseNumberOfRepsTextField;
-    private JTextField exerciseNumberOfSetsTextField;
-    private JTextField exerciseRestTimeTextField;
-    private JTextField exerciseRatingTextField;
+    JTextField exerciseNameTextField;
+    JTextField exerciseDescriptionTextField;
+    JTextField exerciseNumberOfRepsTextField;
+    JTextField exerciseNumberOfSetsTextField;
+    JTextField exerciseRestTimeTextField;
+    JTextField exerciseRatingTextField;
 
-    private JPanel topFlowPanel;
-    private JPanel centerFlowPanel;
-    private JPanel bottomFlowPanel;
-    private JPanel gridPanel;
+    JPanel topFlowPanel;
+    JPanel centerFlowPanel;
+    JPanel bottomFlowPanel;
+    JPanel gridPanel;
 
     static String[] tableHeader =
             {"Exercise name", "Description", "# of Reps", "# of Sets", "Rest time (sec)", "Rating"};
@@ -50,7 +50,7 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
 
 
     private static List<Exercise> exercises;
-    private Workout workout = WorkoutAppUI.getWorkoutApp().getWorkout();
+    private Workout workout = WorkoutAppUI.getWorkout();
 
     public ExercisePanel() {
         super();
@@ -76,7 +76,7 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
     }
 
     private void setUpTable() {
-        scrollPane.setPreferredSize(new Dimension(500,300));
+        scrollPane.setPreferredSize(new Dimension(500, 300));
         scrollPane.setVisible(true);
 
         mainJTable.getColumnModel().getColumn(0).setPreferredWidth(50);
@@ -138,11 +138,11 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
         deleteExerciseButton = new JButton("-");
         editExerciseButton = new JButton("Edit");
         toggleFavoriteExercisesButton = new JButton("View favorite exercises");
-        toggleFavoriteExercisesButton.setPreferredSize(new Dimension(200,25));
+        toggleFavoriteExercisesButton.setPreferredSize(new Dimension(200, 25));
     }
 
     private void addExercise() {
-        workout = WorkoutAppUI.getWorkoutApp().getWorkout();
+        workout = WorkoutAppUI.getWorkout();
         try {
             Exercise exercise = new Exercise(exerciseNameTextField.getText(),
                     exerciseDescriptionTextField.getText(),
@@ -162,11 +162,12 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
     public void deleteExercise() {
         try {
             String exerciseName = exerciseNameTextField.getText();
-            exercises = WorkoutAppUI.getWorkoutApp().getWorkout().getExercises();
+            workout = WorkoutAppUI.getWorkout();
+            exercises = workout.getExercises();
             for (Exercise exercise : exercises) {
                 if (exercise.getExerciseName().equals(exerciseName)) {
                     exercises.remove(exercise);
-                    updateExerciseTable(WorkoutAppUI.getWorkoutApp().getWorkout());
+                    updateExerciseTable(workout);
                     break;
                 }
             }
@@ -179,7 +180,7 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
         try {
             String exerciseName = exerciseNameTextField.getText();
 
-            exercises = WorkoutAppUI.getWorkoutApp().getWorkout().getExercises();
+            exercises = WorkoutAppUI.getWorkout().getExercises();
             for (Exercise exercise : exercises) {
                 if (exercise.getExerciseName().equals(exerciseName)) {
                     exercise.setExerciseDescription(exerciseDescriptionTextField.getText());
@@ -188,7 +189,7 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
                     exercise.setExerciseRestTime(Integer.parseInt(exerciseRestTimeTextField.getText()));
                     exercise.setExerciseRating(Integer.parseInt(exerciseRatingTextField.getText()));
 
-                    updateExerciseTable(WorkoutAppUI.getWorkoutApp().getWorkout());
+                    updateExerciseTable(WorkoutAppUI.getWorkout());
                     break;
                 }
             }
@@ -200,7 +201,7 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
 
     public void repopulateWithFavorites(boolean isFavoriteView) {
         if (!isFavoriteView) {
-            workout = WorkoutAppUI.getWorkoutApp().getWorkout();
+            workout = WorkoutAppUI.getWorkout();
             defaultTableModel.setRowCount(0);
 
             defaultTableModel.addRow(exerciseEntries);
@@ -212,7 +213,7 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
             favoriteView = true;
             toggleFavoriteExercisesButton.setText("View all exercises");
         } else {
-            workout = WorkoutAppUI.getWorkoutApp().getWorkout();
+            workout = WorkoutAppUI.getWorkout();
             updateExerciseTable(workout);
             favoriteView = false;
             toggleFavoriteExercisesButton.setText("View favorite exercises");
