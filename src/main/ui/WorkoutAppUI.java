@@ -69,7 +69,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         addMenu();
 
         centreOnScreen();
-        setVisible(true);
+        setVisible(false);
     }
 
     public static ExerciseTable getExerciseTable() {
@@ -181,6 +181,8 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new WorkoutAppUI();
+        WorkoutAppUI workoutAppUI = new WorkoutAppUI();
+        new SplashScreen();
+        workoutAppUI.setVisible(true);
     }
 }
