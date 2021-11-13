@@ -3,7 +3,6 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static model.Routine.TIME_FOR_1REP;
 
 public class ExerciseTest {
     private Exercise testExercise;
@@ -35,34 +34,6 @@ public class ExerciseTest {
         assertEquals(0, illegalExerciseExample.getExerciseRestTime());
         assertEquals(5, illegalExerciseExample.getExerciseRating());
     }
-
-    @Test
-    void testPrintExercise() {
-        String testExerciseOutput = "[" + testExercise.getExerciseName() + "]\n"
-                + testExercise.getExerciseDescription() + "\nNumber of reps: " + testExercise.getExerciseNumOfReps()
-                + "\nNumber of sets: " + testExercise.getExerciseNumOfSets() + "\nRest time     : "
-                + testExercise.getExerciseRestTime() + " seconds\nRating        : " + testExercise.returnDefinedRating();
-
-        String testExercise2Output = "[" + testExercise2.getExerciseName() + "]\n"
-                + testExercise2.getExerciseDescription() + "\nNumber of reps: " + testExercise2.getExerciseNumOfReps()
-                + "\nNumber of sets: " + testExercise2.getExerciseNumOfSets() + "\nRest time     : "
-                + testExercise2.getExerciseRestTime() + " seconds\nRating        : " + testExercise2.returnDefinedRating();
-
-        assertEquals(testExerciseOutput, testExercise.printExercise());
-        assertEquals(testExercise2Output, testExercise2.printExercise());
-
-        testExercise.setExerciseDescription("This is a very long description. Hopefully it is longer than the"
-                + " TIME_FOR_1_REP constant which is set at: " + TIME_FOR_1REP + " characters long.");
-
-        String testExerciseLongOutput = "[" + testExercise.getExerciseName() + "]\n"
-                + "This is a very long description. Hopefully it is longer than the"
-                + " TIME_FOR_1_REP constant which is \nset at: "
-                + TIME_FOR_1REP + " characters long." + "\nNumber of reps: " + testExercise.getExerciseNumOfReps()
-                + "\nNumber of sets: " + testExercise.getExerciseNumOfSets() + "\nRest time     : "
-                + testExercise.getExerciseRestTime() + " seconds\nRating        : " + testExercise.returnDefinedRating();
-        assertEquals(testExerciseLongOutput, testExercise.printExercise());
-    }
-
 
     @Test
     void testReturnDefinedRating() {

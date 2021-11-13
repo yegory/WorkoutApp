@@ -2,8 +2,6 @@ package model;
 
 import org.json.JSONObject;
 import persistence.Writable;
-import java.util.Arrays;
-import java.util.List;
 
 /*
     Json stuff borrowed from  JsonSerializationDemo
@@ -18,8 +16,6 @@ import java.util.List;
 //      - rest time in seconds (>= 0); and
 //      - rating [1-5] (any other number is "Unrated")
 public class Exercise implements Writable {
-
-    private static final int CONSOLE_OUTPUT_LINE_LENGTH = 80;
 
     private String exerciseName;
     private String exerciseDescription;
@@ -48,33 +44,6 @@ public class Exercise implements Writable {
         } else {
             this.exerciseName = exerciseName;
         }
-    }
-
-    // EFFECTS: a helper method to print a string representation of exercise.
-    public String printExercise() {
-        String returnedString = "[" + exerciseName + "]\n";
-
-        String descriptionContainer = exerciseDescription;
-        String[] outputArrayList = descriptionContainer.split(" ");
-
-        String descriptionBuilder = "";
-        int charCount = 0;
-        for (String word : outputArrayList) {
-            descriptionBuilder += word + " ";
-            charCount += word.length();
-
-            if (charCount > CONSOLE_OUTPUT_LINE_LENGTH) {
-                descriptionBuilder += "\n";
-                charCount = 0;
-            }
-        }
-
-        returnedString += descriptionBuilder.trim()
-                + "\nNumber of reps: " + exerciseNumOfReps + "\n"
-                + "Number of sets: " + exerciseNumOfSets + "\n"
-                + "Rest time     : " + exerciseRestTime + " seconds\n"
-                + "Rating        : " + returnDefinedRating();
-        return returnedString;
     }
 
     // EFFECTS: returns a string equivalent of a numeric rating from 0-5. Any other number is "Unrated"

@@ -45,28 +45,6 @@ public class Routine implements Writable {
         this.routineRating = routineRating;
     }
 
-    // EFFECTS: a helper method to print a string representation of exercise.
-    public String printRoutine() {
-        String outputString = "[" + routineName + "]: " + routineDescription
-                + "\nConsists of: ";
-        String includedExerciseFormatting = "[";
-        if (includedExercises.size() == 1) {
-            includedExerciseFormatting += includedExercises.get(0).getExerciseName() + "]";
-        } else {
-            for (int i = 0; i < includedExercises.size(); i++) {
-                if ((i + 1) != includedExercises.size()) {
-                    includedExerciseFormatting += includedExercises.get(i).getExerciseName() + ", ";
-                } else {
-                    includedExerciseFormatting += "followed by " + includedExercises.get(i).getExerciseName() + "]";
-                }
-            }
-        }
-        outputString += includedExerciseFormatting;
-        outputString += "\nTakes " + formatTotalTimeToComplete(this.totalTimeToComplete) + " to complete,"
-                + " and the rating of this routine is: " + returnDefinedRating() + ".";
-        return outputString;
-    }
-
     // EFFECTS: returns a string equivalent of a numeric rating from 0-5. Any other number is "Unrated"
     public String returnDefinedRating() {
         if (routineRating == 0) {

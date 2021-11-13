@@ -3,7 +3,7 @@ package model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class WorkoutTest {
 
@@ -44,5 +44,12 @@ public class WorkoutTest {
         workout.removeRoutine(0);
         assertEquals(1, workout.routinesSize());
         assertEquals(routine2, workout.getRoutine(0));
+    }
+
+    @Test
+    void testFindExercise() {
+        assertTrue(workout.findExercise("ExerciseName1"));
+        assertTrue(workout.findExercise("ExerciseName2"));
+        assertFalse(workout.findExercise("ExerciseName3"));
     }
 }

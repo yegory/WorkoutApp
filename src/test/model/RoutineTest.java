@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static model.Routine.TIME_FOR_1REP;
@@ -19,9 +20,10 @@ public class RoutineTest {
         exercise1 = new Exercise("exercise1", "Description1", 1, 2, 3, -1);
         exercise2 = new Exercise("exercise2", "Description2", 4, 5, 6, 5);
 
+        List<Exercise> includedExercise = new LinkedList<Exercise>(Arrays.asList(exercise1,exercise2));
+
         exercise3 = new Exercise("exercise2", "Description3", 5, 5, 5, 1);
-        testRoutine = new Routine("Routine name", "Routine description",
-                Arrays.asList(exercise1, exercise2), 1);
+        testRoutine = new Routine("Routine name", "Routine description", includedExercise, 1);
     }
 
     @Test
@@ -97,21 +99,27 @@ public class RoutineTest {
     }
 
     @Test
-    void testPrintRoutine() {
-        String testExerciseOutput = "[" + testRoutine.getRoutineName() + "]: "
-                + testRoutine.getRoutineDescription() + "\nConsists of: [" + exercise1.getExerciseName()
-                + ", followed by " + exercise2.getExerciseName() + "]\n"
-                + "Takes " + testRoutine.formatTotalTimeToComplete(testRoutine.getTotalTimeToComplete())
-                + " to complete, and the rating of this routine is: " + testRoutine.returnDefinedRating() + ".";
-        assertEquals(testExerciseOutput, testRoutine.printRoutine());
+    void testUpdateTotalTimeToComplete() {
 
-        testRoutine.setIncludedExercises(Arrays.asList(exercise1));
+        int totalTime = 0;
 
-        String testExerciseOutput2 = "[" + testRoutine.getRoutineName() + "]: "
-                + testRoutine.getRoutineDescription() + "\nConsists of: [" + exercise1.getExerciseName() + "]\n"
-                + "Takes " + testRoutine.formatTotalTimeToComplete(testRoutine.getTotalTimeToComplete())
-                + " to complete, and the rating of this routine is: " + testRoutine.returnDefinedRating() + ".";
-        assertEquals(testExerciseOutput2, testRoutine.printRoutine());
+        for (Exercise exercise : testRoutine.getIncludedExercises()) {
+            totalTime += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
+                    + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
+        }
+        assertEquals(totalTime, testRoutine.getTotalTimeToComplete());
 
+        Exercise removedExercise = testRoutine.getIncludedExercises().get(0);
+        testRoutine.getIncludedExercises().remove(0);
+        int timeToCompleteRemovedExercise = removedExercise.getExerciseRestTime() * removedExercise.getExerciseNumOfSets()
+                + removedExercise.getExerciseNumOfSets() * removedExercise.getExerciseNumOfReps() * TIME_FOR_1REP;
+
+        int timeAfterDeleting = 0;
+
+        for (Exercise exercise : testRoutine.getIncludedExercises()) {
+            timeAfterDeleting += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
+                    + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
+        }
+        assertEquals(timeAfterDeleting, totalTime - timeToCompleteRemovedExercise);
     }
 }
