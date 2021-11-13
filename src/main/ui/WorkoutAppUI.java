@@ -1,6 +1,5 @@
 package ui;
 
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import model.Routine;
 import model.Workout;
 import persistence.JsonReader;
@@ -12,12 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import java.beans.PropertyVetoException;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Scanner;
 
 /*
     !!! save and load functionality inspired/borrowed from JsonSerializationDemo
@@ -36,17 +30,17 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     public static final Color MAIN_BACKGROUND_COLOR = new Color(0xB07000);
     public static final Color WorkoutPanelColor = new Color(0x6D7EB0);
 
-     static JDesktopPane mainWindow;
-     static ExerciseTable exerciseTable;
-     JInternalFrame homePanel;
-     JInternalFrame filePanel;
-     static JInternalFrame exercisePanel;
-     JInternalFrame routinePanel;
+    static JDesktopPane mainWindow;
+    static ExerciseTable exerciseTable;
+    JInternalFrame homePanel;
+    JInternalFrame filePanel;
+    static JInternalFrame exercisePanel;
+    JInternalFrame routinePanel;
 
-     JMenuItem homeMenuItem;
-     JMenuItem fileMenuItem;
-     JMenuItem exerciseMenuItem;
-     JMenuItem routineMenuItem;
+    JMenuItem homeMenuItem;
+    JMenuItem fileMenuItem;
+    JMenuItem exerciseMenuItem;
+    JMenuItem routineMenuItem;
 
 
     public WorkoutAppUI() {
