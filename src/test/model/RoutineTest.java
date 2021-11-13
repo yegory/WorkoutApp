@@ -100,26 +100,22 @@ public class RoutineTest {
 
     @Test
     void testUpdateTotalTimeToComplete() {
+        testRoutine.setTotalTimeToComplete(999999);
+        testRoutine.updateTotalTimeToComplete();
+        int timeBeforeRemoving = testRoutine.getTotalTimeToComplete();
+        assertNotEquals(999999, timeBeforeRemoving);
 
-        int totalTime = 0;
-
-        for (Exercise exercise : testRoutine.getIncludedExercises()) {
-            totalTime += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
-                    + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
-        }
-        assertEquals(totalTime, testRoutine.getTotalTimeToComplete());
-
-        Exercise removedExercise = testRoutine.getIncludedExercises().get(0);
         testRoutine.getIncludedExercises().remove(0);
-        int timeToCompleteRemovedExercise = removedExercise.getExerciseRestTime() * removedExercise.getExerciseNumOfSets()
-                + removedExercise.getExerciseNumOfSets() * removedExercise.getExerciseNumOfReps() * TIME_FOR_1REP;
 
-        int timeAfterDeleting = 0;
+        // since we have calculated the time again for the included exercises, time will be same as before
+        int timeAfterRemoving = testRoutine.getTotalTimeToComplete();
+        assertEquals(timeBeforeRemoving, timeAfterRemoving);
 
-        for (Exercise exercise : testRoutine.getIncludedExercises()) {
-            timeAfterDeleting += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
-                    + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
-        }
-        assertEquals(timeAfterDeleting, totalTime - timeToCompleteRemovedExercise);
+        testRoutine.setTotalTimeToComplete(5000);
+
+        // now time will be updated
+        testRoutine.updateTotalTimeToComplete();
+        assertNotEquals(5000, testRoutine.getTotalTimeToComplete());
+        assertNotEquals(timeAfterRemoving, testRoutine.getTotalTimeToComplete());
     }
 }
