@@ -8,33 +8,31 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
-public class ChoiceList implements ItemListener {
+public class ChoiceList extends JFrame implements ItemListener {
 
-    JFrame frame;
+    JPanel buttonPanel;
+    JPanel gridPanel;
     TextArea textArea;
-    JButton doneButton = new JButton("Done");
-    JButton deleteButton = new JButton("Delete all");
-    private List list;
-    private static ArrayList<String> finalList = new ArrayList<String>();
+    JButton doneButton;
+    JButton deleteButton;
 
+    private List list;
+    private static ArrayList<String> finalList = new ArrayList<>();
     private static java.util.List<Exercise> exercises = WorkoutAppUI.getWorkout().getExercises();
 
     public ChoiceList() {
-        frame = new JFrame("Exercise Selector");
-        frame.setPreferredSize(new Dimension(800, 400));
-        frame.pack();
-        frame.setLayout(new FlowLayout(FlowLayout.LEFT));
-
+        setTitle("Exercise Selector");
+        setPreferredSize(new Dimension(800, 400));
+        pack();
+        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setBackground(new Color(0x8D8D93));
         setUp();
-
-        doneButton.addActionListener(event -> createListExercise());
-        deleteButton.addActionListener(event -> deleteListExercise());
     }
 
     private void deleteListExercise() {
         finalList = new ArrayList<String>();
-        frame.remove(list);
-        frame.remove(textArea);
+        remove(list);
+        remove(textArea);
         setUp();
         textArea.setText("");
         int i = 1;
@@ -62,8 +60,9 @@ public class ChoiceList implements ItemListener {
     }
 
     private void setUp() {
-
         list = new List(exercises.size(), false);
+        list.setBackground(new Color(0xD2D2D2));
+        list.setPreferredSize(new Dimension(150,300));
         for (Exercise exercise: exercises) {
             list.add(exercise.getExerciseName());
         }
@@ -72,17 +71,28 @@ public class ChoiceList implements ItemListener {
         textArea = new TextArea(10, 30);
         textArea.setBackground(Color.WHITE);
 
-        frame.add(list);
-        frame.add(textArea);
-        frame.add(doneButton);
-        frame.add(deleteButton);
-        frame.setVisible(true);
+        doneButton = new JButton("Done");
+        deleteButton = new JButton("Delete all");
+        doneButton.addActionListener(event -> createListExercise());
+        deleteButton.addActionListener(event -> deleteListExercise());
+
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        gridPanel = new JPanel(new GridLayout(2,2));
+
+        buttonPanel.add(doneButton);
+        buttonPanel.add(deleteButton);
+
+        gridPanel.add(list);
+        gridPanel.add(textArea);
+        gridPanel.add(buttonPanel);
+
+        add(gridPanel);
+        setVisible(true);
     }
 
     @Override
     public void itemStateChanged(ItemEvent e) {
-        frame.remove(list);
-        frame.remove(textArea);
+        remove(gridPanel);
         finalList.add(list.getSelectedItem());
         setUp();
         textArea.setText("");
