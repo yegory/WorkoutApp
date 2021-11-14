@@ -72,14 +72,6 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         setVisible(false);
     }
 
-    public static ExerciseTable getExerciseTable() {
-        return exerciseTable;
-    }
-
-    public static void setExerciseTable(ExerciseTable exerciseTable) {
-        WorkoutAppUI.exerciseTable = exerciseTable;
-    }
-
     private void addMenu() {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);

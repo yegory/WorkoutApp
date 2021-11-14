@@ -16,15 +16,15 @@ public class HomePanel extends WorkoutPanelPrototype implements ActionListener {
 
     public HomePanel() {
         super();
-        this.setTitle("Home Panel");
-        this.setBackground(WorkoutAppUI.WorkoutPanelColor);
-        this.setBounds(25, 25, 300, 250);
+        setTitle("Home Panel");
+        setBackground(WorkoutAppUI.WorkoutPanelColor);
+        setBounds(25, 25, 300, 250);
 
         setUpLabel();
         setUpPanel();
 
-        this.add(homeLabel, BorderLayout.NORTH);
-        this.add(panel, BorderLayout.CENTER);
+        add(homeLabel, BorderLayout.NORTH);
+        add(panel, BorderLayout.CENTER);
     }
 
     private void setUpPanel() {

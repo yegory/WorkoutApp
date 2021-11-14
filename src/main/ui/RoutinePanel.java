@@ -34,11 +34,11 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
     JPanel bottomFlowPanel;
     JPanel gridPanel;
 
-    static String[] tableHeader = {"Routine name", "Description", "Button", "Total time (sec)"};
-    static String[] routineEntries = {"Routine name", "Description", "Included exercises", "Total time (sec)"};
+    static String[] tableHeader = {"Routine name", "Description", "Included exercises", "Total time (sec)"};
+    static String[] routineEntries = {};
 
-    static DefaultTableModel defaultTableModel = new DefaultTableModel(tableHeader, 0);
-    JTable table = new JTable(defaultTableModel);
+    static DefaultTableModel defaultTableModel = new DefaultTableModel(tableHeader, 1);
+    NonEditableJTableForRoutinePanel table = new NonEditableJTableForRoutinePanel(defaultTableModel);
     JScrollPane scrollPane = new JScrollPane(table);
 
     private Workout workout = WorkoutAppUI.getWorkout();
@@ -51,8 +51,8 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
 
         updateRoutineTable(workout);
 
-        table.getColumn("Button").setCellRenderer(new ButtonRenderer());
-        table.getColumn("Button").setCellEditor(new ButtonEditor(new JCheckBox()));
+        table.getColumn("Included exercises").setCellRenderer(new ButtonRenderer());
+        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox()));
         table.setPreferredScrollableViewportSize(table.getPreferredSize());
         table.getColumnModel().getColumn(0).setPreferredWidth(100);
 
@@ -80,6 +80,9 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
         table.getColumnModel().getColumn(1).setPreferredWidth(250);
         table.getColumnModel().getColumn(2).setPreferredWidth(15);
         table.getColumnModel().getColumn(3).setPreferredWidth(15);
+
+        table.getTableHeader().setOpaque(false);
+        table.getTableHeader().setBackground(new Color(0xFF9026));
     }
 
     private void setUpFlowPanels() {
@@ -207,7 +210,6 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
     public static void updateRoutineTable(Workout workout) {
         defaultTableModel.setRowCount(0);
 
-        defaultTableModel.addRow(routineEntries);
         for (int i = 0; i < workout.routinesSize(); i++) {
             defaultTableModel.addRow(routineToStringObject(workout.getRoutine(i)));
         }

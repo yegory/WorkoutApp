@@ -11,7 +11,7 @@ public class ExerciseTable extends JFrame {
 
     String[] tableHeader = {"Exercise name", "Description", "# of Reps", "# of Sets", "Rest time (sec)", "Rating"};
 
-    String[] exerciseEntries = {"Exercise name", "Description", "# of Reps", "# of Sets", "Rest time (sec)", "Rating"};
+    String[] exerciseEntries = {};
 
     DefaultTableModel defaultTableModel = new DefaultTableModel(tableHeader, 0);
 
@@ -21,17 +21,17 @@ public class ExerciseTable extends JFrame {
 
     public ExerciseTable(Routine routine) {
         super();
-        this.setTitle("Included exercises");
-        this.setBackground(WorkoutAppUI.WorkoutPanelColor);
-        this.setBounds(350, 25, 825, 400);
-        this.setPreferredSize(new Dimension(1000,300));
-        this.setVisible(true);
-        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        this.pack();
+        setTitle("Included exercises");
+        setBackground(WorkoutAppUI.WorkoutPanelColor);
+        setBounds(350, 25, 825, 400);
+        setPreferredSize(new Dimension(1000,300));
+        setVisible(true);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        pack();
         updateExerciseTableLocal(routine);
-        setUpTable();
 
-        this.add(scrollPane);
+        setUpTable();
+        add(scrollPane);
     }
 
     private void setUpTable() {
@@ -44,12 +44,14 @@ public class ExerciseTable extends JFrame {
         table.getColumnModel().getColumn(3).setPreferredWidth(15);
         table.getColumnModel().getColumn(4).setPreferredWidth(25);
         table.getColumnModel().getColumn(5).setPreferredWidth(20);
+
+        table.getTableHeader().setOpaque(false);
+        table.getTableHeader().setBackground(new Color(0xFF9026));
     }
 
     public void updateExerciseTableLocal(Routine routine) {
         defaultTableModel.setRowCount(0);
 
-        defaultTableModel.addRow(exerciseEntries);
         for (int i = 0; i < routine.getIncludedExercises().size(); i++) {
             defaultTableModel.addRow(exerciseToStringObject(routine.getIncludedExercises().get(i)));
         }

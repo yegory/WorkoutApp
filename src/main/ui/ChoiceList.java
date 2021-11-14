@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class ChoiceList extends JFrame implements ItemListener {
 
     JPanel buttonPanel;
+    JPanel textPanel;
     JPanel gridPanel;
     TextArea textArea;
     JButton doneButton;
@@ -22,17 +23,17 @@ public class ChoiceList extends JFrame implements ItemListener {
 
     public ChoiceList() {
         setTitle("Exercise Selector");
-        setPreferredSize(new Dimension(800, 400));
+        setPreferredSize(new Dimension(500, 350));
         pack();
-        setLayout(new FlowLayout(FlowLayout.LEFT));
+        setLayout(new FlowLayout(FlowLayout.CENTER));
         setBackground(new Color(0x8D8D93));
         setUp();
+        updateTextArea();
     }
 
     private void deleteListExercise() {
         finalList = new ArrayList<String>();
-        remove(list);
-        remove(textArea);
+        remove(gridPanel);
         setUp();
         textArea.setText("");
         int i = 1;
@@ -62,28 +63,30 @@ public class ChoiceList extends JFrame implements ItemListener {
     private void setUp() {
         list = new List(exercises.size(), false);
         list.setBackground(new Color(0xD2D2D2));
-        list.setPreferredSize(new Dimension(150,300));
         for (Exercise exercise: exercises) {
             list.add(exercise.getExerciseName());
         }
         list.addItemListener(this);
 
+        gridPanel = new JPanel(new GridLayout(2,2));
+        textPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
         textArea = new TextArea(10, 30);
-        textArea.setBackground(Color.WHITE);
+        textArea.setBackground(new Color(0x7AAB7A));
+
+        textPanel.add(list);
+        textPanel.add(textArea);
 
         doneButton = new JButton("Done");
         deleteButton = new JButton("Delete all");
         doneButton.addActionListener(event -> createListExercise());
         deleteButton.addActionListener(event -> deleteListExercise());
 
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        gridPanel = new JPanel(new GridLayout(2,2));
-
         buttonPanel.add(doneButton);
         buttonPanel.add(deleteButton);
 
-        gridPanel.add(list);
-        gridPanel.add(textArea);
+        gridPanel.add(textPanel);
         gridPanel.add(buttonPanel);
 
         add(gridPanel);
@@ -95,6 +98,10 @@ public class ChoiceList extends JFrame implements ItemListener {
         remove(gridPanel);
         finalList.add(list.getSelectedItem());
         setUp();
+        updateTextArea();
+    }
+
+    public void updateTextArea() {
         textArea.setText("");
         int i = 1;
         for (String exercise : finalList) {

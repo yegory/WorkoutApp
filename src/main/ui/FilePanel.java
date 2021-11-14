@@ -19,15 +19,15 @@ public class FilePanel extends WorkoutPanelPrototype implements ActionListener {
 
     public FilePanel() {
         super();
-        this.setTitle("File Panel");
-        this.setBackground(WorkoutAppUI.WorkoutPanelColor);
-        this.setBounds(25, 350, 300, 300);
+        setTitle("File Panel");
+        setBackground(WorkoutAppUI.WorkoutPanelColor);
+        setBounds(25, 350, 300, 300);
 
         setUpLabel();
         setUpButtons();
         setUpPanel();
-        this.add(leftLoadSavePanel, BorderLayout.WEST);
-        this.add(rightLoadSavePanel, BorderLayout.CENTER);
+        add(leftLoadSavePanel, BorderLayout.WEST);
+        add(rightLoadSavePanel, BorderLayout.CENTER);
     }
 
     private void setUpLabel() {

@@ -40,8 +40,7 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
     static String[] tableHeader =
             {"Exercise name", "Description", "# of Reps", "# of Sets", "Rest time (sec)", "Rating"};
 
-    static String[] exerciseEntries =
-            {"Exercise name", "Description", "# of Reps", "# of Sets", "Rest time (sec)", "Rating"};
+    static String[] exerciseEntries = {};
 
     static DefaultTableModel defaultTableModel = new DefaultTableModel(tableHeader, 0);
 
@@ -85,6 +84,9 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
         mainJTable.getColumnModel().getColumn(3).setPreferredWidth(15);
         mainJTable.getColumnModel().getColumn(4).setPreferredWidth(25);
         mainJTable.getColumnModel().getColumn(5).setPreferredWidth(20);
+
+        mainJTable.getTableHeader().setOpaque(false);
+        mainJTable.getTableHeader().setBackground(new Color(0xFF9026));
     }
 
     private void setUpFlowPanels() {
@@ -223,7 +225,6 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
     public static void updateExerciseTable(Workout workout) {
         defaultTableModel.setRowCount(0);
 
-        defaultTableModel.addRow(exerciseEntries);
         for (int i = 0; i < workout.exercisesSize(); i++) {
             defaultTableModel.addRow(exerciseToStringObject(workout.getExercise(i)));
         }
