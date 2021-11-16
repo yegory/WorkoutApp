@@ -75,7 +75,7 @@ public class FilePanel extends AbstractInternalFrame implements ActionListener {
             try {
                 WorkoutAppUI.loadWorkout();
                 WorkoutAppUI.updateExercisePanel(WorkoutAppUI.getWorkout());
-                WorkoutAppUI.updateRoutinePanel(WorkoutAppUI.getWorkout());
+                WorkoutAppUI.updateRoutinePanel();
                 JOptionPane.showMessageDialog(loadButton, "Successfully loaded file", "Information",
                         JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException loadError) {

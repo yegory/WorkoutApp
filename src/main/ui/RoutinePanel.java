@@ -13,8 +13,8 @@ import java.util.List;
 
 public class RoutinePanel extends AbstractInternalFrame implements ActionListener {
 
-    private boolean favoriteView;
-    JButton toggleFavoriteRoutinesButton;
+    private static boolean favoriteView;
+    static JButton toggleFavoriteRoutinesButton;
     JButton addRoutineButton;
     JButton deleteRoutineButton;
     JButton editRoutineButton;
@@ -39,7 +39,7 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
 
     static DefaultTableModel defaultTableModel;
 
-    NonEditableJTable table;
+    static NonEditableJTable table;
     JScrollPane scrollPane;
 
     private Workout workout;
@@ -61,7 +61,7 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         setUpTableAndScrollPane();
         setUpActionListeners();
         workout = WorkoutAppUI.getWorkout();
-        updateRoutineTable(workout);
+        updateRoutineTable(favoriteView);
     }
 
     private void setUpJLabelsAndTextFields() {
@@ -130,7 +130,7 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
 
         //credit: http://www.java2s.com/Code/Java/Swing-Components/ButtonTableExample.htm
         table.getColumn("Included exercises").setCellRenderer(new ButtonRenderer());
-        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox()));
+        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox(), favoriteView));
         table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
         scrollPane = new JScrollPane(table);
@@ -141,9 +141,9 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
 
     private void setUpActionListeners() {
         addRoutineButton.addActionListener(event -> addRoutine());
-        deleteRoutineButton.addActionListener(event -> deleteRoutine());
-        editRoutineButton.addActionListener(event -> editRoutine());
-        toggleFavoriteRoutinesButton.addActionListener(event -> repopulateWithFavorites());
+        deleteRoutineButton.addActionListener(event -> deleteRoutine(favoriteView));
+        editRoutineButton.addActionListener(event -> editRoutine(favoriteView));
+        toggleFavoriteRoutinesButton.addActionListener(event -> updateRoutineTable(favoriteView));
         routineIncludedExercisesButton.addActionListener(event -> new ChoiceList());
     }
 
@@ -162,7 +162,7 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         }
     }
 
-    private void deleteRoutine() {
+    private void deleteRoutine(boolean favoriteView) {
         try {
             String routineName = routineNameTextField.getText();
             workout = WorkoutAppUI.getWorkout();
@@ -170,7 +170,7 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
             for (Routine routine : routines) {
                 if (routine.getRoutineName().equals(routineName)) {
                     routines.remove(routine);
-                    updateRoutineTable(workout);
+                    updateRoutineTable(favoriteView);
                     break;
                 }
             }
@@ -179,7 +179,7 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         }
     }
 
-    private void editRoutine() {
+    private void editRoutine(boolean favoriteView) {
         try {
             String routineName = routineNameTextField.getText();
             workout = WorkoutAppUI.getWorkout();
@@ -191,7 +191,7 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
                     routine.setIncludedExercises(chosenExercises);
                     routine.setRoutineRating(Integer.parseInt(routineRatingTextField.getText()));
                     routine.updateTotalTimeToComplete();
-                    updateRoutineTable(workout);
+                    updateRoutineTable(favoriteView);
                     break;
                 }
             }
@@ -200,36 +200,27 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         }
     }
 
-    public void repopulateWithFavorites() {
+    public static void updateRoutineTable(boolean favoriteView) {
 
         table.getColumn("Included exercises").setCellRenderer(new ButtonRenderer());
-        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox()));
+        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox(), !favoriteView));
+        defaultTableModel.setRowCount(0);
 
         Workout workout = WorkoutAppUI.getWorkout();
         if (!favoriteView) {
-            this.favoriteView = true;
             toggleFavoriteRoutinesButton.setText("View all routines");
-
-            defaultTableModel.setRowCount(0);
             for (int i = 0; i < workout.routinesSize(); i++) {
                 if (workout.getRoutine(i).getRoutineRating() == 5) {
                     defaultTableModel.addRow(routineToStringObject(workout.getRoutine(i)));
                 }
             }
         } else {
-            this.favoriteView = false;
             toggleFavoriteRoutinesButton.setText("View favorite routines");
-            updateRoutineTable(workout);
+            for (int i = 0; i < workout.routinesSize(); i++) {
+                defaultTableModel.addRow(routineToStringObject(workout.getRoutine(i)));
+            }
         }
-    }
-
-    public static void updateRoutineTable(Workout workout) {
-        defaultTableModel.setRowCount(0);
-
-        for (int i = 0; i < workout.routinesSize(); i++) {
-            defaultTableModel.addRow(routineToStringObject(workout.getRoutine(i)));
-        }
-
+        RoutinePanel.favoriteView = !favoriteView;
     }
 
     public static String[] routineToStringObject(Routine routine) {
@@ -244,6 +235,10 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         data[4] = routine.returnDefinedRating();
 
         return data;
+    }
+
+    public static boolean getFavoriteView() {
+        return favoriteView;
     }
 
     private void resetTextFields() {

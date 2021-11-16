@@ -134,13 +134,23 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         ExercisePanel.updateExerciseTable(workout);
     }
 
-    public static void updateRoutinePanel(Workout workout) {
-        RoutinePanel.updateRoutineTable(workout);
+    public static void updateRoutinePanel() {
+        RoutinePanel.updateRoutineTable(RoutinePanel.getFavoriteView());
     }
 
-    public static void displayIncludedExercises(int routinePos) {
+    public static void displayIncludedExercises(int routinePos, boolean favoriteView) {
         List<Routine> routines = workout.getRoutines();
-        new ExerciseTable(routines.get(routinePos));
+        if (!favoriteView) {
+            new ExerciseTable(routines.get(routinePos));
+        } else {
+            List<Routine> favoriteRoutines = new ArrayList<>();
+            for (int i = 0; i < routines.size(); i++) {
+                if (routines.get(i).getRoutineRating() == 5) {
+                    favoriteRoutines.add(routines.get(i));
+                }
+            }
+            new ExerciseTable(favoriteRoutines.get(routinePos));
+        }
     }
 
     /**

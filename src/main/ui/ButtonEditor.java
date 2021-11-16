@@ -16,7 +16,8 @@ class ButtonEditor extends DefaultCellEditor {
     private String label;
     private boolean isPushed;
 
-    public ButtonEditor(JCheckBox checkBox) {
+
+    public ButtonEditor(JCheckBox checkBox, boolean favoriteView) {
         super(checkBox);
         button = new JButton();
         button.setOpaque(true);
@@ -34,7 +35,7 @@ class ButtonEditor extends DefaultCellEditor {
                     }
                 }
                 WorkoutAppUI.displayIncludedExercises(
-                        Integer.parseInt(buttonLabel.substring(startIndex + 1, endIndex)) - 1);
+                        Integer.parseInt(buttonLabel.substring(startIndex + 1, endIndex)) - 1, favoriteView);
             }
         });
     }
