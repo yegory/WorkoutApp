@@ -202,6 +202,9 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
 
     public void repopulateWithFavorites() {
 
+        table.getColumn("Included exercises").setCellRenderer(new ButtonRenderer());
+        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox()));
+
         Workout workout = WorkoutAppUI.getWorkout();
         if (!favoriteView) {
             this.favoriteView = true;

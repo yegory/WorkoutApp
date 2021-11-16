@@ -67,6 +67,6 @@ class ButtonEditor extends DefaultCellEditor {
     @Override
     public boolean stopCellEditing() {
         isPushed = false;
-        return super.stopCellEditing();
+        return true;
     }
 }
