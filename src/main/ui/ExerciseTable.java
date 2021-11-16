@@ -4,20 +4,21 @@ import model.Exercise;
 import model.Routine;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class ExerciseTable extends JFrame {
 
-    String[] tableHeader = {"Exercise name", "Description", "# of Reps", "# of Sets", "Rest time (sec)", "Rating"};
+    String[] tableHeader = {"Name", "Description", "Reps", "Sets", "Rest time (s)", "Rating"};
 
     String[] exerciseEntries = {};
 
     DefaultTableModel defaultTableModel = new DefaultTableModel(tableHeader, 0);
-
-    NonEditableJTable table = new NonEditableJTable(defaultTableModel);
-
+    NonEditableJTable table = new NonEditableJTable(defaultTableModel, 1);
     JScrollPane scrollPane = new JScrollPane(table);
+
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 
     public ExerciseTable(Routine routine) {
         super();
@@ -38,7 +39,8 @@ public class ExerciseTable extends JFrame {
         scrollPane.setPreferredSize(new Dimension(500,300));
         scrollPane.setVisible(true);
 
-        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        //table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.getColumnModel().getColumn(0).setPreferredWidth(3);
         table.getColumnModel().getColumn(1).setPreferredWidth(250);
         table.getColumnModel().getColumn(2).setPreferredWidth(15);
         table.getColumnModel().getColumn(3).setPreferredWidth(15);
@@ -47,6 +49,11 @@ public class ExerciseTable extends JFrame {
 
         table.getTableHeader().setOpaque(false);
         table.getTableHeader().setBackground(new Color(0xFF9026));
+
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
     }
 
     public void updateExerciseTableLocal(Routine routine) {

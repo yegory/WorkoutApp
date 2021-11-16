@@ -11,9 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class RoutinePanel extends WorkoutPanelPrototype implements ActionListener {
+public class RoutinePanel extends AbstractInternalFrame implements ActionListener {
 
-    private boolean favoriteView = false;
+    private boolean favoriteView;
     JButton toggleFavoriteRoutinesButton;
     JButton addRoutineButton;
     JButton deleteRoutineButton;
@@ -34,55 +34,57 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
     JPanel bottomFlowPanel;
     JPanel gridPanel;
 
-    static String[] tableHeader = {"Routine name", "Description", "Included exercises", "Total time (sec)"};
+    static String[] tableHeader = {"Name", "Description", "Included exercises", "Total time (s)", "Rating"};
     static String[] routineEntries = {};
 
-    static DefaultTableModel defaultTableModel = new DefaultTableModel(tableHeader, 1);
-    NonEditableJTableForRoutinePanel table = new NonEditableJTableForRoutinePanel(defaultTableModel);
-    JScrollPane scrollPane = new JScrollPane(table);
+    static DefaultTableModel defaultTableModel;
 
-    private Workout workout = WorkoutAppUI.getWorkout();
+    NonEditableJTable table;
+    JScrollPane scrollPane;
+
+    private Workout workout;
     private List<Routine> routines;
 
     public RoutinePanel() {
-        this.setTitle("Routine Panel");
-        this.setBackground(WorkoutAppUI.WorkoutPanelColor);
-        this.setBounds(350, 450, 825, 400);
+        setTitle("Routine Panel");
+        setBounds(350, 450, 825, 400);
 
-        updateRoutineTable(workout);
+        workout = WorkoutAppUI.getWorkout();
+        favoriteView = false;
+        setUp();
+    }
 
-        table.getColumn("Included exercises").setCellRenderer(new ButtonRenderer());
-        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox()));
-        table.setPreferredScrollableViewportSize(table.getPreferredSize());
-        table.getColumnModel().getColumn(0).setPreferredWidth(100);
-
+    private void setUp() {
         setUpJLabelsAndTextFields();
         setUpButton();
         setUpFlowPanels();
-
-        setUpTable();
-
-        this.add(scrollPane, BorderLayout.CENTER);
-        this.add(gridPanel, BorderLayout.SOUTH);
-
-        addRoutineButton.addActionListener(event -> addRoutine());
-        deleteRoutineButton.addActionListener(event -> deleteRoutine());
-        editRoutineButton.addActionListener(event -> editRoutine());
-        toggleFavoriteRoutinesButton.addActionListener(event -> repopulateWithFavorites(favoriteView));
-        routineIncludedExercisesButton.addActionListener(event -> new ChoiceList());
+        setUpTableAndScrollPane();
+        setUpActionListeners();
+        workout = WorkoutAppUI.getWorkout();
+        updateRoutineTable(workout);
     }
 
-    private void setUpTable() {
-        scrollPane.setPreferredSize(new Dimension(500, 300));
-        scrollPane.setVisible(true);
+    private void setUpJLabelsAndTextFields() {
+        routineNameLabel = new JLabel("Name: ");
+        routineDescriptionLabel = new JLabel("Description: ");
+        routineIncludedExercisesLabel = new JLabel("Included exercises: ");
 
-        table.getColumnModel().getColumn(0).setPreferredWidth(50);
-        table.getColumnModel().getColumn(1).setPreferredWidth(250);
-        table.getColumnModel().getColumn(2).setPreferredWidth(15);
-        table.getColumnModel().getColumn(3).setPreferredWidth(15);
+        routineRatingLabel = new JLabel("Rating: ");
 
-        table.getTableHeader().setOpaque(false);
-        table.getTableHeader().setBackground(new Color(0xFF9026));
+        routineNameTextField = new JTextField(10);
+        routineDescriptionTextField = new JTextField(40);
+        routineRatingTextField = new JTextField(2);
+
+    }
+
+    private void setUpButton() {
+        addRoutineButton = new JButton("+");
+        deleteRoutineButton = new JButton("-");
+        editRoutineButton = new JButton("Edit");
+        toggleFavoriteRoutinesButton = new JButton("View favorite routines");
+        toggleFavoriteRoutinesButton.setPreferredSize(new Dimension(200, 25));
+
+        routineIncludedExercisesButton = new JButton("select exercises");
     }
 
     private void setUpFlowPanels() {
@@ -109,29 +111,40 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
         gridPanel.add(topFlowPanel);
         gridPanel.add(centerFlowPanel);
         gridPanel.add(bottomFlowPanel);
+
+        add(gridPanel, BorderLayout.SOUTH);
     }
 
-    private void setUpJLabelsAndTextFields() {
-        routineNameLabel = new JLabel("Name: ");
-        routineDescriptionLabel = new JLabel("Description: ");
-        routineIncludedExercisesLabel = new JLabel("Included exercises: ");
+    private void setUpTableAndScrollPane() {
+        defaultTableModel = new DefaultTableModel(tableHeader, 1);
 
-        routineRatingLabel = new JLabel("Rating: ");
+        table = new NonEditableJTable(defaultTableModel, 2);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.getColumnModel().getColumn(0).setPreferredWidth(130);
+        table.getColumnModel().getColumn(1).setPreferredWidth(380);
+        table.getColumnModel().getColumn(2).setPreferredWidth(110);
+        table.getColumnModel().getColumn(3).setPreferredWidth(100);
 
-        routineNameTextField = new JTextField(10);
-        routineDescriptionTextField = new JTextField(40);
-        routineRatingTextField = new JTextField(2);
+        table.getTableHeader().setOpaque(false);
+        table.getTableHeader().setBackground(new Color(0xFF9026));
 
+        //credit: http://www.java2s.com/Code/Java/Swing-Components/ButtonTableExample.htm
+        table.getColumn("Included exercises").setCellRenderer(new ButtonRenderer());
+        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox()));
+        table.setPreferredScrollableViewportSize(table.getPreferredSize());
+
+        scrollPane = new JScrollPane(table);
+        scrollPane.setPreferredSize(new Dimension(500, 300));
+        scrollPane.setVisible(true);
+        add(scrollPane, BorderLayout.CENTER);
     }
 
-    private void setUpButton() {
-        addRoutineButton = new JButton("+");
-        deleteRoutineButton = new JButton("-");
-        editRoutineButton = new JButton("Edit");
-        toggleFavoriteRoutinesButton = new JButton("View favorite routines");
-        toggleFavoriteRoutinesButton.setPreferredSize(new Dimension(200, 25));
-
-        routineIncludedExercisesButton = new JButton("select exercises");
+    private void setUpActionListeners() {
+        addRoutineButton.addActionListener(event -> addRoutine());
+        deleteRoutineButton.addActionListener(event -> deleteRoutine());
+        editRoutineButton.addActionListener(event -> editRoutine());
+        toggleFavoriteRoutinesButton.addActionListener(event -> repopulateWithFavorites());
+        routineIncludedExercisesButton.addActionListener(event -> new ChoiceList());
     }
 
     private void addRoutine() {
@@ -187,23 +200,23 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
         }
     }
 
-    public void repopulateWithFavorites(boolean isFavoriteView) {
-        Workout workout = WorkoutAppUI.getWorkout();
-        if (!isFavoriteView) {
-            defaultTableModel.setRowCount(0);
+    public void repopulateWithFavorites() {
 
-            defaultTableModel.addRow(routineEntries);
+        Workout workout = WorkoutAppUI.getWorkout();
+        if (!favoriteView) {
+            this.favoriteView = true;
+            toggleFavoriteRoutinesButton.setText("View all routines");
+
+            defaultTableModel.setRowCount(0);
             for (int i = 0; i < workout.routinesSize(); i++) {
                 if (workout.getRoutine(i).getRoutineRating() == 5) {
                     defaultTableModel.addRow(routineToStringObject(workout.getRoutine(i)));
                 }
             }
-            favoriteView = true;
-            toggleFavoriteRoutinesButton.setText("View all routines");
         } else {
-            updateRoutineTable(workout);
-            favoriteView = false;
+            this.favoriteView = false;
             toggleFavoriteRoutinesButton.setText("View favorite routines");
+            updateRoutineTable(workout);
         }
     }
 
@@ -213,17 +226,19 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
         for (int i = 0; i < workout.routinesSize(); i++) {
             defaultTableModel.addRow(routineToStringObject(workout.getRoutine(i)));
         }
+
     }
 
     public static String[] routineToStringObject(Routine routine) {
 
-        String[] data = new String[4];
+        String[] data = new String[5];
 
         data[0] = routine.getRoutineName();
         data[1] = routine.getRoutineDescription();
 
-        data[2] = "view [" + defaultTableModel.getRowCount() + "]";
+        data[2] = "view [" + (defaultTableModel.getRowCount() + 1) + "]";
         data[3] = routine.formatTotalTimeToComplete(routine.getTotalTimeToComplete());
+        data[4] = routine.returnDefinedRating();
 
         return data;
     }
@@ -231,6 +246,7 @@ public class RoutinePanel extends WorkoutPanelPrototype implements ActionListene
     private void resetTextFields() {
         routineNameTextField.setText("");
         routineDescriptionTextField.setText("");
+        routineRatingTextField.setText("");
     }
 
     @Override

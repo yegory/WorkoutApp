@@ -4,13 +4,14 @@ import model.Exercise;
 import model.Workout;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-public class ExercisePanel extends WorkoutPanelPrototype implements ActionListener {
+public class ExercisePanel extends AbstractInternalFrame implements ActionListener {
 
     private boolean favoriteView = false;
     JButton toggleFavoriteExercisesButton;
@@ -37,25 +38,25 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
     JPanel bottomFlowPanel;
     JPanel gridPanel;
 
-    static String[] tableHeader =
-            {"Exercise name", "Description", "# of Reps", "# of Sets", "Rest time (sec)", "Rating"};
+    static String[] tableHeader = {"Name", "Description", "Reps", "Sets", "Rest time (s)", "Rating"};
 
     static String[] exerciseEntries = {};
 
     static DefaultTableModel defaultTableModel = new DefaultTableModel(tableHeader, 0);
 
-    NonEditableJTable mainJTable = new NonEditableJTable(defaultTableModel);
-    JScrollPane scrollPane = new JScrollPane(mainJTable);
+    NonEditableJTable table = new NonEditableJTable(defaultTableModel, 1);
+    JScrollPane scrollPane = new JScrollPane(table);
 
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 
     private static List<Exercise> exercises;
     private Workout workout = WorkoutAppUI.getWorkout();
 
     public ExercisePanel() {
         super();
-        this.setTitle("Exercise Panel");
-        this.setBackground(WorkoutAppUI.WorkoutPanelColor);
-        this.setBounds(350, 25, 825, 400);
+        setTitle("Exercise Panel");
+        setBackground(WorkoutAppUI.WorkoutPanelColor);
+        setBounds(350, 25, 825, 400);
 
         updateExerciseTable(workout);
 
@@ -65,28 +66,35 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
 
         setUpTable();
 
-        this.add(scrollPane, BorderLayout.CENTER);
-        this.add(gridPanel, BorderLayout.SOUTH);
+        add(scrollPane, BorderLayout.CENTER);
+        add(gridPanel, BorderLayout.SOUTH);
 
         addExerciseButton.addActionListener(event -> addExercise());
         deleteExerciseButton.addActionListener(event -> deleteExercise());
         editExerciseButton.addActionListener(event -> editExercise());
         toggleFavoriteExercisesButton.addActionListener(event -> repopulateWithFavorites(favoriteView));
+
     }
 
     private void setUpTable() {
         scrollPane.setPreferredSize(new Dimension(500, 300));
         scrollPane.setVisible(true);
 
-        mainJTable.getColumnModel().getColumn(0).setPreferredWidth(50);
-        mainJTable.getColumnModel().getColumn(1).setPreferredWidth(250);
-        mainJTable.getColumnModel().getColumn(2).setPreferredWidth(15);
-        mainJTable.getColumnModel().getColumn(3).setPreferredWidth(15);
-        mainJTable.getColumnModel().getColumn(4).setPreferredWidth(25);
-        mainJTable.getColumnModel().getColumn(5).setPreferredWidth(20);
+//        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.getColumnModel().getColumn(0).setPreferredWidth(130);
+        table.getColumnModel().getColumn(1).setPreferredWidth(550);
+        table.getColumnModel().getColumn(2).setPreferredWidth(40);
+        table.getColumnModel().getColumn(3).setPreferredWidth(40);
+        table.getColumnModel().getColumn(4).setPreferredWidth(80);
+        table.getColumnModel().getColumn(5).setPreferredWidth(90);
 
-        mainJTable.getTableHeader().setOpaque(false);
-        mainJTable.getTableHeader().setBackground(new Color(0xFF9026));
+        table.getTableHeader().setOpaque(false);
+        table.getTableHeader().setBackground(new Color(0xFF9026));
+
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
     }
 
     private void setUpFlowPanels() {
@@ -206,7 +214,6 @@ public class ExercisePanel extends WorkoutPanelPrototype implements ActionListen
             workout = WorkoutAppUI.getWorkout();
             defaultTableModel.setRowCount(0);
 
-            defaultTableModel.addRow(exerciseEntries);
             for (int i = 0; i < workout.exercisesSize(); i++) {
                 if (workout.getExercise(i).getExerciseRating() == 5) {
                     defaultTableModel.addRow(exerciseToStringObject(workout.getExercise(i)));

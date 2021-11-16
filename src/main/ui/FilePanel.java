@@ -1,14 +1,12 @@
 package ui;
 
-import com.sun.corba.se.spi.orbutil.threadpool.Work;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class FilePanel extends WorkoutPanelPrototype implements ActionListener {
+public class FilePanel extends AbstractInternalFrame implements ActionListener {
 
     JPanel leftLoadSavePanel;
     JPanel rightLoadSavePanel;

@@ -12,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
     !!! save and load functionality inspired/borrowed from JsonSerializationDemo
@@ -137,8 +139,8 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     }
 
     public static void displayIncludedExercises(int routinePos) {
-        Routine routine = workout.getRoutine(routinePos);
-        new ExerciseTable(routine);
+        List<Routine> routines = workout.getRoutines();
+        new ExerciseTable(routines.get(routinePos));
     }
 
     /**
@@ -174,7 +176,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         WorkoutAppUI workoutAppUI = new WorkoutAppUI();
-        new SplashScreen();
+        //new SplashScreen();
         workoutAppUI.setVisible(true);
     }
 }

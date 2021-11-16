@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class HomePanel extends WorkoutPanelPrototype implements ActionListener {
+public class HomePanel extends AbstractInternalFrame implements ActionListener {
 
     JPanel panel;
     JPanel topPanel;
