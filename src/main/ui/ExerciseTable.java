@@ -7,6 +7,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
+/*
+    This is essentially an ExercisePanel however it does not contain any intractable items such as buttons or labels
+        or text areas.
+
+    This class is constructed when the user clicks on 'view [x]' button (included exercises) of a routine in
+        RoutinePanel
+ */
+
 public class ExerciseTable extends JFrame {
 
     String[] tableHeader = {"Name", "Description", "Reps", "Sets", "Rest time (s)", "Rating"};
@@ -17,21 +25,27 @@ public class ExerciseTable extends JFrame {
 
     DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 
+    /*
+        Constructs an exercise table with the included exercises found in the chosen routine
+     */
     public ExerciseTable(Routine routine) {
         super();
         setTitle("Included exercises");
         setBackground(WorkoutAppUI.WorkoutPanelColor);
         setBounds(350, 25, 825, 400);
         setPreferredSize(new Dimension(1000,300));
+        pack();
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        pack();
         updateExerciseTableLocal(routine);
 
         setUpTable();
         add(scrollPane);
     }
 
+    /*
+        Sets up the main table
+     */
     private void setUpTable() {
         scrollPane.setPreferredSize(new Dimension(500,300));
         scrollPane.setVisible(true);
@@ -56,6 +70,10 @@ public class ExerciseTable extends JFrame {
         table.setRowMargin(5);
     }
 
+    /*
+        MODIFIES: this
+        EFFECTS: builds up the table with all the exercises in the included exercise holder inside the Routine
+     */
     public void updateExerciseTableLocal(Routine routine) {
         defaultTableModel.setRowCount(0);
 

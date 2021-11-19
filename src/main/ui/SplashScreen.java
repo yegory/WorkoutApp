@@ -4,13 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 
 /*
-learnt this from https://www.youtube.com/watch?v=JEI-fcfnFkc (Bro Code on YouTube)
+    A splash loading screen learnt this from https://www.youtube.com/watch?v=JEI-fcfnFkc (Bro Code on YouTube)
 
-dumbbells image taken from: https://www.today.com/series/one-small-thing/5-day-workout-plan-women-strengthen-tone-muscles-t166294
-
-metallica logo found here: https://wallpaperaccess.com/metallica-logo
-
-No hands push up image taken from: http://www.hoaxorfact.com/pranks/russian-soldier-no-hands-push-ups.html
+    Image sources:
+        dumbbells image: https://www.today.com/series/one-small-thing/5-day-workout-plan-women-strengthen-tone-muscles-t166294
+        metallica logo: https://wallpaperaccess.com/metallica-logo
+        No hands push up image: http://www.hoaxorfact.com/pranks/russian-soldier-no-hands-push-ups.html
  */
 
 public class SplashScreen extends JFrame {
@@ -25,6 +24,9 @@ public class SplashScreen extends JFrame {
     ImageIcon imageIconNoHands = new ImageIcon("noHands.jpg");
     JLabel imageLabel = new JLabel();
 
+    /*
+        Constructs a splash screen and sets the loading progress to 0%
+     */
     public SplashScreen() {
         setTitle("Workout App");
         setVisible(true);
@@ -53,8 +55,8 @@ public class SplashScreen extends JFrame {
         fill();
     }
 
-    /**
-     * Helper to centre main application window on desktop
+    /*
+        Helper to centre main application window on desktop, taken from AlarmSystem demo project
      */
     private void centreOnScreen() {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -62,6 +64,12 @@ public class SplashScreen extends JFrame {
         setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
     }
 
+    /*
+        MODIFIES: this
+        EFFECTS: increases the progress of the loading bar, ensures that the progress is takes some time by using
+            Thread.sleep.
+            Once progress reaches 99, and 1.2 more seconds passes, the splash screen is disposed (quit).
+     */
     public void fill() {
         int progress = 0;
 
@@ -88,6 +96,10 @@ public class SplashScreen extends JFrame {
         dispose();
     }
 
+    /*
+        MODIFIES: this
+        EFFECTS: changes the background and image displayed depending on the loading % state
+     */
     private void changeSplashScreen(int state) {
         if (state == 0) {
             topPanel.setBackground(new Color(0x73c4e2));

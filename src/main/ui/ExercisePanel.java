@@ -55,7 +55,6 @@ public class ExercisePanel extends AbstractInternalFrame {
     private static List<Exercise> exercises;
     private Workout workout = WorkoutAppUI.getWorkout();
 
-
     /*
         EFFECTS: Constructs an Exercise panel
      */
@@ -97,7 +96,7 @@ public class ExercisePanel extends AbstractInternalFrame {
         addExerciseButton.addActionListener(event -> addExercise());
         deleteExerciseButton.addActionListener(event -> deleteExercise());
         editExerciseButton.addActionListener(event -> editExercise());
-        toggleFavoriteExercisesButton.addActionListener(event -> repopulateWithFavorites(favoriteView));
+        toggleFavoriteExercisesButton.addActionListener(event -> repopulateWithFavorites(!favoriteView));
     }
 
     /*
@@ -226,13 +225,14 @@ public class ExercisePanel extends AbstractInternalFrame {
      */
     public void deleteExercise() {
         try {
-            String exerciseName = exerciseNameTextField.getText();
+            String exerciseName = exerciseSearchTextField.getText();
             workout = WorkoutAppUI.getWorkout();
             exercises = workout.getExercises();
             for (Exercise exercise : exercises) {
                 if (exercise.getExerciseName().equals(exerciseName)) {
                     exercises.remove(exercise);
                     updateExerciseTable(workout);
+                    resetTextFields();
                     break;
                 }
             }
@@ -250,7 +250,8 @@ public class ExercisePanel extends AbstractInternalFrame {
         try {
             String exerciseName = exerciseSearchTextField.getText();
 
-            exercises = WorkoutAppUI.getWorkout().getExercises();
+            Workout workout = WorkoutAppUI.getWorkout();
+            exercises = workout.getExercises();
             for (Exercise exercise : exercises) {
                 if (exercise.getExerciseName().equals(exerciseName)) {
                     exercise.setExerciseName(exerciseNameTextField.getText());
@@ -259,8 +260,8 @@ public class ExercisePanel extends AbstractInternalFrame {
                     exercise.setExerciseNumOfSets(Integer.parseInt(exerciseNumberOfSetsTextField.getText()));
                     exercise.setExerciseRestTime(Integer.parseInt(exerciseRestTimeTextField.getText()));
                     exercise.setExerciseRating(Integer.parseInt(exerciseRatingTextField.getText()));
-
-                    updateExerciseTable(WorkoutAppUI.getWorkout());
+                    repopulateWithFavorites(favoriteView);
+                    resetTextFields();
                     break;
                 }
             }
@@ -282,16 +283,16 @@ public class ExercisePanel extends AbstractInternalFrame {
 
     /*
         MODIFIES: this
-        EFFECTS: depending on the isFavoriteView parameter, the function will flip the text on the favoriteButton
+        EFFECTS: depending on the favoriteView parameter, the function will flip the text on the favoriteButton
         to the polar text, and build up the table with the favoriteView in mind. If the table was in favoriteView before
         the call to this function, the table's rows will get repopulated with all the current exercises.
         Otherwise, only exercises with rating of '5' will be displayed.
      */
-    private void repopulateWithFavorites(boolean isFavoriteView) {
+    private void repopulateWithFavorites(boolean favoriteView) {
 
         workout = WorkoutAppUI.getWorkout();
 
-        if (!isFavoriteView) {
+        if (favoriteView) {
             defaultTableModel.setRowCount(0);
 
             for (int i = 0; i < workout.exercisesSize(); i++) {
@@ -304,7 +305,7 @@ public class ExercisePanel extends AbstractInternalFrame {
             updateExerciseTable(workout);
             toggleFavoriteExercisesButton.setText("View favorite exercises");
         }
-        favoriteView = !favoriteView;
+        this.favoriteView = favoriteView;
     }
 
     /*
@@ -330,5 +331,6 @@ public class ExercisePanel extends AbstractInternalFrame {
         exerciseNumberOfSetsTextField.setText("");
         exerciseRestTimeTextField.setText("");
         exerciseRatingTextField.setText("");
+        exerciseSearchTextField.setText("");
     }
 }

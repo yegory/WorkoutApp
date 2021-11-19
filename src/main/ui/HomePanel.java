@@ -3,6 +3,14 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 
+/*
+    This is unfinished as I wanted to make a separate Menu Bar item for the about section.
+    However, this class is an InternalJPanel that holds some information about the sources used and who the
+    app was made by.
+
+    Got the idea to use HTML from Joop Eggen:
+    https://stackoverflow.com/questions/20706206/insert-line-break-in-java?lq=1
+ */
 public class HomePanel extends AbstractInternalFrame {
 
     JPanel panel;
@@ -12,6 +20,10 @@ public class HomePanel extends AbstractInternalFrame {
     JLabel credit;
     JLabel credits;
 
+    /*
+        MODIFIES: this
+        EFFECTS: Constructs and assigns all child components to Home Panel and displays them.
+     */
     public HomePanel() {
         super("Home Panel");
         setBackground(WorkoutAppUI.WorkoutPanelColor);
@@ -24,6 +36,9 @@ public class HomePanel extends AbstractInternalFrame {
         add(panel, BorderLayout.CENTER);
     }
 
+    /*
+        Sets up the panels
+     */
     private void setUpPanel() {
         panel = new JPanel();
         panel.setVisible(true);
@@ -48,7 +63,9 @@ public class HomePanel extends AbstractInternalFrame {
         panel.add(bottomPanel, BorderLayout.CENTER);
     }
 
-
+    /*
+        Sets up labels
+     */
     private void setUpLabel() {
         homeLabel = new JLabel("Made by Yegor Yeryomenko");
         homeLabel.setVisible(true);

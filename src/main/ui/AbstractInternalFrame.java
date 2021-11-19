@@ -3,6 +3,10 @@ package ui;
 import javax.swing.*;
 import java.awt.*;
 
+/*
+    An abstract class to help remove some code redundancy when creating JInternalFrames in WorkoutAppUI
+ */
+
 public abstract class AbstractInternalFrame extends JInternalFrame {
 
     public AbstractInternalFrame(String title) {

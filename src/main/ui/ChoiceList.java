@@ -16,6 +16,10 @@ import java.util.ArrayList;
     This class creates a list of exercise name entries in a small window from which I can select any exercise
     any number of times and in any order. Also, it has a "done" button that saves this list in case I want to include
     the exercises in my routine, as well as a "delete all" button which deletes all exercises from the final list.
+
+    Since in the video, a java.awt.List is used, I had to define List<Exercise> as java.util.List<Exercise>
+    (can't have both import in the same file)
+
  */
 
 public class ChoiceList extends JFrame implements ItemListener {
@@ -31,6 +35,9 @@ public class ChoiceList extends JFrame implements ItemListener {
     private static ArrayList<String> finalList = new ArrayList<>();
     private static java.util.List<Exercise> exercises = WorkoutAppUI.getWorkout().getExercises();
 
+    /*
+        Constructs a Choice list, adds all the components and populates the text area
+     */
     public ChoiceList() {
         setTitle("Exercise Selector");
         setPreferredSize(new Dimension(500, 350));
@@ -41,34 +48,10 @@ public class ChoiceList extends JFrame implements ItemListener {
         updateTextArea();
     }
 
-    private void deleteListExercise() {
-        finalList = new ArrayList<String>();
-        remove(gridPanel);
-        setUp();
-        textArea.setText("");
-        int i = 1;
-        for (String exercise : finalList) {
-            textArea.append(i + ") " + exercise + "\n");
-            i++;
-        }
-    }
-
-    public static java.util.List<Exercise> createListExercise() {
-
-        java.util.List<Exercise> exerciseList = new ArrayList<>();
-        try {
-            for (String exerciseName : finalList) {
-                for (Exercise exercise : exercises) {
-                    if (exercise.getExerciseName().equals(exerciseName)) {
-                        exerciseList.add(exercise);
-                    }
-                }
-            }
-        } catch (NullPointerException e) {
-            System.out.println("error");
-        }
-        return exerciseList;
-    }
+    /*
+        MODIFIES: this
+        EFFECTS: Set up the list, panels, buttons
+     */
 
     private void setUp() {
         list = new List(exercises.size(), false);
@@ -103,14 +86,50 @@ public class ChoiceList extends JFrame implements ItemListener {
         setVisible(true);
     }
 
-    @Override
-    public void itemStateChanged(ItemEvent e) {
-        remove(gridPanel);
-        finalList.add(list.getSelectedItem());
-        setUp();
-        updateTextArea();
+    /*
+        MODIFIES: this
+        EFFECTS: for each exerciseName chosen in the TextArea, finds the corresponding Exercise Object and adds
+            it to a List of Exercise
+     */
+    public static java.util.List<Exercise> createListExercise() {
+
+        java.util.List<Exercise> exerciseList = new ArrayList<>();
+        try {
+            for (String exerciseName : finalList) {
+                for (Exercise exercise : exercises) {
+                    if (exercise.getExerciseName().equals(exerciseName)) {
+                        exerciseList.add(exercise);
+                    }
+                }
+            }
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Could not create a list of exercises", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return exerciseList;
     }
 
+    /*
+        MODIFIES: this
+        EFFECTS: Sets the list of current added exercises to empty and updates the panel to reflect this in the
+        text area
+     */
+    private void deleteListExercise() {
+        finalList = new ArrayList<>();
+        remove(gridPanel);
+        setUp();
+        textArea.setText("");
+        int i = 1;
+        for (String exercise : finalList) {
+            textArea.append(i + ") " + exercise + "\n");
+            i++;
+        }
+    }
+
+    /*
+        MODIFIES: this
+        EFFECTS: populates the textArea with exercisePosition followed by exerciseName "1) ExerciseName"
+     */
     public void updateTextArea() {
         textArea.setText("");
         int i = 1;
@@ -118,5 +137,13 @@ public class ChoiceList extends JFrame implements ItemListener {
             textArea.append(i + ") " + exercise + "\n");
             i++;
         }
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        remove(gridPanel);
+        finalList.add(list.getSelectedItem());
+        setUp();
+        updateTextArea();
     }
 }

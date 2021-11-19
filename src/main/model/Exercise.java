@@ -39,7 +39,7 @@ public class Exercise implements Writable {
         this.exerciseRestTime = Math.max(0, exerciseRestTime);
         this.exerciseRating = exerciseRating;
         if (exerciseName.equals("")) {
-            this.exerciseName = "temporary name - " + this.exerciseNumOfReps + this.exerciseNumOfSets
+            this.exerciseName = "TempName" + this.exerciseNumOfReps + this.exerciseNumOfSets
                     + this.exerciseRestTime + this.exerciseRating;
         } else {
             this.exerciseName = exerciseName;
@@ -93,7 +93,7 @@ public class Exercise implements Writable {
     //          otherwise assigns a temporary name
     public void setExerciseName(String name) {
         if (name.equals("")) {
-            this.exerciseName = "temporary name - " + exerciseNumOfReps + exerciseNumOfSets
+            this.exerciseName = "TempName" + exerciseNumOfReps + exerciseNumOfSets
                     + exerciseRestTime + exerciseRating;
         } else {
             this.exerciseName = name;

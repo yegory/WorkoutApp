@@ -3,15 +3,18 @@ package ui;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+/*
+    Represents a non-editableJTable.
+    Used in Exercise Panel, Routine Panel, and Exercise Table.
+    In Exercise Panel, 1 is passed as version as the table is not editable anywhere.
+    In Routine Panel, 2 is passed as version as the table has to be editable on column 2 (where the button is located)
+*/
 public class NonEditableJTable extends JTable {
 
     private int version;
 
     /*
-    Represents a non-editableJTable.
-    Used in Exercise Panel, Routine Panel, and Exercise Table.
-    In Exercise Panel, 1 is passed as version as the table is not editable anywhere.
-    In Routine Panel, 2 is passed as version as the table has to be editable on column 2 (where the button is located)
+        Constructs a NonEditableJTable with tableModel parameter (which contains the header for the table)
      */
     public NonEditableJTable(DefaultTableModel tableModel, int version) {
         super(tableModel);

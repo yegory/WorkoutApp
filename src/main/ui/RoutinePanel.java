@@ -147,7 +147,7 @@ public class RoutinePanel extends AbstractInternalFrame {
         defaultTableModel = new DefaultTableModel(tableHeader, 1);
 
         table = new NonEditableJTable(defaultTableModel, 2);
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        //table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.getColumnModel().getColumn(0).setPreferredWidth(130);
         table.getColumnModel().getColumn(1).setPreferredWidth(380);
         table.getColumnModel().getColumn(2).setPreferredWidth(110);
@@ -209,13 +209,14 @@ public class RoutinePanel extends AbstractInternalFrame {
      */
     private void deleteRoutine() {
         try {
-            String routineName = routineNameTextField.getText();
+            String routineName = routineSearchTextField.getText();
             workout = WorkoutAppUI.getWorkout();
             routines = workout.getRoutines();
             for (Routine routine : routines) {
                 if (routine.getRoutineName().equals(routineName)) {
                     routines.remove(routine);
                     updateRoutineTable();
+                    resetTextFields();
                     break;
                 }
             }
@@ -224,6 +225,11 @@ public class RoutinePanel extends AbstractInternalFrame {
         }
     }
 
+    /*
+        MODIFIES: this, routine
+        EFFECTS: edits a routine from the list of routines in the workout file.
+                reflects the changes made to the routine in the table
+     */
     private void editRoutine() {
         try {
             String routineName = routineSearchTextField.getText();
@@ -245,12 +251,26 @@ public class RoutinePanel extends AbstractInternalFrame {
         }
     }
 
+    /*
+        MODIFIES: routine
+        EFFECTS: if the user's description input is "keep", this function does not alter the description
+        (stays the same). Otherwise, routine's description is set to the input.
+     */
     private void handleEditDescription(Routine routine, String routineDescriptionInput) {
         if (!routineDescriptionInput.equals("keep")) {
             routine.setRoutineDescription(routineDescriptionInput);
         }
     }
 
+    /*
+        MODIFIES: this
+        EFFECTS: the function will flip the favoriteView boolean value. And call the update Function on the table.
+            A new Button Renderer and Button Editor is made to ensure that the buttons are created in the correct cells.
+
+            If the table was in favoriteView before the call to this function,
+            the table's rows will get repopulated with all the current routines.
+            Otherwise, only routines with rating equal to '5' will be displayed.
+     */
     public static void repopulateWithFavoriteView(boolean favoriteView) {
         table.getColumn("Included exercises").setCellRenderer(new ButtonRenderer());
         table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox(), !favoriteView));
@@ -258,14 +278,16 @@ public class RoutinePanel extends AbstractInternalFrame {
         updateRoutineTable();
     }
 
-    // MODIFIES: this
-    // REQUIRES:
-    // EFFECTS: updates the routine table depending on
+    /*
+        MODIFIES: this
+        EFFECTS: updates the routine table. Updates the favoriteRoutineButton if needed.
+     */
     public static void updateRoutineTable() {
         defaultTableModel.setRowCount(0);
 
         Workout workout = WorkoutAppUI.getWorkout();
         if (favoriteView) {
+            toggleFavoriteRoutinesButton.setText("View all routines");
             for (int i = 0; i < workout.routinesSize(); i++) {
                 if (workout.getRoutine(i).getRoutineRating() == 5) {
                     defaultTableModel.addRow(routineToStringObject(workout.getRoutine(i)));
@@ -278,7 +300,6 @@ public class RoutinePanel extends AbstractInternalFrame {
             }
         }
     }
-
 
     /*
         Creates a string object from a routine object
@@ -301,9 +322,14 @@ public class RoutinePanel extends AbstractInternalFrame {
         favoriteView = view;
     }
 
+    /*
+       MODIFIES: this
+       EFFECTS: resets the Text fields to empty (used to clear input boxes after doing some operation)
+    */
     private void resetTextFields() {
         routineNameTextField.setText("");
         routineDescriptionTextField.setText("");
         routineRatingTextField.setText("");
+        routineSearchTextField.setText("");
     }
 }
