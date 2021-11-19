@@ -108,4 +108,17 @@ public class ExerciseTest {
         assertEquals(-6, testExercise2.getExerciseRating());
         assertEquals(12, testExercise3.getExerciseRating());
     }
+
+    @Test
+    void testExerciseToStringObject() {
+        String[] exerciseStringObject = testExercise.exerciseToStringObject();
+
+        assertEquals(exerciseStringObject[0], testExercise.getExerciseName());
+        assertEquals(exerciseStringObject[1], testExercise.getExerciseDescription());
+        assertEquals(Integer.parseInt(exerciseStringObject[2]), testExercise.getExerciseNumOfReps());
+        assertEquals(Integer.parseInt(exerciseStringObject[3]), testExercise.getExerciseNumOfSets());
+        assertEquals(Integer.parseInt(exerciseStringObject[4]), testExercise.getExerciseRestTime());
+        assertEquals(exerciseStringObject[5], testExercise.returnDefinedRating());
+    }
+
 }
