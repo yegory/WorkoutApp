@@ -217,7 +217,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
 
     public static void main(String[] args) {
         WorkoutAppUI workoutAppUI = new WorkoutAppUI();
-        //new SplashScreen();
+        new SplashScreen();
         workoutAppUI.setVisible(true);
     }
 }
