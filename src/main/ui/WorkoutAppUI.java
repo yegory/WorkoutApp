@@ -18,6 +18,10 @@ import java.util.List;
 /*
     !!! save and load functionality inspired/borrowed from JsonSerializationDemo
     https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+
+    M
+
+
  */
 
 public class WorkoutAppUI extends JFrame implements ActionListener {
@@ -29,11 +33,10 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
 
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 900;
-    public static final Color MAIN_BACKGROUND_COLOR = new Color(0xB07000);
+    public static final Color MAIN_BACKGROUND_COLOR = new Color(0x253C6B);
     public static final Color WorkoutPanelColor = new Color(0x6D7EB0);
 
     static JDesktopPane mainWindow;
-    static ExerciseTable exerciseTable;
     JInternalFrame homePanel;
     JInternalFrame filePanel;
     static JInternalFrame exercisePanel;
@@ -44,7 +47,9 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     JMenuItem exerciseMenuItem;
     JMenuItem routineMenuItem;
 
-
+/*
+Constructor to add JInternalFrames and add a Menu.
+ */
     public WorkoutAppUI() {
         jsonReader = new JsonReader(JSON_STORE);
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -74,6 +79,9 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         setVisible(false);
     }
 
+    /*
+        initializes the JMenu, JMenuBar, and JMenuItems, and adds action listeners for each.
+     */
     private void addMenu() {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
@@ -97,6 +105,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
 
     /**
      * Helper to centre main application window on desktop
+     * Taken from AlarmSystem demo project
      */
     private void centreOnScreen() {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -104,7 +113,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
     }
 
-
+    // Responsible for the Menu item actions (when user clicks on buttons)
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == homeMenuItem) {
@@ -134,10 +143,19 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         ExercisePanel.updateExerciseTable(workout);
     }
 
+    /*
+        Updates the routine Panel after the user loaded a save.
+     */
     public static void updateRoutinePanel() {
-        RoutinePanel.updateRoutineTable(RoutinePanel.getFavoriteView());
+        RoutinePanel.updateRoutineTable();
     }
 
+    /*
+        The responsibility of this function is to open a new ExerciseTable JPanel with a table of exercises contained
+        in the routine with which the user interacted with. Since the position of the routine chosen depends on whether
+        the RoutinePanel was in favoriteView or not (if any routine does not have a rating of 5, then indexes won't
+        match when searching)
+     */
     public static void displayIncludedExercises(int routinePos, boolean favoriteView) {
         List<Routine> routines = workout.getRoutines();
         if (!favoriteView) {
@@ -156,6 +174,8 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     /**
      * Represents action to be taken when user clicks desktop
      * to switch focus. (Needed for key handling.)
+     * Taken from AlarmSystem demo project, however i don't think this serves any purpose in my project,
+     * kept just in case
      */
     private class DesktopFocusAction extends MouseAdapter {
         @Override
@@ -164,29 +184,33 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         }
     }
 
-
+    // EFFECTS: returns the workout object
     public static Workout getWorkout() {
         return workout;
     }
 
-    // !!! inspired by JsonSerializationDemo (link in README)
-    // EFFECTS: saves the workout to file
+    /*
+        inspired by JsonSerializationDemo (link in README)
+        saves the workout to file
+     */
     protected static void saveWorkout() throws IOException {
         jsonWriter.open();
         jsonWriter.write(workout);
         jsonWriter.close();
     }
 
-    // !!! inspired by JsonSerializationDemo (link in README)
-    // MODIFIES: this
-    // EFFECTS: loads workout from file
+    /*
+        !!! inspired by JsonSerializationDemo (link in README)
+        MODIFIES: this
+        EFFECTS: loads workout from file
+     */
     protected static void loadWorkout() throws IOException {
         workout = jsonReader.read();
     }
 
     public static void main(String[] args) {
         WorkoutAppUI workoutAppUI = new WorkoutAppUI();
-        //new SplashScreen();
+        new SplashScreen();
         workoutAppUI.setVisible(true);
     }
 }

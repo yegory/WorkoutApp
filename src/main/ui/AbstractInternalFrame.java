@@ -5,7 +5,7 @@ import java.awt.*;
 
 public abstract class AbstractInternalFrame extends JInternalFrame {
 
-    public AbstractInternalFrame() {
+    public AbstractInternalFrame(String title) {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(true);
@@ -13,5 +13,6 @@ public abstract class AbstractInternalFrame extends JInternalFrame {
         setMaximizable(false);
         setIconifiable(true);
         setVisible(true);
+        setTitle(title);
     }
 }

@@ -8,63 +8,60 @@ import java.io.IOException;
 
 public class FilePanel extends AbstractInternalFrame implements ActionListener {
 
-    JPanel leftLoadSavePanel;
-    JPanel rightLoadSavePanel;
-    JLabel fileLocationLabelTop;
-    JLabel fileLocationLabelBottom;
+    JPanel topPanel;
+    JPanel bottomPanel;
+    JPanel gridPanel;
+
+    JLabel saveLoadLocationLabel;
+    JTextArea saveLoadTextArea;
+
+    JTextArea topTextArea;
     JButton loadButton;
     JButton saveButton;
 
     public FilePanel() {
-        super();
-        setTitle("File Panel");
+        super("File Panel");
         setBackground(WorkoutAppUI.WorkoutPanelColor);
-        setBounds(25, 350, 300, 300);
+        setBounds(25, 350, 250, 150);
+        setResizable(false);
 
         setUpLabel();
         setUpButtons();
         setUpPanel();
-        add(leftLoadSavePanel, BorderLayout.WEST);
-        add(rightLoadSavePanel, BorderLayout.CENTER);
+        topPanel.add(saveLoadLocationLabel);
+        topPanel.add(saveLoadTextArea);
+        bottomPanel.add(saveButton);
+        bottomPanel.add(loadButton);
+
+        add(gridPanel);
     }
 
     private void setUpLabel() {
-        fileLocationLabelTop = new JLabel();
-        fileLocationLabelTop.setText("SAVE/LOAD Location");
-        fileLocationLabelTop.setVisible(true);
-        fileLocationLabelTop.setBounds(0, 0, 200, 100);
-
-
-        fileLocationLabelBottom = new JLabel();
-        fileLocationLabelBottom.setText("./data/WorkoutAppData.json");
-        fileLocationLabelBottom.setVisible(true);
-
-        fileLocationLabelTop.setBounds(0, 50, 200, 100);
+        saveLoadLocationLabel = new JLabel("SAVE/LOAD Location: ");
+        saveLoadTextArea = new JTextArea("./data/WorkoutAppData.json");
+        saveLoadTextArea.setEditable(false);
+        saveLoadTextArea.setFocusable(false);
+        saveLoadTextArea.setBackground(new Color(0x118df0));
     }
 
 
     private void setUpPanel() {
-        leftLoadSavePanel = new JPanel();
-        leftLoadSavePanel.setPreferredSize(new Dimension(75, 100));
-        leftLoadSavePanel.add(loadButton);
-        leftLoadSavePanel.add(saveButton);
-        leftLoadSavePanel.setVisible(true);
-        leftLoadSavePanel.setBackground(new Color(0x000372));
-        leftLoadSavePanel.add(loadButton);
-        leftLoadSavePanel.add(saveButton);
+        topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        topPanel.setBackground(new Color(0x118df0));
+        bottomPanel.setBackground(new Color(0x0B69AD));
 
-        rightLoadSavePanel = new JPanel();
-        rightLoadSavePanel.setPreferredSize(new Dimension(75, 100));
-        rightLoadSavePanel.add(fileLocationLabelTop);
-        rightLoadSavePanel.add(fileLocationLabelBottom);
-        rightLoadSavePanel.setVisible(true);
-        rightLoadSavePanel.setBackground(new Color(0xAEB286));
+        gridPanel = new JPanel(new GridLayout(2,1));
+
+        gridPanel.add(topPanel);
+        gridPanel.add(bottomPanel);
+        gridPanel.setVisible(true);
     }
 
     private void setUpButtons() {
-        loadButton = new JButton("Load");
+        loadButton = new JButton("Load file");
         loadButton.addActionListener(this);
-        saveButton = new JButton("Save");
+        saveButton = new JButton("Save file");
         saveButton.addActionListener(this);
     }
 

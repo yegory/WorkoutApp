@@ -15,8 +15,7 @@ public class HomePanel extends AbstractInternalFrame implements ActionListener {
     JLabel credits;
 
     public HomePanel() {
-        super();
-        setTitle("Home Panel");
+        super("Home Panel");
         setBackground(WorkoutAppUI.WorkoutPanelColor);
         setBounds(25, 25, 300, 250);
 
