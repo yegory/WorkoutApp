@@ -7,12 +7,14 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.List;
 
-public class ExercisePanel extends AbstractInternalFrame implements ActionListener {
+/*
+    Represents the Exercise Panel that is responsible for all actions related to adding,editing, deleting,
+    and printing each exercise onto a table.
+ */
+
+public class ExercisePanel extends AbstractInternalFrame {
 
     private boolean favoriteView = false;
     JButton toggleFavoriteExercisesButton;
@@ -20,13 +22,13 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
     JButton deleteExerciseButton;
     JButton editExerciseButton;
 
-    CustonButtonLabel exerciseNameLabel;
-    CustonButtonLabel exerciseDescriptionLabel;
-    CustonButtonLabel exerciseNumberOfRepsLabel;
-    CustonButtonLabel exerciseNumberOfSetsLabel;
-    CustonButtonLabel exerciseRestTimeLabel;
-    CustonButtonLabel exerciseRatingLabel;
-    CustonButtonLabel exerciseSearchLabel;
+    CustomButtonLabel exerciseNameLabel;
+    CustomButtonLabel exerciseDescriptionLabel;
+    CustomButtonLabel exerciseNumberOfRepsLabel;
+    CustomButtonLabel exerciseNumberOfSetsLabel;
+    CustomButtonLabel exerciseRestTimeLabel;
+    CustomButtonLabel exerciseRatingLabel;
+    CustomButtonLabel exerciseSearchLabel;
 
     CustomTextField exerciseNameTextField;
     CustomTextField exerciseDescriptionTextField;
@@ -43,8 +45,6 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
 
     static String[] tableHeader = {"Name", "Description", "Reps", "Sets", "Rest time (s)", "Rating"};
 
-    static String[] exerciseEntries = {};
-
     static DefaultTableModel defaultTableModel = new DefaultTableModel(tableHeader, 0);
 
     NonEditableJTable table = new NonEditableJTable(defaultTableModel, 1);
@@ -56,6 +56,9 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
     private Workout workout = WorkoutAppUI.getWorkout();
 
 
+    /*
+        EFFECTS: Constructs an Exercise panel
+     */
     public ExercisePanel() {
         super("Exercise Panel");
         setBackground(WorkoutAppUI.WorkoutPanelColor);
@@ -64,6 +67,10 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
         setUp();
     }
 
+    /*
+        MODIFIES: this
+        EFFECTS: initializes all the UI elements inside the Exercise Panel
+     */
     private void setUp() {
         updateExerciseTable(workout);
 
@@ -83,6 +90,9 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
         add(gridPanel, BorderLayout.SOUTH);
     }
 
+    /*
+        EFFECTS: adds action listeners to each button
+     */
     private void setUpActionListeners() {
         addExerciseButton.addActionListener(event -> addExercise());
         deleteExerciseButton.addActionListener(event -> deleteExercise());
@@ -90,6 +100,10 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
         toggleFavoriteExercisesButton.addActionListener(event -> repopulateWithFavorites(favoriteView));
     }
 
+    /*
+        MODIFIES: this
+        EFFECTS: sets up the table
+     */
     private void setUpTable() {
         scrollPane.setPreferredSize(new Dimension(500, 300));
         scrollPane.setVisible(true);
@@ -113,6 +127,9 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
         table.setRowMargin(5);
     }
 
+    /*
+        EFFECTS: initializes flow panels
+     */
     private void initializeUpFlowPanels() {
         topFlowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         centerFlowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -122,6 +139,9 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
         bottomFlowPanel.setBackground(new Color(0x696969));
     }
 
+    /*
+        EFFECTS: adds elements to the flow panels
+     */
     private void setUpFlowPanels() {
         topFlowPanel.add(exerciseNameLabel);
         topFlowPanel.add(exerciseNameTextField);
@@ -145,14 +165,17 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
         bottomFlowPanel.add(toggleFavoriteExercisesButton);
     }
 
+    /*
+        EFFECTS: initializes text fields and Labels
+     */
     private void setUpJLabelsAndTextFields() {
-        exerciseNameLabel = new CustonButtonLabel("Name: ");
-        exerciseDescriptionLabel = new CustonButtonLabel("Description: ");
-        exerciseNumberOfRepsLabel = new CustonButtonLabel("Number of reps: ");
-        exerciseNumberOfSetsLabel = new CustonButtonLabel("Number of sets: ");
-        exerciseRestTimeLabel = new CustonButtonLabel("Rest time (sec): ");
-        exerciseRatingLabel = new CustonButtonLabel("Rating: ");
-        exerciseSearchLabel = new CustonButtonLabel("Modify w/ name: ");
+        exerciseNameLabel = new CustomButtonLabel("Name: ");
+        exerciseDescriptionLabel = new CustomButtonLabel("Description: ");
+        exerciseNumberOfRepsLabel = new CustomButtonLabel("Number of reps: ");
+        exerciseNumberOfSetsLabel = new CustomButtonLabel("Number of sets: ");
+        exerciseRestTimeLabel = new CustomButtonLabel("Rest time (sec): ");
+        exerciseRatingLabel = new CustomButtonLabel("Rating: ");
+        exerciseSearchLabel = new CustomButtonLabel("Modify w/ name: ");
 
         exerciseNameTextField = new CustomTextField(10);
         exerciseDescriptionTextField = new CustomTextField(40);
@@ -163,6 +186,9 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
         exerciseSearchTextField = new CustomTextField(10);
     }
 
+    /*
+        EFFECTS: sets up buttons and adds action listeners to each
+     */
     private void setUpButton() {
         addExerciseButton = new JButton("+");
         deleteExerciseButton = new JButton("-");
@@ -171,6 +197,11 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
         toggleFavoriteExercisesButton.setPreferredSize(new Dimension(200, 25));
     }
 
+    /*
+        MODIFIES: this, workout
+        EFFECTS: adds exercise to the list of exercises in the workout file.
+                 Adds the exercise to the table
+     */
     private void addExercise() {
         workout = WorkoutAppUI.getWorkout();
         try {
@@ -181,13 +212,18 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
                     Integer.parseInt(exerciseRestTimeTextField.getText()),
                     Integer.parseInt(exerciseRatingTextField.getText()));
             workout.addExercise(exercise);
-            defaultTableModel.addRow(exerciseToStringObject(exercise));
+            defaultTableModel.addRow(exercise.exerciseToStringObject());
             resetTextFields();
         } catch (Exception error) {
             JOptionPane.showMessageDialog(null, error.toString());
         }
     }
 
+    /*
+        MODIFIES: this, workout
+        EFFECTS: removes an exercise from the list of exercises in the workout file.
+                Deletes the exercise from the table.
+     */
     public void deleteExercise() {
         try {
             String exerciseName = exerciseNameTextField.getText();
@@ -205,6 +241,11 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
         }
     }
 
+    /*
+        MODIFIES: this, exercise
+        EFFECTS: edits an exercise from the list of exercises in the workout file. and reflects the changes made
+        to the exercise in the table.
+     */
     private void editExercise() {
         try {
             String exerciseName = exerciseSearchTextField.getText();
@@ -228,54 +269,60 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
         }
     }
 
+    /*
+        MODIFIES: exercise
+        EFFECTS: if the user's description input is "keep", this function does not alter the description
+        (stays the same). Otherwise, exercise's description is set to the input.
+     */
     private void handleEditDescription(Exercise exercise, String exerciseDescriptionInput) {
         if (!exerciseDescriptionInput.equals("keep")) {
             exercise.setExerciseDescription(exerciseDescriptionInput);
         }
     }
 
-
+    /*
+        MODIFIES: this
+        EFFECTS: depending on the isFavoriteView parameter, the function will flip the text on the favoriteButton
+        to the polar text, and build up the table with the favoriteView in mind. If the table was in favoriteView before
+        the call to this function, the table's rows will get repopulated with all the current exercises.
+        Otherwise, only exercises with rating of '5' will be displayed.
+     */
     private void repopulateWithFavorites(boolean isFavoriteView) {
+
+        workout = WorkoutAppUI.getWorkout();
+
         if (!isFavoriteView) {
-            workout = WorkoutAppUI.getWorkout();
             defaultTableModel.setRowCount(0);
 
             for (int i = 0; i < workout.exercisesSize(); i++) {
                 if (workout.getExercise(i).getExerciseRating() == 5) {
-                    defaultTableModel.addRow(exerciseToStringObject(workout.getExercise(i)));
+                    defaultTableModel.addRow((workout.getExercise(i)).exerciseToStringObject());
                 }
             }
-            favoriteView = true;
             toggleFavoriteExercisesButton.setText("View all exercises");
         } else {
-            workout = WorkoutAppUI.getWorkout();
             updateExerciseTable(workout);
-            favoriteView = false;
             toggleFavoriteExercisesButton.setText("View favorite exercises");
         }
+        favoriteView = !favoriteView;
     }
 
+    /*
+        MODIFIES: this
+        EFFECTS: builds up the table without favorite view in mind. All exercises will be displayed in the table.
+     */
     public static void updateExerciseTable(Workout workout) {
         defaultTableModel.setRowCount(0);
 
         for (int i = 0; i < workout.exercisesSize(); i++) {
-            defaultTableModel.addRow(exerciseToStringObject(workout.getExercise(i)));
+            defaultTableModel.addRow((workout.getExercise(i).exerciseToStringObject()));
         }
     }
 
-    private static String[] exerciseToStringObject(Exercise exercise) {
-        String[] data = new String[6];
-
-        data[0] = exercise.getExerciseName();
-        data[1] = exercise.getExerciseDescription();
-        data[2] = Integer.toString(exercise.getExerciseNumOfReps());
-        data[3] = Integer.toString(exercise.getExerciseNumOfSets());
-        data[4] = Integer.toString(exercise.getExerciseRestTime());
-        data[5] = exercise.returnDefinedRating();
-
-        return data;
-    }
-
+    /*
+        MODIFIES: this
+        EFFECTS: resets the Text fields to empty (used to clear input boxes after doing some operation)
+     */
     private void resetTextFields() {
         exerciseNameTextField.setText("");
         exerciseDescriptionTextField.setText("");
@@ -283,10 +330,5 @@ public class ExercisePanel extends AbstractInternalFrame implements ActionListen
         exerciseNumberOfSetsTextField.setText("");
         exerciseRestTimeTextField.setText("");
         exerciseRatingTextField.setText("");
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }

@@ -5,10 +5,13 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
 /*
-CUSTOM JTextField Border CODE Taken FROM
-https://stackoverflow.com/questions/8515601/java-swing-rounded-border-for-jtextfield
-Legend.
+    CUSTOM JTextField Border CODE Taken FROM
+    https://stackoverflow.com/questions/8515601/java-swing-rounded-border-for-jtextfield
+
+    This class is responsible for creating TextFields with rounded off corners that look nice. Only for visual appeal.
+    Since I just got this code from the stackoverflow post, I won't try to understand how all of this works.
  */
+
 public class CustomTextField extends JTextField {
     private Shape shape;
     private int arcWidth = 15;

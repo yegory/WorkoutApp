@@ -2,10 +2,8 @@ package ui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class HomePanel extends AbstractInternalFrame implements ActionListener {
+public class HomePanel extends AbstractInternalFrame {
 
     JPanel panel;
     JPanel topPanel;
@@ -70,10 +68,5 @@ public class HomePanel extends AbstractInternalFrame implements ActionListener {
         credits.setVisible(true);
         credits.setBounds(0, 0, 200, 50);
         credits.setHorizontalAlignment(SwingConstants.CENTER);
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }

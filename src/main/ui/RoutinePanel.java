@@ -7,11 +7,16 @@ import model.Workout;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
-public class RoutinePanel extends AbstractInternalFrame implements ActionListener {
+/*
+    Represents the Routine Panel that is responsible for all actions related to adding,editing, deleting,
+    and printing each routine onto a table.
+    It also handles the Exercise table when clicking on "view exercises" button in the table.
+    It also handles the ChoiceList/Button Renderer and Button Editor when clicking on "select exercises" in the JPanel
+ */
+
+public class RoutinePanel extends AbstractInternalFrame {
 
     private static boolean favoriteView;
     static JButton toggleFavoriteRoutinesButton;
@@ -20,11 +25,11 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
     JButton editRoutineButton;
     JButton routineIncludedExercisesButton;
 
-    CustonButtonLabel routineNameLabel;
-    CustonButtonLabel routineDescriptionLabel;
-    CustonButtonLabel routineIncludedExercisesLabel;
-    CustonButtonLabel routineRatingLabel;
-    CustonButtonLabel routineSearchLabel;
+    CustomButtonLabel routineNameLabel;
+    CustomButtonLabel routineDescriptionLabel;
+    CustomButtonLabel routineIncludedExercisesLabel;
+    CustomButtonLabel routineRatingLabel;
+    CustomButtonLabel routineSearchLabel;
 
     CustomTextField routineNameTextField;
     CustomTextField routineDescriptionTextField;
@@ -37,7 +42,6 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
     JPanel gridPanel;
 
     static String[] tableHeader = {"Name", "Description", "Included exercises", "Total time (s)", "Rating"};
-    static String[] routineEntries = {};
 
     static DefaultTableModel defaultTableModel;
 
@@ -47,6 +51,9 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
     private Workout workout;
     private List<Routine> routines;
 
+    /*
+        Constructs a Routine panel, with initial view set to all exercises (!favorite)
+     */
     public RoutinePanel() {
         super("Routine Panel");
         setBounds(350, 425, 825, 425);
@@ -56,6 +63,10 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         setUp();
     }
 
+    /*
+        MODIFIES: this
+        Sets up all the components within this JInternalFrame
+     */
     private void setUp() {
         workout = WorkoutAppUI.getWorkout();
         setUpJLabelsAndTextFields();
@@ -74,11 +85,11 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
     }
 
     private void setUpJLabelsAndTextFields() {
-        routineNameLabel = new CustonButtonLabel("Name: ");
-        routineDescriptionLabel = new CustonButtonLabel("Description: ");
-        routineIncludedExercisesLabel = new CustonButtonLabel("Included exercises: ");
-        routineRatingLabel = new CustonButtonLabel("Rating: ");
-        routineSearchLabel = new CustonButtonLabel("Modify w/ name: ");
+        routineNameLabel = new CustomButtonLabel("Name: ");
+        routineDescriptionLabel = new CustomButtonLabel("Description: ");
+        routineIncludedExercisesLabel = new CustomButtonLabel("Included exercises: ");
+        routineRatingLabel = new CustomButtonLabel("Rating: ");
+        routineSearchLabel = new CustomButtonLabel("Modify w/ name: ");
 
         routineNameTextField = new CustomTextField(10);
         routineDescriptionTextField = new CustomTextField(40);
@@ -87,6 +98,9 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
 
     }
 
+    /*
+        EFFECTS: sets up buttons and adds action listeners to each
+     */
     private void setUpButton() {
         addRoutineButton = new JButton("+");
         deleteRoutineButton = new JButton("-");
@@ -97,6 +111,9 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         routineIncludedExercisesButton = new JButton("select exercises");
     }
 
+    /*
+        EFFECTS: initializes flow panels and adds elements to the flow panels
+     */
     private void setUpFlowPanels() {
         topFlowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         centerFlowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -122,6 +139,10 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         bottomFlowPanel.add(toggleFavoriteRoutinesButton);
     }
 
+    /*
+        MODIFIES: this
+        EFFECTS: sets up the table
+     */
     private void setUpTableAndScrollPane() {
         defaultTableModel = new DefaultTableModel(tableHeader, 1);
 
@@ -150,6 +171,9 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         add(scrollPane, BorderLayout.CENTER);
     }
 
+    /*
+        EFFECTS: adds action listeners to each button
+     */
     private void setUpActionListeners() {
         addRoutineButton.addActionListener(event -> addRoutine());
         deleteRoutineButton.addActionListener(event -> deleteRoutine());
@@ -158,6 +182,11 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         routineIncludedExercisesButton.addActionListener(event -> new ChoiceList());
     }
 
+    /*
+        MODIFIES: this, workout
+        EFFECTS: adds routine to the list of routines in the workout file.
+                Adds the routine to the table
+     */
     private void addRoutine() {
         Workout workout = WorkoutAppUI.getWorkout();
         try {
@@ -173,6 +202,11 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         }
     }
 
+    /*
+        MODIFIES: this, workout
+        EFFECTS: removes a routine from the list of routines in the workout file.
+                Deletes the exercise from the table
+     */
     private void deleteRoutine() {
         try {
             String routineName = routineNameTextField.getText();
@@ -192,13 +226,14 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
 
     private void editRoutine() {
         try {
-            String routineName = routineNameTextField.getText();
+            String routineName = routineSearchTextField.getText();
             workout = WorkoutAppUI.getWorkout();
             routines = workout.getRoutines();
             for (Routine routine : routines) {
                 if (routine.getRoutineName().equals(routineName)) {
                     List<Exercise> chosenExercises = ChoiceList.createListExercise();
-                    routine.setRoutineDescription(routineDescriptionTextField.getText());
+                    routine.setRoutineName(routineNameTextField.getText());
+                    handleEditDescription(routine, routineDescriptionTextField.getText());
                     routine.setIncludedExercises(chosenExercises);
                     routine.setRoutineRating(Integer.parseInt(routineRatingTextField.getText()));
                     routine.updateTotalTimeToComplete();
@@ -210,9 +245,9 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         }
     }
 
-    private void handleEditDescription(Exercise exercise, String exerciseDescriptionInput) {
-        if (!exerciseDescriptionInput.equals("keep")) {
-            exercise.setExerciseDescription(exerciseDescriptionInput);
+    private void handleEditDescription(Routine routine, String routineDescriptionInput) {
+        if (!routineDescriptionInput.equals("keep")) {
+            routine.setRoutineDescription(routineDescriptionInput);
         }
     }
 
@@ -245,9 +280,9 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
     }
 
 
-    // MODIFIES:
-    // REQUIRES:
-    // EFFECTS:
+    /*
+        Creates a string object from a routine object
+     */
     public static String[] routineToStringObject(Routine routine) {
 
         String[] data = new String[5];
@@ -262,10 +297,6 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         return data;
     }
 
-    public static boolean getFavoriteView() {
-        return favoriteView;
-    }
-
     public static void setFavoriteView(boolean view) {
         favoriteView = view;
     }
@@ -274,10 +305,5 @@ public class RoutinePanel extends AbstractInternalFrame implements ActionListene
         routineNameTextField.setText("");
         routineDescriptionTextField.setText("");
         routineRatingTextField.setText("");
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
     }
 }

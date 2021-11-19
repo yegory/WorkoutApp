@@ -19,9 +19,10 @@ import java.util.List;
     !!! save and load functionality inspired/borrowed from JsonSerializationDemo
     https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 
-    M
+    Copied centreOnScreen() and DesktopFocusAction from AlarmSystem demo project
 
-
+    WorkoutAppUI is contains the main method. It is responsible for the Main window that contains 4 Panels, A Menu bar,
+    and also initializes a splash screen before running the program.
  */
 
 public class WorkoutAppUI extends JFrame implements ActionListener {
@@ -47,9 +48,10 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     JMenuItem exerciseMenuItem;
     JMenuItem routineMenuItem;
 
-/*
-Constructor to add JInternalFrames and add a Menu.
- */
+    /*
+        MODIFIES: this
+        EFFECTS: Constructor to add JInternalFrames and add a Menu.
+     */
     public WorkoutAppUI() {
         jsonReader = new JsonReader(JSON_STORE);
         jsonWriter = new JsonWriter(JSON_STORE);
@@ -80,7 +82,8 @@ Constructor to add JInternalFrames and add a Menu.
     }
 
     /*
-        initializes the JMenu, JMenuBar, and JMenuItems, and adds action listeners for each.
+        MODIFIES: this
+        EFFECTS: initializes the JMenu, JMenuBar, and JMenuItems, and adds action listeners for each.
      */
     private void addMenu() {
         JMenuBar menuBar = new JMenuBar();
@@ -103,9 +106,10 @@ Constructor to add JInternalFrames and add a Menu.
         routineMenuItem.addActionListener(this);
     }
 
-    /**
-     * Helper to centre main application window on desktop
-     * Taken from AlarmSystem demo project
+    /*
+         MODIFIES: this
+         EFFECTS: centres main application window on desktop
+         Taken from AlarmSystem demo project
      */
     private void centreOnScreen() {
         int width = Toolkit.getDefaultToolkit().getScreenSize().width;
@@ -139,6 +143,10 @@ Constructor to add JInternalFrames and add a Menu.
         }
     }
 
+    /*
+        MODIFIES: this, ExercisePanel
+        EFFECTS: updates the ExercisePanel table with the new workout profile. Called from FilePanel after loading.
+     */
     public static void updateExercisePanel(Workout workout) {
         ExercisePanel.updateExerciseTable(workout);
     }
@@ -172,9 +180,8 @@ Constructor to add JInternalFrames and add a Menu.
     }
 
     /**
-     * Represents action to be taken when user clicks desktop
-     * to switch focus. (Needed for key handling.)
-     * Taken from AlarmSystem demo project, however i don't think this serves any purpose in my project,
+     * Represents action to be taken when user clicks desktop to switch focus.
+     * Taken from AlarmSystem demo project, however I don't think this serves any purpose in my project,
      * kept just in case
      */
     private class DesktopFocusAction extends MouseAdapter {

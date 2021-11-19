@@ -142,4 +142,20 @@ public class Exercise implements Writable {
         json.put("exerciseRating", exerciseRating);
         return json;
     }
+
+    /*
+        EFFECTS: constructs a string object from an exercise object.
+     */
+    public String[] exerciseToStringObject() {
+        String[] data = new String[6];
+
+        data[0] = exerciseName;
+        data[1] = exerciseDescription;
+        data[2] = Integer.toString(exerciseNumOfReps);
+        data[3] = Integer.toString(exerciseNumOfSets);
+        data[4] = Integer.toString(exerciseRestTime);
+        data[5] = returnDefinedRating();
+
+        return data;
+    }
 }

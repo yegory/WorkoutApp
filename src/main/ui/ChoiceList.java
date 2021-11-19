@@ -8,6 +8,16 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
+/*
+    Got the idea from https://www.youtube.com/watch?v=1EN2lA__xV0
+    "Create a pop-up list of items using choice, multiple-select scrolling selection with List"
+    However I modified a significant portion to work with my project idea.
+
+    This class creates a list of exercise name entries in a small window from which I can select any exercise
+    any number of times and in any order. Also, it has a "done" button that saves this list in case I want to include
+    the exercises in my routine, as well as a "delete all" button which deletes all exercises from the final list.
+ */
+
 public class ChoiceList extends JFrame implements ItemListener {
 
     JPanel buttonPanel;
