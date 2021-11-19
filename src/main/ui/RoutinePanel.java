@@ -307,10 +307,8 @@ public class RoutinePanel extends AbstractInternalFrame {
     public static String[] routineToStringObject(Routine routine) {
 
         String[] data = new String[5];
-
         data[0] = routine.getRoutineName();
         data[1] = routine.getRoutineDescription();
-
         data[2] = "view [" + (defaultTableModel.getRowCount() + 1) + "]";
         data[3] = routine.formatTotalTimeToComplete(routine.getTotalTimeToComplete());
         data[4] = routine.returnDefinedRating();

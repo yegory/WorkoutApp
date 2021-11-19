@@ -179,10 +179,11 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         }
     }
 
-    /**
-     * Represents action to be taken when user clicks desktop to switch focus.
-     * Taken from AlarmSystem demo project, however I don't think this serves any purpose in my project,
-     * kept just in case
+    /*
+         Represents action to be taken when user clicks desktop to switch focus.
+
+         Taken from AlarmSystem demo project, however I don't think this serves any purpose in my project,
+         kept just in case
      */
     private class DesktopFocusAction extends MouseAdapter {
         @Override

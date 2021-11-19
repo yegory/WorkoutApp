@@ -19,7 +19,7 @@ class ButtonEditor extends DefaultCellEditor implements ActionListener {
     protected JButton button;
     private String label;
     private boolean isPushed;
-    private final boolean favoriteView;
+    private boolean favoriteView;
 
     /*
         Constructs an invisible checkbox in the table cell.

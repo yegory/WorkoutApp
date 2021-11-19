@@ -147,8 +147,8 @@ public class Exercise implements Writable {
         EFFECTS: constructs a string object from an exercise object.
      */
     public String[] exerciseToStringObject() {
-        String[] data = new String[6];
 
+        String[] data = new String[6];
         data[0] = exerciseName;
         data[1] = exerciseDescription;
         data[2] = Integer.toString(exerciseNumOfReps);
