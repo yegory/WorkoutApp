@@ -46,6 +46,7 @@ public class JsonReader {
         Workout workout = new Workout(name);
         addExercises(workout, jsonObject);
         addRoutines(workout, jsonObject);
+
         return workout;
     }
 

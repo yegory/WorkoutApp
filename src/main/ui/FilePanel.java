@@ -1,5 +1,7 @@
 package ui;
 
+import javafx.beans.InvalidationListener;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,7 +31,7 @@ public class FilePanel extends AbstractInternalFrame implements ActionListener {
      */
     public FilePanel() {
         super("File Panel");
-        setBounds(25, 350, 250, 150);
+        setBounds(50, 0, 250, 150);
         setResizable(false);
 
         setUp();

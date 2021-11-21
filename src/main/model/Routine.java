@@ -26,7 +26,7 @@ public class Routine implements Writable {
     private int routineRating;
 
     // EFFECTS: Constructs the exercise
-    //          routineName is initialized to user input (can be empty)
+    //          routineName is initialized to user input (can't be empty)
     //          sets routineDescription to user input (can be empty)
     //          sets includedExercise to user input (can be empty)
     //          calculates and sets the totalTimeToComplete for that routine
@@ -34,7 +34,6 @@ public class Routine implements Writable {
     public Routine(String routineName, String routineDescription, List<Exercise> includedExercises, int routineRating) {
         int totalExerciseTime = 0;
 
-        this.routineName = routineName;
         this.routineDescription = routineDescription;
         this.includedExercises = includedExercises;
         for (Exercise exercise : includedExercises) {
@@ -43,6 +42,12 @@ public class Routine implements Writable {
         }
         this.totalTimeToComplete = totalExerciseTime;
         this.routineRating = routineRating;
+
+        if (routineName.equals("")) {
+            this.routineName = "Routine" + routineDescription.length() + totalTimeToComplete + routineRating;
+        } else {
+            this.routineName = routineName;
+        }
     }
 
     // EFFECTS: returns a string equivalent of a numeric rating from 0-5. Any other number is "Unrated"
@@ -87,31 +92,46 @@ public class Routine implements Writable {
     // MODIFIES: this
     // EFFECTS: sets exerciseRating to the input
     public void setRoutineName(String routineName) {
-        this.routineName = routineName;
+        String oldName = this.routineName;
+        if (routineName.equals("")) {
+            this.routineName = "Routine" + routineDescription.length() + totalTimeToComplete + routineRating;
+        } else {
+            this.routineName = routineName;
+        }
+        EventLog.getInstance().logEvent(new Event(
+                "Changed name of" + oldName + " routine to: " + this.routineName));
     }
 
     // MODIFIES: this
     // EFFECTS: sets exerciseDescription to the input
     public void setRoutineDescription(String routineDescription) {
         this.routineDescription = routineDescription;
+        EventLog.getInstance().logEvent(new Event(
+                "Changed description for" + routineName + " routine to: " + this.routineDescription));
     }
 
     // MODIFIES: this
     // EFFECTS: sets exerciseIncludedExercises to the provided listOfExercise
     public void setIncludedExercises(List<Exercise> includedExercises) {
         this.includedExercises = includedExercises;
+        EventLog.getInstance().logEvent(new Event(
+                "Changed included exercises for" + routineName + " routine"));
     }
 
     // MODIFIES: this
     // EFFECTS: sets exerciseRating to the input
     public void setTotalTimeToComplete(int totalTimeToComplete) {
         this.totalTimeToComplete = totalTimeToComplete;
+        EventLog.getInstance().logEvent(new Event(
+                "Changed total time for" + routineName + " routine to: " + this.totalTimeToComplete));
     }
 
     // MODIFIES: this
     // EFFECTS: sets routineRating to the input
     public void setRoutineRating(int routineRating) {
         this.routineRating = routineRating;
+        EventLog.getInstance().logEvent(new Event(
+                "Changed rating for" + routineName + " routine to: " + this.routineRating));
     }
 
     public void updateTotalTimeToComplete() {
@@ -120,6 +140,8 @@ public class Routine implements Writable {
             totalTimeToComplete += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
                     + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
         }
+        EventLog.getInstance().logEvent(new Event(
+                "Changed total time for" + routineName + " routine to: " + totalTimeToComplete));
     }
 
     // EFFECTS: helper to format time, e.g.: "# min, # sec"

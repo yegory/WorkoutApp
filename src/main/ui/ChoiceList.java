@@ -1,6 +1,7 @@
 package ui;
 
 import model.Exercise;
+import model.Workout;
 
 import javax.swing.*;
 import java.awt.*;
@@ -92,21 +93,30 @@ public class ChoiceList extends JFrame implements ItemListener {
             it to a List of Exercise
      */
     public static java.util.List<Exercise> createListExercise() {
-
-        java.util.List<Exercise> exerciseList = new ArrayList<>();
+        java.util.List<Exercise> exercises = new ArrayList<>();
         try {
-            for (String exerciseName : finalList) {
-                for (Exercise exercise : exercises) {
-                    if (exercise.getExerciseName().equals(exerciseName)) {
-                        exerciseList.add(exercise);
-                    }
-                }
-            }
+            exercises = choiceListHelper(finalList);
         } catch (NullPointerException e) {
             JOptionPane.showMessageDialog(null,
                     "Could not create a list of exercises", "Error", JOptionPane.ERROR_MESSAGE);
         }
+        return exercises;
+    }
+
+    public static java.util.List<Exercise> choiceListHelper(ArrayList<String> finalList) throws NullPointerException {
+
+        java.util.List<Exercise> exerciseList = new ArrayList<>();
+
+        for (String exerciseName : finalList) {
+            for (Exercise exercise : exercises) {
+                if (exercise.getExerciseName().equals(exerciseName)) {
+                    exerciseList.add(exercise);
+                }
+            }
+        }
+
         return exerciseList;
+
     }
 
     /*

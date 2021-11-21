@@ -3,8 +3,10 @@ package model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 /*
     !!! I created this class so that I could save/load to the same file, got the idea from
@@ -35,12 +37,14 @@ public class Workout implements Writable {
     // EFFECTS: adds exercise to this workroom
     public void addExercise(Exercise exercise) {
         exercises.add(exercise);
+        EventLog.getInstance().logEvent(new Event(("Added new exercise \"" + exercise.getExerciseName() + "\"")));
     }
 
     // MODIFIES: this
     // EFFECTS: adds routine to this workout
     public void addRoutine(Routine routine) {
         routines.add(routine);
+        EventLog.getInstance().logEvent(new Event(("Added new routine \"" + routine.getRoutineName() + "\"")));
     }
 
     // EFFECT: returns a list of the all the exercises
@@ -79,6 +83,8 @@ public class Workout implements Writable {
     // REQUIRES: index is not out of range for exercises
     // EFFECTS: removes the Routine at position equal to index
     public void removeExercise(int index) {
+        EventLog.getInstance().logEvent(new Event(("Deleted exercise \""
+                + exercises.get(index).getExerciseName() + "\"")));
         exercises.remove(index);
     }
 
@@ -86,6 +92,8 @@ public class Workout implements Writable {
     // REQUIRES: index is not out of range for routines
     // EFFECTS: removes the Routine at position equal to index
     public void removeRoutine(int index) {
+        EventLog.getInstance().logEvent(new Event(("Deleted routine \""
+                + routines.get(index).getRoutineName() + "\"")));
         routines.remove(index);
     }
 
@@ -111,7 +119,7 @@ public class Workout implements Writable {
     private JSONArray exercisesToJson() {
         JSONArray jsonArray = new JSONArray();
 
-        for (Exercise exercise: exercises) {
+        for (Exercise exercise : exercises) {
             jsonArray.put(exercise.toJson());
         }
 
@@ -122,10 +130,34 @@ public class Workout implements Writable {
     private JSONArray routinesToJson() {
         JSONArray jsonArray = new JSONArray();
 
-        for (Routine routine: routines) {
+        for (Routine routine : routines) {
             jsonArray.put(routine.toJson());
         }
 
         return jsonArray;
     }
+
+    public void notifySaved(String path) {
+        EventLog.getInstance().logEvent(new Event("Saved program to " + path));
+    }
+
+    public void notifyLoad(String path) {
+        EventLog.getInstance().logEvent(new Event("Loaded program from " + path));
+    }
+
+//    public List<Exercise> choiceListHelper(ArrayList<String> finalList) throws NullPointerException {
+//
+//        List<Exercise> exerciseList = new ArrayList<>();
+//
+//        for (String exerciseName : finalList) {
+//            for (Exercise exercise : exercises) {
+//                if (exercise.getExerciseName().equals(exerciseName)) {
+//                    exerciseList.add(exercise);
+//                }
+//            }
+//        }
+//
+//        return exerciseList;
+//
+//    }
 }

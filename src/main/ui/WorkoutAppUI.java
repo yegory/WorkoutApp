@@ -1,18 +1,18 @@
 package ui;
 
+import model.EventLog;
 import model.Routine;
 import model.Workout;
+import model.exception.LogException;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /*
@@ -31,6 +31,10 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     private static Workout workout;
     private static JsonReader jsonReader;
     private static JsonWriter jsonWriter;
+    private static final String FILE_DESCRIPTOR = "...file";
+    private static final String SCREEN_DESCRIPTOR = "...screen";
+    private JComboBox<String> printCombo;
+    private int logNum = 1;
 
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 900;
@@ -42,11 +46,14 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     JInternalFrame filePanel;
     static JInternalFrame exercisePanel;
     JInternalFrame routinePanel;
+    private JInternalFrame controlPanel;
 
-    JMenuItem homeMenuItem;
+    private static ScreenPrinter screenPrinter;
+
     JMenuItem fileMenuItem;
     JMenuItem exerciseMenuItem;
     JMenuItem routineMenuItem;
+    JMenuItem aboutMenuItem;
 
     /*
         MODIFIES: this
@@ -65,20 +72,32 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainWindow.setBackground(MAIN_BACKGROUND_COLOR);
 
-        homePanel = new HomePanel();
-        filePanel = new FilePanel();
-        exercisePanel = new ExercisePanel();
-        routinePanel = new RoutinePanel();
-
-        mainWindow.add(homePanel);
-        mainWindow.add(filePanel);
-        mainWindow.add(exercisePanel);
-        mainWindow.add(routinePanel);
-
+        addPanels();
         addMenu();
+        addButtonPanel();
 
         centreOnScreen();
         setVisible(false);
+    }
+
+    private void addPanels() {
+        filePanel = new FilePanel();
+        exercisePanel = new ExercisePanel();
+        routinePanel = new RoutinePanel();
+        controlPanel = new JInternalFrame("Control Panel", false, false, false, false);
+        controlPanel.setLayout(new BorderLayout());
+        controlPanel.pack();
+        controlPanel.setBounds(25, 150, 300, 100);
+        controlPanel.setVisible(true);
+
+        mainWindow.add(filePanel);
+        mainWindow.add(exercisePanel);
+        mainWindow.add(routinePanel);
+        mainWindow.add(controlPanel);
+    }
+
+    public static void setScreenPrinter(ScreenPrinter screenPrinter) {
+        WorkoutAppUI.screenPrinter = screenPrinter;
     }
 
     /*
@@ -88,19 +107,21 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     private void addMenu() {
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
+        JMenu aboutMenu = new JMenu("About");
         JMenu mainMenu = new JMenu("Menu");
+        menuBar.add(aboutMenu);
         menuBar.add(mainMenu);
 
-        homeMenuItem = new JMenuItem("Open Home panel");
+        aboutMenuItem = new JMenuItem("Open About panel");
+        aboutMenu.add(aboutMenuItem);
         fileMenuItem = new JMenuItem("Open File panel");
         exerciseMenuItem = new JMenuItem("Open Exercise panel");
         routineMenuItem = new JMenuItem("Open Routine panel");
-        mainMenu.add(homeMenuItem);
         mainMenu.add(fileMenuItem);
         mainMenu.add(exerciseMenuItem);
         mainMenu.add(routineMenuItem);
 
-        homeMenuItem.addActionListener(this);
+        aboutMenuItem.addActionListener(this);
         fileMenuItem.addActionListener(this);
         exerciseMenuItem.addActionListener(this);
         routineMenuItem.addActionListener(this);
@@ -117,29 +138,23 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         setLocation((width - getWidth()) / 2, (height - getHeight()) / 2);
     }
 
-    // Responsible for the Menu item actions (when user clicks on buttons)
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == homeMenuItem) {
-            if (homePanel.isClosed()) {
-                homePanel = new HomePanel();
-                mainWindow.add(homePanel);
+    /*
+        Got from Evren PALA:
+        https://stackoverflow.com/questions/15499211/calling-function-on-windows-close
+        Added sys.exit(0) to close app (not given by Evren)
+     */
+    public void processWindowEvent(WindowEvent we) {
+        if (we.getID() == WindowEvent.WINDOW_CLOSING) {
+
+            for (Iterator<model.Event> it = EventLog.getInstance().iterator(); it.hasNext(); ) {
+                model.Event s = it.next();
+                if (!it.hasNext()) {
+                    System.out.println(s);
+                } else {
+                    System.out.println(s + "\n");
+                }
             }
-        } else if (e.getSource() == fileMenuItem) {
-            if (filePanel.isClosed()) {
-                filePanel = new FilePanel();
-                mainWindow.add(filePanel);
-            }
-        } else if (e.getSource() == exerciseMenuItem) {
-            if (exercisePanel.isClosed()) {
-                exercisePanel = new ExercisePanel();
-                mainWindow.add(exercisePanel);
-            }
-        } else if (e.getSource() == routineMenuItem) {
-            if (routinePanel.isClosed()) {
-                routinePanel = new RoutinePanel();
-                mainWindow.add(routinePanel);
-            }
+            System.exit(0);
         }
     }
 
@@ -205,6 +220,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         jsonWriter.open();
         jsonWriter.write(workout);
         jsonWriter.close();
+        workout.notifySaved(JSON_STORE);
     }
 
     /*
@@ -214,11 +230,118 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
      */
     protected static void loadWorkout() throws IOException {
         workout = jsonReader.read();
+        workout.notifyLoad(JSON_STORE);
+    }
+
+    /**
+     * Helper to add control buttons.
+     */
+    private void addButtonPanel() {
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(2, 2));
+        buttonPanel.add(new JButton(new ClearLogAction()));
+        buttonPanel.add(new JButton(new PrintLogAction()));
+        buttonPanel.add(createPrintCombo());
+
+        controlPanel.add(buttonPanel, BorderLayout.CENTER);
+    }
+
+    /**
+     * Helper to create print options combo box
+     *
+     * @return the combo box
+     */
+    private JComboBox<String> createPrintCombo() {
+        printCombo = new JComboBox<String>();
+        printCombo.setBackground(new Color(0xABABFF));
+        printCombo.addItem(FILE_DESCRIPTOR);
+        printCombo.addItem(SCREEN_DESCRIPTOR);
+        return printCombo;
+    }
+
+    /**
+     * Represents the action to be taken when the user wants to
+     * print the event log.
+     */
+    private class PrintLogAction extends AbstractAction {
+        PrintLogAction() {
+            super("Print log to...");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            String selected = (String) printCombo.getSelectedItem();
+            LogPrinter logPrinter;
+            try {
+                if (selected.equals(FILE_DESCRIPTOR)) {
+                    logPrinter = new FilePrinter(logNum);
+                } else {
+                    logPrinter = handleScreenPrinter();
+                }
+                logPrinter.printLog(EventLog.getInstance());
+            } catch (LogException e) {
+                JOptionPane.showMessageDialog(null, e.getMessage(), "System Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private LogPrinter handleScreenPrinter() {
+        LogPrinter logPrinter;
+        if (screenPrinter != null) {
+            screenPrinter.dispose();
+        }
+        logPrinter = new ScreenPrinter();
+        screenPrinter = (ScreenPrinter) logPrinter;
+        mainWindow.add(screenPrinter);
+        return logPrinter;
+    }
+
+    /**
+     * Represents the action to be taken when the user wants to
+     * clear the event log.
+     */
+    private class ClearLogAction extends AbstractAction {
+        ClearLogAction() {
+            super("Clear log");
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent evt) {
+            EventLog.getInstance().clear();
+        }
+    }
+
+    // Responsible for the Menu item actions (when user clicks on buttons)
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == aboutMenuItem) {
+            if (homePanel != null) {
+                homePanel.dispose();
+            }
+            homePanel = new HomePanel();
+            mainWindow.add(homePanel);
+        } else if (e.getSource() == fileMenuItem) {
+            if (filePanel.isClosed()) {
+                filePanel = new FilePanel();
+                mainWindow.add(filePanel);
+            }
+        } else if (e.getSource() == exerciseMenuItem) {
+            if (exercisePanel.isClosed()) {
+                exercisePanel = new ExercisePanel();
+                mainWindow.add(exercisePanel);
+            }
+        } else if (e.getSource() == routineMenuItem) {
+            if (routinePanel.isClosed()) {
+                routinePanel = new RoutinePanel();
+                mainWindow.add(routinePanel);
+            }
+        }
     }
 
     public static void main(String[] args) {
         WorkoutAppUI workoutAppUI = new WorkoutAppUI();
-        new SplashScreen();
+        //new SplashScreen();
         workoutAppUI.setVisible(true);
     }
 }

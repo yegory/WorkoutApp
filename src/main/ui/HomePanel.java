@@ -27,11 +27,10 @@ public class HomePanel extends AbstractInternalFrame {
     public HomePanel() {
         super("Home Panel");
         setBackground(WorkoutAppUI.WorkoutPanelColor);
-        setBounds(25, 25, 300, 250);
+        setSize(300,250);
 
         setUpLabel();
         setUpPanel();
-
         add(homeLabel, BorderLayout.NORTH);
         add(panel, BorderLayout.CENTER);
     }

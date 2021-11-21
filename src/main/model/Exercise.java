@@ -91,18 +91,23 @@ public class Exercise implements Writable {
 
     // EFFECTS: sets exerciseName to passed name parameter if length of the parameter is > 0
     //          otherwise assigns a temporary name
-    public void setExerciseName(String name) {
-        if (name.equals("")) {
+    public void setExerciseName(String exerciseName) {
+        String nameBefore = this.exerciseName;
+        if (exerciseName.equals("")) {
             this.exerciseName = "TempName" + exerciseNumOfReps + exerciseNumOfSets
                     + exerciseRestTime + exerciseRating;
         } else {
-            this.exerciseName = name;
+            this.exerciseName = exerciseName;
         }
+        EventLog.getInstance().logEvent(new Event(
+                "Changed description for" + nameBefore + " exercise to: " + this.exerciseName));
     }
 
     // MODIFIES: this
     // EFFECTS: sets exerciseDescription to input
     public void setExerciseDescription(String exerciseDescription) {
+        EventLog.getInstance().logEvent(new Event(
+                "Changed description for" + exerciseName + " exercise to: " + exerciseDescription));
         this.exerciseDescription = exerciseDescription;
     }
 
@@ -110,24 +115,32 @@ public class Exercise implements Writable {
     // EFFECTS:  sets exerciseNumOfReps to whichever integer is greatest ( user input or 1)
     public void setExerciseNumOfReps(int exerciseNumOfReps) {
         this.exerciseNumOfReps = Math.max(1, exerciseNumOfReps);
+        EventLog.getInstance().logEvent(new Event(
+                "Changed reps for" + exerciseName + " exercise to: " + this.exerciseNumOfReps));
     }
 
     // MODIFIES: this
     // EFFECTS:  sets exerciseNumOfSets to whichever integer is greatest ( user input or 1)
     public void setExerciseNumOfSets(int exerciseNumOfSets) {
         this.exerciseNumOfSets = Math.max(1, exerciseNumOfSets);
+        EventLog.getInstance().logEvent(new Event(
+                "Changed reps for" + exerciseName + " exercise to: " + this.exerciseNumOfSets));
     }
 
     // MODIFIES: this
     // EFFECTS:  sets exerciseRestTime to whichever integer is greatest ( user input or 0)
     public void setExerciseRestTime(int exerciseRestTime) {
         this.exerciseRestTime = Math.max(0, exerciseRestTime);
+        EventLog.getInstance().logEvent(new Event(
+                "Changed reps for" + exerciseName + " exercise to: " + this.exerciseRestTime));
     }
 
     // MODIFIES: this
     // EFFECTS: sets exerciseRating to the input
     public void setExerciseRating(int exerciseRating) {
         this.exerciseRating = exerciseRating;
+        EventLog.getInstance().logEvent(new Event(
+                "Changed reps for" + exerciseName + " exercise to: " + exerciseRating));
     }
 
     // EFFECTS: converts exercise to Json object
