@@ -22,7 +22,6 @@ public class FilePanel extends AbstractInternalFrame implements ActionListener {
     JLabel saveLoadLocationLabel;
     JTextArea saveLoadTextArea;
 
-    JTextArea topTextArea;
     JButton loadButton;
     JButton saveButton;
 

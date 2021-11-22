@@ -47,6 +47,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     static JInternalFrame exercisePanel;
     JInternalFrame routinePanel;
     private JInternalFrame controlPanel;
+    private static ExerciseTable exerciseTable;
 
     private static ScreenPrinter screenPrinter;
 
@@ -98,6 +99,10 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
 
     public static void setScreenPrinter(ScreenPrinter screenPrinter) {
         WorkoutAppUI.screenPrinter = screenPrinter;
+    }
+
+    public static void setExerciseTable(ExerciseTable exerciseTable) {
+        WorkoutAppUI.exerciseTable = exerciseTable;
     }
 
     /*
@@ -181,8 +186,11 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
      */
     public static void displayIncludedExercises(int routinePos, boolean favoriteView) {
         List<Routine> routines = workout.getRoutines();
+        if (exerciseTable != null) {
+            exerciseTable.dispose();
+        }
         if (!favoriteView) {
-            new ExerciseTable(routines.get(routinePos));
+            exerciseTable = new ExerciseTable(routines.get(routinePos));
         } else {
             List<Routine> favoriteRoutines = new ArrayList<>();
             for (int i = 0; i < routines.size(); i++) {
@@ -190,7 +198,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
                     favoriteRoutines.add(routines.get(i));
                 }
             }
-            new ExerciseTable(favoriteRoutines.get(routinePos));
+            exerciseTable = new ExerciseTable(favoriteRoutines.get(routinePos));
         }
     }
 

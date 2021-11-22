@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 /*
     This is essentially an ExercisePanel however it does not contain any intractable items such as buttons or labels
@@ -15,7 +17,7 @@ import java.awt.*;
         RoutinePanel
  */
 
-public class ExerciseTable extends JFrame {
+public class ExerciseTable extends JFrame implements WindowListener {
 
     String[] tableHeader = {"Name", "Description", "Reps", "Sets", "Rest time (s)", "Rating"};
 
@@ -38,7 +40,7 @@ public class ExerciseTable extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         updateExerciseTableLocal(routine);
-
+        setAlwaysOnTop(true);
         setUpTable();
         add(scrollPane);
     }
@@ -80,5 +82,40 @@ public class ExerciseTable extends JFrame {
         for (int i = 0; i < routine.getIncludedExercises().size(); i++) {
             defaultTableModel.addRow((routine.getIncludedExercises().get(i)).exerciseToStringObject());
         }
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        WorkoutAppUI.setExerciseTable(this);
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 }
