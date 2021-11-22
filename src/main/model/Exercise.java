@@ -96,51 +96,69 @@ public class Exercise implements Writable {
         if (exerciseName.equals("")) {
             this.exerciseName = "TempName" + exerciseNumOfReps + exerciseNumOfSets
                     + exerciseRestTime + exerciseRating;
-        } else {
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed exercise name from \"" + nameBefore + " to \"" + this.exerciseName + "\""));
+        } else if (!this.exerciseName.equals(exerciseName)) {
             this.exerciseName = exerciseName;
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed exercise name from \"" + nameBefore + " to \"" + this.exerciseName + "\""));
         }
-        EventLog.getInstance().logEvent(new Event(
-                "Changed description for" + nameBefore + " exercise to: " + this.exerciseName));
     }
 
     // MODIFIES: this
     // EFFECTS: sets exerciseDescription to input
     public void setExerciseDescription(String exerciseDescription) {
-        EventLog.getInstance().logEvent(new Event(
-                "Changed description for" + exerciseName + " exercise to: " + exerciseDescription));
         this.exerciseDescription = exerciseDescription;
+        EventLog.getInstance().logEvent(new Event(
+                "Changed description for \"" + exerciseName + "\" to \"" + this.exerciseDescription + "\""));
     }
 
     // MODIFIES: this
     // EFFECTS:  sets exerciseNumOfReps to whichever integer is greatest ( user input or 1)
     public void setExerciseNumOfReps(int exerciseNumOfReps) {
+        int oldReps = this.exerciseNumOfReps;
         this.exerciseNumOfReps = Math.max(1, exerciseNumOfReps);
-        EventLog.getInstance().logEvent(new Event(
-                "Changed reps for" + exerciseName + " exercise to: " + this.exerciseNumOfReps));
+        if (oldReps != this.exerciseNumOfReps) {
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed reps for \"" + exerciseName + "\" from "
+                            + oldReps + " to " + this.exerciseNumOfReps + "."));
+        }
     }
 
     // MODIFIES: this
     // EFFECTS:  sets exerciseNumOfSets to whichever integer is greatest ( user input or 1)
     public void setExerciseNumOfSets(int exerciseNumOfSets) {
+        int oldSets = this.exerciseNumOfSets;
         this.exerciseNumOfSets = Math.max(1, exerciseNumOfSets);
-        EventLog.getInstance().logEvent(new Event(
-                "Changed reps for" + exerciseName + " exercise to: " + this.exerciseNumOfSets));
+        if (oldSets != this.exerciseNumOfSets) {
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed sets for \"" + exerciseName + "\" from "
+                            + oldSets + " to " + this.exerciseNumOfSets + "."));
+        }
     }
 
     // MODIFIES: this
     // EFFECTS:  sets exerciseRestTime to whichever integer is greatest ( user input or 0)
     public void setExerciseRestTime(int exerciseRestTime) {
+        int oldRestTime = this.exerciseRestTime;
         this.exerciseRestTime = Math.max(0, exerciseRestTime);
-        EventLog.getInstance().logEvent(new Event(
-                "Changed reps for" + exerciseName + " exercise to: " + this.exerciseRestTime));
+        if (oldRestTime != this.exerciseRestTime) {
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed rest time for \"" + exerciseName + "\" from " + oldRestTime + "s to "
+                            + this.exerciseRestTime + "s."));
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: sets exerciseRating to the input
     public void setExerciseRating(int exerciseRating) {
+        String oldRating = returnDefinedRating();
         this.exerciseRating = exerciseRating;
-        EventLog.getInstance().logEvent(new Event(
-                "Changed reps for" + exerciseName + " exercise to: " + exerciseRating));
+        if (oldRating != returnDefinedRating()) {
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed rating for \"" + exerciseName + "\" from \"" + oldRating
+                            + "\" to \"" + returnDefinedRating() + "\"."));
+        }
     }
 
     // EFFECTS: converts exercise to Json object

@@ -35,6 +35,8 @@ public class ScreenPrinter extends JInternalFrame implements LogPrinter, WindowL
         setBounds(0,250, WIDTH, HEIGHT);
         setVisible(true);
         addWindowListener(this);
+        logArea.setLineWrap(true);
+        logArea.setWrapStyleWord(true);
     }
 
     @Override

@@ -27,7 +27,7 @@ public class ExerciseTest {
         assertEquals(3, testExercise.getExerciseRestTime());
         assertEquals(-1, testExercise.getExerciseRating());
 
-        assertEquals("temporary name - 1105", illegalExerciseExample.getExerciseName());
+        assertEquals("TempName1105", illegalExerciseExample.getExerciseName());
         assertEquals("", illegalExerciseExample.getExerciseDescription());
         assertEquals(1, illegalExerciseExample.getExerciseNumOfReps());
         assertEquals(1, illegalExerciseExample.getExerciseNumOfSets());
@@ -56,7 +56,7 @@ public class ExerciseTest {
     void testSetExerciseName() {
         testExercise.setExerciseName("");
         testExercise2.setExerciseName("NewName123");
-        assertEquals("temporary name - 123-1", testExercise.getExerciseName());
+        assertEquals("TempName123-1", testExercise.getExerciseName());
         assertEquals("NewName123", testExercise2.getExerciseName());
     }
 

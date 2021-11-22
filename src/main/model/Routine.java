@@ -3,6 +3,7 @@ package model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import persistence.Writable;
+
 import java.util.List;
 
 /*
@@ -95,11 +96,13 @@ public class Routine implements Writable {
         String oldName = this.routineName;
         if (routineName.equals("")) {
             this.routineName = "Routine" + routineDescription.length() + totalTimeToComplete + routineRating;
-        } else {
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed routine name from \"" + oldName + "\" to \"" + this.routineName + "\"."));
+        } else if (!oldName.equals(routineName)) {
             this.routineName = routineName;
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed routine name from \"" + oldName + "\" to \"" + this.routineName + "\"."));
         }
-        EventLog.getInstance().logEvent(new Event(
-                "Changed name of" + oldName + " routine to: " + this.routineName));
     }
 
     // MODIFIES: this
@@ -107,41 +110,62 @@ public class Routine implements Writable {
     public void setRoutineDescription(String routineDescription) {
         this.routineDescription = routineDescription;
         EventLog.getInstance().logEvent(new Event(
-                "Changed description for" + routineName + " routine to: " + this.routineDescription));
+                "Changed description for \"" + routineName + "\" routine to \""
+                        + this.routineDescription + "\"."));
     }
 
     // MODIFIES: this
     // EFFECTS: sets exerciseIncludedExercises to the provided listOfExercise
     public void setIncludedExercises(List<Exercise> includedExercises) {
-        this.includedExercises = includedExercises;
-        EventLog.getInstance().logEvent(new Event(
-                "Changed included exercises for" + routineName + " routine"));
+        List<Exercise> previousExercises = this.includedExercises;
+        if (previousExercises != includedExercises) {
+            String previousExercisesString = getIncludedExerciseString();
+            this.includedExercises = includedExercises;
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed included exercises for \"" + routineName + "\" from "
+                            + previousExercisesString + " to " + getIncludedExerciseString() + "."));
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: sets exerciseRating to the input
     public void setTotalTimeToComplete(int totalTimeToComplete) {
-        this.totalTimeToComplete = totalTimeToComplete;
-        EventLog.getInstance().logEvent(new Event(
-                "Changed total time for" + routineName + " routine to: " + this.totalTimeToComplete));
+        int oldTime = this.totalTimeToComplete;
+        int expectedNewTime = Math.max(0,totalTimeToComplete);
+        if (oldTime != expectedNewTime) {
+            this.totalTimeToComplete = expectedNewTime;
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed total time for \"" + routineName + "\" routine from \""
+                            + formatTotalTimeToComplete(oldTime) + "\" to \""
+                            + formatTotalTimeToComplete(this.totalTimeToComplete) + "\"."));
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: sets routineRating to the input
     public void setRoutineRating(int routineRating) {
+        String oldRating = returnDefinedRating();
         this.routineRating = routineRating;
-        EventLog.getInstance().logEvent(new Event(
-                "Changed rating for" + routineName + " routine to: " + this.routineRating));
+        if (!oldRating.equals(returnDefinedRating())) {
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed rating for \"" + routineName + "\" routine from \"" + oldRating
+                            + "\" to " + returnDefinedRating() + "\"."));
+        }
     }
 
     public void updateTotalTimeToComplete() {
+        int oldTime = totalTimeToComplete;
         totalTimeToComplete = 0;
         for (Exercise exercise : includedExercises) {
             totalTimeToComplete += exercise.getExerciseRestTime() * exercise.getExerciseNumOfSets()
                     + exercise.getExerciseNumOfSets() * exercise.getExerciseNumOfReps() * TIME_FOR_1REP;
         }
-        EventLog.getInstance().logEvent(new Event(
-                "Changed total time for" + routineName + " routine to: " + totalTimeToComplete));
+        if (oldTime != totalTimeToComplete) {
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed total time for \"" + routineName + "\" routine from \""
+                            + formatTotalTimeToComplete(oldTime) + "\" to \""
+                            + formatTotalTimeToComplete(totalTimeToComplete) + "\"."));
+        }
     }
 
     // EFFECTS: helper to format time, e.g.: "# min, # sec"
@@ -149,6 +173,23 @@ public class Routine implements Writable {
         int wholeMinutes = Math.floorDiv(time, 60);
         time -= 60 * wholeMinutes;
         return String.format("%d min, %d sec", wholeMinutes, time);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: displays all the exercise name
+    //          example of possible output: "Routine 2: Routine 2 Name"
+    private String getIncludedExerciseString() {
+        String exerciseString = "[(" + includedExercises.size() + " exercises) ";
+        if (includedExercises.size() != 0) {
+            for (int i = 1; i <= includedExercises.size(); i++) {
+                if (i == includedExercises.size()) {
+                    exerciseString += includedExercises.get(i - 1).getExerciseName() + "]";
+                } else {
+                    exerciseString += includedExercises.get(i - 1).getExerciseName() + ", ";
+                }
+            }
+        }
+        return exerciseString;
     }
 
     // EFFECTS: converts routine to a Json object
