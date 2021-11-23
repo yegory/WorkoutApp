@@ -3,6 +3,8 @@ package model;
 import org.json.JSONObject;
 import persistence.Writable;
 
+import java.util.Objects;
+
 /*
     Json stuff borrowed from  JsonSerializationDemo
     https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
@@ -108,9 +110,12 @@ public class Exercise implements Writable {
     // MODIFIES: this
     // EFFECTS: sets exerciseDescription to input
     public void setExerciseDescription(String exerciseDescription) {
-        this.exerciseDescription = exerciseDescription;
-        EventLog.getInstance().logEvent(new Event(
-                "Changed description for \"" + exerciseName + "\" to \"" + this.exerciseDescription + "\""));
+        String oldDescription = this.exerciseDescription;
+        if (!oldDescription.equals(exerciseDescription)) {
+            this.exerciseDescription = exerciseDescription;
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed description for \"" + exerciseName + "\" to \"" + this.exerciseDescription + "\""));
+        }
     }
 
     // MODIFIES: this
@@ -188,5 +193,33 @@ public class Exercise implements Writable {
         data[5] = returnDefinedRating();
 
         return data;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Exercise exercise = (Exercise) o;
+
+        if (exerciseRating != exercise.exerciseRating) {
+            return false;
+        }
+        if (!exerciseName.equals(exercise.exerciseName)) {
+            return false;
+        }
+        return Objects.equals(exerciseDescription, exercise.exerciseDescription);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = exerciseName.hashCode();
+        result = 31 * result + (exerciseDescription != null ? exerciseDescription.hashCode() : 0);
+        result = 31 * result + exerciseRating;
+        return result;
     }
 }

@@ -73,3 +73,114 @@ Here is a list of the goals for the second phase:
 - As a user, when I start the application, I want to start with a fresh start where there are still no exercises or routines.
 - As a user, I want to be able to save all the exercises and routines that exist inside the app to the save file.
 - As a user, I want to be able to load all the exercises and routines that exist inside the save file.
+
+## Phase 4: Task 2 (adding event logging)
+### A representative sample of the events that occur when I use my program:
+    Mon Nov 22 18:26:24 PST 2021
+    Added new exercise "Knee push ups"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new exercise "Normal push ups"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new exercise "Inclined push ups"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new exercise "Bench press hypertrophy"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new exercise "Bench press for strength"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new exercise "Bodyweight squats"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new exercise "Barbell squats"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new exercise "Stiff leg deadlift"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new exercise "Calf raises"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new routine "Chest Workout Hypertrophy"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new routine "Leg day"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new routine "Chest/Legs mix"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Added new routine "1"
+    
+    Mon Nov 22 18:26:24 PST 2021
+    Loaded program from ./data/WorkoutAppData.json
+    
+    Mon Nov 22 18:30:32 PST 2021
+    Added new exercise "Lat Pulldown"
+    
+    Mon Nov 22 18:32:38 PST 2021
+    Changed exercise name from "Bench press hypertrophy to "Normal bench press"
+    
+    Mon Nov 22 18:32:38 PST 2021
+    Changed reps for "Normal bench press" from 15 to 12.
+    
+    Mon Nov 22 18:32:38 PST 2021
+    Changed sets for "Normal bench press" from 2 to 3.
+    
+    Mon Nov 22 18:32:38 PST 2021
+    Changed rest time for "Normal bench press" from 60s to 45s.
+    
+    Mon Nov 22 18:32:38 PST 2021
+    Changed rating for "Normal bench press" from "B - Great" to "A - Amazing".
+    
+    Mon Nov 22 18:34:08 PST 2021
+    Added new exercise "Shrugs"
+    
+    Mon Nov 22 18:35:13 PST 2021
+    Added new exercise "Farmer's Walk"
+    
+    Mon Nov 22 18:36:33 PST 2021
+    Added new exercise "Pull-up"
+    
+    Mon Nov 22 18:39:49 PST 2021
+    Added new exercise "Jumping Jacks"
+    
+    Mon Nov 22 18:40:45 PST 2021
+    Added new exercise "Arm circles"
+    
+    Mon Nov 22 18:41:42 PST 2021
+    Added new exercise "Jump Rope"
+    
+    Mon Nov 22 18:44:17 PST 2021
+    Added new exercise "Lunges"
+    
+    Mon Nov 22 18:46:44 PST 2021
+    Added new routine "Warm up"
+    
+    Mon Nov 22 18:49:41 PST 2021
+    Added new routine "Back day"
+    
+    Mon Nov 22 18:51:41 PST 2021
+    Added new exercise "Hyperextensions"
+    
+    Mon Nov 22 18:53:38 PST 2021
+    Added new exercise "Deadlift"
+    
+    Mon Nov 22 18:56:21 PST 2021
+    Changed included exercises for "Back day" from [(1 exercises) Lat Pulldown] to [(8 exercises) Hyperextensions, Lat Pulldown, Deadlift, Shrugs, Farmer's Walk, Pull-up, Hyperextensions, Hyperextensions].
+    
+    Mon Nov 22 18:56:21 PST 2021
+    Changed total time for "Back day" routine from "6 min, 21 sec" to "54 min, 33 sec".
+    
+    Mon Nov 22 18:56:28 PST 2021
+    Saved program to ./data/WorkoutAppData.json
+
+## Phase 4: Task 3 (reflection of app design as presented in the UML diagram)
+### prompt:
+    If you had more time to work on the project, is there any refactoring that you would do to improve your design?
+    If so, describe the changes you would make in point form in this section of your README.md file.
+    Note that we do not want you to actually perform the refactoring - just identify the changes you would make if you had more time.
+    Keep in mind that refactoring does not mean adding more features to your application.    

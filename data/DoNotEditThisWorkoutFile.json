@@ -26,12 +26,12 @@
             "exerciseNumOfReps": 15
         },
         {
-            "exerciseName": "Bench press hypertrophy",
-            "exerciseRestTime": 60,
+            "exerciseName": "Normal bench press",
+            "exerciseRestTime": 45,
             "exerciseDescription": "Load the bench press with medium weights to tire out the muscle. Make sure to control the weight on the on the way down, and up.",
-            "exerciseNumOfSets": 2,
-            "exerciseRating": 4,
-            "exerciseNumOfReps": 15
+            "exerciseNumOfSets": 3,
+            "exerciseRating": 5,
+            "exerciseNumOfReps": 12
         },
         {
             "exerciseName": "Bench press for strength",
@@ -40,14 +40,6 @@
             "exerciseNumOfSets": 5,
             "exerciseRating": 5,
             "exerciseNumOfReps": 5
-        },
-        {
-            "exerciseName": "Bodyweight squats",
-            "exerciseRestTime": 30,
-            "exerciseDescription": "No equipment needed, bring hips at or below knee level.",
-            "exerciseNumOfSets": 2,
-            "exerciseRating": 3,
-            "exerciseNumOfReps": 20
         },
         {
             "exerciseName": "Barbell squats",
@@ -72,6 +64,86 @@
             "exerciseNumOfSets": 3,
             "exerciseRating": 5,
             "exerciseNumOfReps": 15
+        },
+        {
+            "exerciseName": "Lat Pulldown",
+            "exerciseRestTime": 55,
+            "exerciseDescription": "The lat pulldown is a fantastic exercise to strengthen the latissimus dorsi muscle, the broadest muscle in your back, which promotes good postures and spinal stability. ",
+            "exerciseNumOfSets": 3,
+            "exerciseRating": 5,
+            "exerciseNumOfReps": 18
+        },
+        {
+            "exerciseName": "Shrugs",
+            "exerciseRestTime": 30,
+            "exerciseDescription": "The shoulder shrug is an exercise in weight training used to develop the upper trapezius muscle.",
+            "exerciseNumOfSets": 4,
+            "exerciseRating": 3,
+            "exerciseNumOfReps": 16
+        },
+        {
+            "exerciseName": "Farmer's Walk",
+            "exerciseRestTime": 75,
+            "exerciseDescription": "The farmer\u2019s walk, also called the farmer\u2019s carry, is a strength and conditioning exercise in which you hold a heavy load in each hand while walking for a designated distance.",
+            "exerciseNumOfSets": 4,
+            "exerciseRating": 5,
+            "exerciseNumOfReps": 1
+        },
+        {
+            "exerciseName": "Pull-up",
+            "exerciseRestTime": 60,
+            "exerciseDescription": "A pull-up is an upper-body strength exercise. The pull-up is a closed-chain movement where the body is suspended by the hands and pulls up.",
+            "exerciseNumOfSets": 6,
+            "exerciseRating": 5,
+            "exerciseNumOfReps": 10
+        },
+        {
+            "exerciseName": "Jumping Jacks",
+            "exerciseRestTime": 25,
+            "exerciseDescription": "Stand with your feet hip distance apart, with your arms at your sides. Then, simultaneously raise your arms out to the sides and over your head, and jump your feet out",
+            "exerciseNumOfSets": 1,
+            "exerciseRating": 5,
+            "exerciseNumOfReps": 30
+        },
+        {
+            "exerciseName": "Arm circles",
+            "exerciseRestTime": 5,
+            "exerciseDescription": "16 reps forward, 16 reps backward to get the shoulder joints warm",
+            "exerciseNumOfSets": 1,
+            "exerciseRating": 5,
+            "exerciseNumOfReps": 32
+        },
+        {
+            "exerciseName": "Jump Rope",
+            "exerciseRestTime": 50,
+            "exerciseDescription": "3x2 minute rounds ",
+            "exerciseNumOfSets": 3,
+            "exerciseRating": 5,
+            "exerciseNumOfReps": 2
+        },
+        {
+            "exerciseName": "Lunges",
+            "exerciseRestTime": 35,
+            "exerciseDescription": "Alternate between legs. Can do on the spot or 'lunge-walk' around",
+            "exerciseNumOfSets": 3,
+            "exerciseRating": 4,
+            "exerciseNumOfReps": 12
+        },
+        {
+            "exerciseName": "Hyperextensions",
+            "exerciseRestTime": 120,
+            "exerciseDescription": "aka Back extensions, can strengthen lower back muscles.",
+            "exerciseNumOfSets": 1,
+            "exerciseRating": 5,
+            "exerciseNumOfReps": 20
+        },
+        {
+            "exerciseName": "Deadlift",
+            "exerciseRestTime": 180,
+            "exerciseDescription": "Deadlifting trains most of the muscles in the legs, lower back and core.",
+            "exerciseNumOfSets": 5,
+            "exerciseRating": 5,
+            "exerciseNumOfReps": 5
         }
     ],
     "listOfRoutines": [
@@ -198,6 +270,124 @@
                 }
             ],
             "routineName": "Chest/Legs mix",
+            "routineRating": 5
+        },
+        {
+            "routineDescription": "Prevent injury by loosening up the muscles, tendons, joints etc",
+            "includedExercises": [
+                {
+                    "exerciseName": "Arm circles",
+                    "exerciseRestTime": 5,
+                    "exerciseDescription": "16 reps forward, 16 reps backward to get the shoulder joints warm",
+                    "exerciseNumOfSets": 1,
+                    "exerciseRating": 5,
+                    "exerciseNumOfReps": 32
+                },
+                {
+                    "exerciseName": "Jumping Jacks",
+                    "exerciseRestTime": 25,
+                    "exerciseDescription": "Stand with your feet hip distance apart, with your arms at your sides. Then, simultaneously raise your arms out to the sides and over your head, and jump your feet out",
+                    "exerciseNumOfSets": 1,
+                    "exerciseRating": 5,
+                    "exerciseNumOfReps": 30
+                },
+                {
+                    "exerciseName": "Jump Rope",
+                    "exerciseRestTime": 50,
+                    "exerciseDescription": "3x2 minute rounds ",
+                    "exerciseNumOfSets": 3,
+                    "exerciseRating": 5,
+                    "exerciseNumOfReps": 2
+                },
+                {
+                    "exerciseName": "Normal push ups",
+                    "exerciseRestTime": 45,
+                    "exerciseDescription": "A bodyweight exercise where one pushes their body up starting from a prone position using their arms. Only the toes and hands must be in contact with the ground.",
+                    "exerciseNumOfSets": 3,
+                    "exerciseRating": 4,
+                    "exerciseNumOfReps": 15
+                },
+                {
+                    "exerciseName": "Pull-up",
+                    "exerciseRestTime": 60,
+                    "exerciseDescription": "A pull-up is an upper-body strength exercise. The pull-up is a closed-chain movement where the body is suspended by the hands and pulls up.",
+                    "exerciseNumOfSets": 6,
+                    "exerciseRating": 5,
+                    "exerciseNumOfReps": 10
+                }
+            ],
+            "routineName": "Warm up",
+            "routineRating": 5
+        },
+        {
+            "routineDescription": "Made to build maximal back width and thickness",
+            "includedExercises": [
+                {
+                    "exerciseName": "Hyperextensions",
+                    "exerciseRestTime": 120,
+                    "exerciseDescription": "aka Back extensions, can strengthen lower back muscles.",
+                    "exerciseNumOfSets": 1,
+                    "exerciseRating": 5,
+                    "exerciseNumOfReps": 20
+                },
+                {
+                    "exerciseName": "Lat Pulldown",
+                    "exerciseRestTime": 55,
+                    "exerciseDescription": "The lat pulldown is a fantastic exercise to strengthen the latissimus dorsi muscle, the broadest muscle in your back, which promotes good postures and spinal stability. ",
+                    "exerciseNumOfSets": 3,
+                    "exerciseRating": 5,
+                    "exerciseNumOfReps": 18
+                },
+                {
+                    "exerciseName": "Deadlift",
+                    "exerciseRestTime": 180,
+                    "exerciseDescription": "Deadlifting trains most of the muscles in the legs, lower back and core.",
+                    "exerciseNumOfSets": 5,
+                    "exerciseRating": 5,
+                    "exerciseNumOfReps": 5
+                },
+                {
+                    "exerciseName": "Shrugs",
+                    "exerciseRestTime": 30,
+                    "exerciseDescription": "The shoulder shrug is an exercise in weight training used to develop the upper trapezius muscle.",
+                    "exerciseNumOfSets": 4,
+                    "exerciseRating": 3,
+                    "exerciseNumOfReps": 16
+                },
+                {
+                    "exerciseName": "Farmer's Walk",
+                    "exerciseRestTime": 75,
+                    "exerciseDescription": "The farmer\u2019s walk, also called the farmer\u2019s carry, is a strength and conditioning exercise in which you hold a heavy load in each hand while walking for a designated distance.",
+                    "exerciseNumOfSets": 4,
+                    "exerciseRating": 5,
+                    "exerciseNumOfReps": 1
+                },
+                {
+                    "exerciseName": "Pull-up",
+                    "exerciseRestTime": 60,
+                    "exerciseDescription": "A pull-up is an upper-body strength exercise. The pull-up is a closed-chain movement where the body is suspended by the hands and pulls up.",
+                    "exerciseNumOfSets": 6,
+                    "exerciseRating": 5,
+                    "exerciseNumOfReps": 10
+                },
+                {
+                    "exerciseName": "Hyperextensions",
+                    "exerciseRestTime": 120,
+                    "exerciseDescription": "aka Back extensions, can strengthen lower back muscles.",
+                    "exerciseNumOfSets": 1,
+                    "exerciseRating": 5,
+                    "exerciseNumOfReps": 20
+                },
+                {
+                    "exerciseName": "Hyperextensions",
+                    "exerciseRestTime": 120,
+                    "exerciseDescription": "aka Back extensions, can strengthen lower back muscles.",
+                    "exerciseNumOfSets": 1,
+                    "exerciseRating": 5,
+                    "exerciseNumOfReps": 20
+                }
+            ],
+            "routineName": "Back day",
             "routineRating": 5
         }
     ]

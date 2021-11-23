@@ -108,23 +108,43 @@ public class Routine implements Writable {
     // MODIFIES: this
     // EFFECTS: sets exerciseDescription to the input
     public void setRoutineDescription(String routineDescription) {
-        this.routineDescription = routineDescription;
-        EventLog.getInstance().logEvent(new Event(
-                "Changed description for \"" + routineName + "\" routine to \""
-                        + this.routineDescription + "\"."));
+        String oldDescription = this.routineDescription;
+        if (!oldDescription.equals(routineDescription)) {
+            this.routineDescription = routineDescription;
+            EventLog.getInstance().logEvent(new Event(
+                    "Changed description for \"" + routineName + "\" routine to \""
+                            + this.routineDescription + "\"."));
+        }
     }
 
     // MODIFIES: this
     // EFFECTS: sets exerciseIncludedExercises to the provided listOfExercise
     public void setIncludedExercises(List<Exercise> includedExercises) {
         List<Exercise> previousExercises = this.includedExercises;
-        if (previousExercises != includedExercises) {
+        if (determineIfDifferentExerciseLists(previousExercises, includedExercises)) {
             String previousExercisesString = getIncludedExerciseString();
             this.includedExercises = includedExercises;
             EventLog.getInstance().logEvent(new Event(
                     "Changed included exercises for \"" + routineName + "\" from "
                             + previousExercisesString + " to " + getIncludedExerciseString() + "."));
         }
+    }
+
+    private boolean determineIfDifferentExerciseLists(List<Exercise> listA, List<Exercise> listB) {
+        if (listA.size() == listB.size()) {
+            if (listA.size() != 0) {
+                for (int i = 0; i < listA.size(); i++) {
+                    if (!listA.get(i).equals(listB.get(i))) {
+                        return true;
+                    }
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+        return false;
     }
 
     // MODIFIES: this
