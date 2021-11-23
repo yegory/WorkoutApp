@@ -183,4 +183,12 @@ Here is a list of the goals for the second phase:
     If you had more time to work on the project, is there any refactoring that you would do to improve your design?
     If so, describe the changes you would make in point form in this section of your README.md file.
     Note that we do not want you to actually perform the refactoring - just identify the changes you would make if you had more time.
-    Keep in mind that refactoring does not mean adding more features to your application.    
+    Keep in mind that refactoring does not mean adding more features to your application.
+Things that I would refactor:
+1) My ExercisePanel and RoutinePanel are really similar, they both have:
+   - a non-editable tables
+   - both contain a scroll panel 
+   - both have a grid panel
+   - both have 3 flow panels in the same orders
+
+    `To solve this, I would refactor these common parts out into one abstract class, use it `
