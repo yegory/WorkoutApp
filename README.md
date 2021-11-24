@@ -191,4 +191,7 @@ Things that I would refactor:
    - both have a grid panel
    - both have 3 flow panels in the same orders
 
-    `To solve this, I would refactor these common parts out into one abstract class, use it `
+   `To solve this, I would refactor these common parts out into one abstract class and extend it using the ExercisePanel and RoutinePanel classes.`
+2) Another idea I had is to  create a composite class
+3) I made a big mistake (I think) in phase 3 of my project. That is, I couldn't find a way to access the workout without making it static. At this point in time, I don't remember exacly how but I remember that I struggled quite a bit to fix this issue by creating methods/passing workout etc.
+    `I think I could try to use the observer pattern with the file Panel and the rest of the panels. I could add an update method that would be called whenever the user loads a new workout.`
