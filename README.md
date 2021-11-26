@@ -177,6 +177,9 @@ Here is a list of the goals for the second phase:
     Workout saved
 
 ## Phase 4: Task 3 (reflection of app design as presented in the UML diagram)
+
+![UML_Design_Diagram](https://media.github.students.cs.ubc.ca/user/13164/files/e0e2cf00-4e30-11ec-8f62-2dc4261750d4)
+
 ### prompt:
     If you had more time to work on the project, is there any refactoring that you would do to improve your design?
     If so, describe the changes you would make in point form in this section of your README.md file.
