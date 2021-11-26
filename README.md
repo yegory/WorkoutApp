@@ -192,4 +192,6 @@ Things that I would refactor:
    - both have 3 flow panels in the same orders
 
     `To solve this, I would refactor these common parts out into one abstract class, and extend ExercisePanel and RoutinePanel using it`
-2) I can reduce coupling
+2) I can reduce coupling between the ChoiceList class and the Exercise class by utilizing the observer pattern.
+   Furthermore, I believe that my RoutinePanel and Exercise panel would benefit from the observer patter because both have to constantly be updated when new routines and exercises are added.
+       'I believe that an implementation would'

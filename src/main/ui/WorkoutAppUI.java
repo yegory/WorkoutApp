@@ -196,9 +196,9 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
             exerciseTable = new ExerciseTable(routines.get(routinePos));
         } else {
             List<Routine> favoriteRoutines = new ArrayList<>();
-            for (int i = 0; i < routines.size(); i++) {
-                if (routines.get(i).getRoutineRating() == 5) {
-                    favoriteRoutines.add(routines.get(i));
+            for (Routine routine : routines) {
+                if (routine.getRoutineRating() == 5) {
+                    favoriteRoutines.add(routine);
                 }
             }
             exerciseTable = new ExerciseTable(favoriteRoutines.get(routinePos));

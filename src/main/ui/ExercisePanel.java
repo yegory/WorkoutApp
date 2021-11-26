@@ -53,7 +53,7 @@ public class ExercisePanel extends AbstractInternalFrame {
     DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 
     private static List<Exercise> exercises;
-    private Workout workout = WorkoutAppUI.getWorkout();
+    private static Workout workout = WorkoutAppUI.getWorkout();
 
     /*
         EFFECTS: Constructs an Exercise panel
