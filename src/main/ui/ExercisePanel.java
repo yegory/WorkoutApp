@@ -211,7 +211,7 @@ public class ExercisePanel extends AbstractInternalFrame {
                     Integer.parseInt(exerciseRestTimeTextField.getText()),
                     Integer.parseInt(exerciseRatingTextField.getText()));
             workout.addExercise(exercise);
-            defaultTableModel.addRow(exercise.exerciseToStringObject());
+            repopulateWithFavorites(favoriteView);
             resetTextFields();
         } catch (Exception error) {
             JOptionPane.showMessageDialog(null, error.toString());
@@ -231,7 +231,7 @@ public class ExercisePanel extends AbstractInternalFrame {
             for (Exercise exercise : exercises) {
                 if (exercise.getExerciseName().equals(exerciseName)) {
                     exercises.remove(exercise);
-                    updateExerciseTable(workout);
+                    repopulateWithFavorites(favoriteView);
                     resetTextFields();
                     break;
                 }

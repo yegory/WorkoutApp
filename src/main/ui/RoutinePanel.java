@@ -51,8 +51,7 @@ public class RoutinePanel extends AbstractInternalFrame {
     static NonEditableJTable table;
     JScrollPane scrollPane;
 
-    private Workout workout = WorkoutAppUI.getWorkout();
-    private List<Routine> routines = workout.getRoutines();
+    private Workout workout;
 
     /*
         Constructs a Routine panel, with initial view set to all exercises (!favorite)
@@ -213,7 +212,7 @@ public class RoutinePanel extends AbstractInternalFrame {
         try {
             String routineName = routineSearchTextField.getText();
             workout = WorkoutAppUI.getWorkout();
-            routines = workout.getRoutines();
+            List<Routine> routines = workout.getRoutines();
             for (Routine routine : routines) {
                 if (routine.getRoutineName().equals(routineName)) {
                     routines.remove(routine);
@@ -236,7 +235,7 @@ public class RoutinePanel extends AbstractInternalFrame {
         try {
             String routineName = routineSearchTextField.getText();
             workout = WorkoutAppUI.getWorkout();
-            routines = workout.getRoutines();
+            List<Routine> routines = workout.getRoutines();
             for (Routine routine : routines) {
                 if (routine.getRoutineName().equals(routineName)) {
                     List<Exercise> chosenExercises = ChoiceList.createListExercise();
@@ -303,8 +302,6 @@ public class RoutinePanel extends AbstractInternalFrame {
         }
     }
 
-
-
     /*
         Creates a string object from a routine object
      */
@@ -318,10 +315,6 @@ public class RoutinePanel extends AbstractInternalFrame {
         data[4] = routine.returnDefinedRating();
 
         return data;
-    }
-
-    private void getFavoriteView() {
-
     }
 
     /*

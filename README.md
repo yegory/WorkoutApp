@@ -28,16 +28,13 @@ their *ideal** workout routine. This application will have:
 ## Who will use it?
 
 The final application **could potentially be used by anyone** (assuming enough pre-made workout programs are made),
-however, since the time is limited for this project, the design/features will be biased towards the average male/woman (
-need to define this better later).
+however, since the time is limited for this project, the design/features will be limited. Furthermore
+I need to use a different data structure to store information depending on what type of exercise, e.g.: you cannot define
+a 30 minute on an elliptical machine in terms of reps, sets, rest time. The reps/sets/rest time would mainly only fit for gym splits,
+and even then this is quite limiting. A better application would address this issue.
 
-However, technically speaking, it is **impossible** to create a program that would be able to produce the 'ideal'
-workout routine for everyone, which is why, personally, I would recommend anyone who wants to see the best results in
-the fastest time to get a personal trainer.
-
-That being said, with enough background knowledge, I believe that one could definitely find this application useful in
-managing their workout planning.
-
+That being said, given that an individual has previous gym experience, they can definitely find this application useful
+to some extent in managing their workout planning.
 ---
 
 ## Why is this project of interest to me?
@@ -50,7 +47,8 @@ kg on a bench press at 75 kg bodyweight.
 
 > Either way, I decided to make this app because:
 >1. I have some experience in this area; and
->2. It seems like a challenging project from which I can learn a lot because in terms of programming as well as facilitating my understanding of a good gym program.
+>2. It seems like a challenging project from which I can learn a lot because in terms of programming as well as 
+    facilitating my understanding of a good gym program.
 ---
 
 # User Stories
@@ -191,7 +189,27 @@ Things that I would refactor:
    - both have a grid panel
    - both have 3 flow panels in the same orders
 
-    `To solve this, I would refactor these common parts out into one abstract class, and extend ExercisePanel and RoutinePanel using it`
-2) I can reduce coupling between the ChoiceList class and the Exercise class by utilizing the observer pattern.
-   Furthermore, I believe that my RoutinePanel and Exercise panel would benefit from the observer patter because both have to constantly be updated when new routines and exercises are added.
-       'I believe that an implementation would'
+`To solve this, I would refactor these common parts out into one abstract class, and extend ExercisePanel and RoutinePanel using it`
+2) My ExercisePanel and ExerciseTable both have the same exact table pattern. 
+
+`To reduce the code duplication, I could try to leave the ExerciseTable as it is, and somehow incorporate this class into the
+Exercise Panel, by adding an ExerciseTable with all exercises into my ExercisePanel class. This would make my code easier to understand,
+because it makes more sense to have update table methods inside the ExerciseTable class instead of ExercisePanel class`
+
+3) I can reduce coupling between the ChoiceList class and the Exercise class by utilizing the observer pattern.
+   Furthermore, I believe that my RoutinePanel and Exercise panel would benefit from the observer patter because both 
+have to constantly be updated when new routines and exercises are added. 
+
+`I am not sure how to implement the observer pattern, but I believe that an implementation would have the Workout class 
+as the Subject of the observer pattern, and the ExercisePanel and RoutinePanel would be the concrete observers 
+(I am not sure if WorkoutAppUI is a concrete observer).`
+4) The thing that confuses me the most in my program is the ButtonRenderer and ButtonEditor, as well as the way they 
+work with favorite view. In my current implementation, I had to verify whether the RoutinePanel is in favorite 
+view or not is by checking the text on the button. This is obviously wrong, but I could not figure out how to use 
+Object-Oriented Programming with UI elements. That is, I tried to call public methods on a RoutinePanel object (routinePanel),
+but this does not work because JPanel does not have those elements. 
+
+`My only guess why I could not call custom methods on my InternalPanels is probably because I did not extend InternalFrame 
+inside my RoutinePanel class, which would mean that in my WorkoutAppUI I could instantiate RoutinePanel as a user-defined 
+class that extends a java package, which would allow me to inherit the methods (probably). This is just a thought, 
+but I would try to do this to improve my code (refactor).`
