@@ -14,31 +14,31 @@ import model.exception.LogException;
 public class FilePrinter implements LogPrinter {
     private static final String SEP = System.getProperty("file.separator");
 
-    private FileWriter fw;
+    private FileWriter fileWriter;
 
     /*
          Constructor creates file.  Each log file has a sequential log number
          starting at LOG_INIT for each run of the application.
          @throws LogException when any kind of input/output error occurs
      */
-    public FilePrinter(int logNum) throws LogException {
+    public FilePrinter(String date) throws LogException {
         try {
-            File logFile = new File("./data/Log_" + logNum);
-            fw = new FileWriter(logFile);
+            File logFile = new File("./data/Logs/" + date);
+            fileWriter = new FileWriter(logFile);
         } catch (IOException e) {
             throw new LogException("Cannot open file");
         }
     }
 
     @Override
-    public void printLog(EventLog el) throws LogException {
+    public void printLog(EventLog eventLog) throws LogException {
         try {
-            for (Event next : el) {
-                fw.write(next.toString());
-                fw.write("\n\n");
+            for (Event next : eventLog) {
+                fileWriter.write(next.toString());
+                fileWriter.write("\n\n");
             }
-            fw.flush();
-            fw.close();
+            fileWriter.flush();
+            fileWriter.close();
         } catch (IOException e) {
             throw new LogException("Cannot write to file");
         }

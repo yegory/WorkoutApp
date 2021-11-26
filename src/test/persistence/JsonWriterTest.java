@@ -20,7 +20,7 @@ public class JsonWriterTest extends JsonTest{
     @Test
     void testWriterInvalidFile() {
         try {
-            Workout workout = new Workout("Workout Writer Test");
+            Workout workout = new Workout("profile");
             JsonWriter writer = new JsonWriter("./data/myError\0:StackTrace.json");
             writer.open();
             fail("IOException was expected");
@@ -39,7 +39,7 @@ public class JsonWriterTest extends JsonTest{
             writer.close();
 
             JsonReader reader = new JsonReader("./data/testWriterEmptyWorkout.json");
-            workout = reader.read();
+            workout = reader.read(workout);
             assertEquals("Workout Writer Test", workout.getName());
             assertEquals(0, workout.exercisesSize());
             assertEquals(0, workout.routinesSize());
@@ -65,7 +65,7 @@ public class JsonWriterTest extends JsonTest{
             writer.close();
 
             JsonReader reader = new JsonReader("./data/testWriterGeneralWorkout.json");
-            workout = reader.read();
+            workout = reader.read(new Workout("profile"));
             assertEquals("Workout Writer Test 2", workout.getName());
             List<Exercise> exercises = workout.getExercises();
             List<Routine> routines = workout.getRoutines();

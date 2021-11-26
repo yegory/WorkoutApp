@@ -11,15 +11,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.List;
 
-/*
+/**
     !!! save and load functionality inspired/borrowed from JsonSerializationDemo
     https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
 
-    Copied centreOnScreen() and DesktopFocusAction from AlarmSystem demo project
+    Credit to https://github.students.cs.ubc.ca/CPSC210/AlarmSystem for allowing me to use their implementation of
+    Event and EventLog classes and the design, as well as
+    centreOnScreen() and DesktopFocusAction methods
 
     WorkoutAppUI is contains the main method. It is responsible for the Main window that contains 4 Panels, A Menu bar,
     and also initializes a splash screen before running the program.
@@ -75,7 +78,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
 
         addPanels();
         addMenu();
-        addButtonPanel();
+        addControlPanelButtons();
 
         centreOnScreen();
         setVisible(false);
@@ -88,7 +91,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         controlPanel = new JInternalFrame("Control Panel", false, false, false, false);
         controlPanel.setLayout(new BorderLayout());
         controlPanel.pack();
-        controlPanel.setBounds(25, 150, 300, 100);
+        controlPanel.setBounds(25, 150, 300, 80);
         controlPanel.setVisible(true);
 
         mainWindow.add(filePanel);
@@ -202,11 +205,11 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         }
     }
 
-    /*
-         Represents action to be taken when user clicks desktop to switch focus.
-
-         Taken from AlarmSystem demo project, however I don't think this serves any purpose in my project,
-         kept just in case
+    /**
+     *      Taken from AlarmSystem demo project, however I don't think this serves any purpose in my project,
+     *      kept just in case
+     *
+     *      Represents action to be taken when user clicks desktop to switch focus.
      */
     private class DesktopFocusAction extends MouseAdapter {
         @Override
@@ -220,34 +223,37 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         return workout;
     }
 
-    /*
-        inspired by JsonSerializationDemo (link in README)
-        saves the workout to file
+    /**
+     *      inspired by JsonSerializationDemo, link to repo at the top of this class.
+     *
+     *      MODIFIES: workout
+     *      EFFECTS: saves the workout to file
      */
     protected static void saveWorkout() throws IOException {
         jsonWriter.open();
         jsonWriter.write(workout);
         jsonWriter.close();
-        workout.notifySaved(JSON_STORE);
-    }
-
-    /*
-        !!! inspired by JsonSerializationDemo (link in README)
-        MODIFIES: this
-        EFFECTS: loads workout from file
-     */
-    protected static void loadWorkout() throws IOException {
-        workout = jsonReader.read();
-        workout.notifyLoad(JSON_STORE);
     }
 
     /**
-     * Helper to add control buttons.
+     *      inspired by JsonSerializationDemo, link to repo at the top of this class.
+     *
+     *      MODIFIES: this, workout
+     *      EFFECTS: loads workout from file
      */
-    private void addButtonPanel() {
+    protected static void loadWorkout() throws IOException {
+        workout = jsonReader.read(workout);
+    }
+
+    /**
+     *      Taken from AlarmSystem, link to repo at the top of this class.
+     *
+     *      MODIFIES: this
+     *      EFFECTS: Helper to add control buttons.
+     */
+    private void addControlPanelButtons() {
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(2, 2));
-        buttonPanel.add(new JButton(new ClearLogAction()));
+        buttonPanel.setLayout(new GridLayout(1, 2));
         buttonPanel.add(new JButton(new PrintLogAction()));
         buttonPanel.add(createPrintCombo());
 
@@ -255,9 +261,13 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     }
 
     /**
-     * Helper to create print options combo box
+     *      Taken from AlarmSystem, link to repo at the top of this class
      *
-     * @return the combo box
+     *      MODIFIES: this
+     *      EFFECTS: Helper to create print options combo box
+     *
+     *      Removed the ability to clear the log (AlarmSystem allowed it), so that ALL the events are printed out
+     *      after the app is closed.
      */
     private JComboBox<String> createPrintCombo() {
         printCombo = new JComboBox<String>();
@@ -268,8 +278,10 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     }
 
     /**
-     * Represents the action to be taken when the user wants to
-     * print the event log.
+     *      Taken from AlarmSystem, link to repo at the top of this class.
+     *
+     *      MODIFIES: this
+     *      EFFECTS:  Represents the action to be taken when the user wants to print the event log.
      */
     private class PrintLogAction extends AbstractAction {
         PrintLogAction() {
@@ -282,7 +294,10 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
             LogPrinter logPrinter;
             try {
                 if (selected.equals(FILE_DESCRIPTOR)) {
-                    logPrinter = new FilePrinter(logNum);
+                    Date date = Calendar.getInstance().getTime();
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+                    String strDate = dateFormat.format(date);
+                    logPrinter = new FilePrinter(strDate);
                 } else {
                     logPrinter = handleScreenPrinter();
                 }
@@ -294,6 +309,10 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     *      MODIFIES: this
+     *      EFFECTS: Helper to ensure that only one ScreenPrinter is created.
+     */
     private LogPrinter handleScreenPrinter() {
         LogPrinter logPrinter;
         if (screenPrinter != null) {
@@ -305,22 +324,11 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         return logPrinter;
     }
 
+
     /**
-     * Represents the action to be taken when the user wants to
-     * clear the event log.
+     *      MODIFIES: this
+     *      EFFECTS: adds panels to mainWindow when user clicks on a menu item
      */
-    private class ClearLogAction extends AbstractAction {
-        ClearLogAction() {
-            super("Clear log");
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent evt) {
-            EventLog.getInstance().clear();
-        }
-    }
-
-    // Responsible for the Menu item actions (when user clicks on buttons)
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == aboutMenuItem) {
@@ -347,6 +355,9 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     *      Main method
+     */
     public static void main(String[] args) {
         WorkoutAppUI workoutAppUI = new WorkoutAppUI();
         //new SplashScreen();

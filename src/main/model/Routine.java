@@ -6,18 +6,20 @@ import persistence.Writable;
 
 import java.util.List;
 
-/*
-    Json stuff borrowed from  JsonSerializationDemo
-    https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+/**
+ *      Credit to JsonSerializationDemo - https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+ *      for inspiration for methods relating to JSON
  */
 
 public class Routine implements Writable {
-    // Represents a list of exercise having:
-    //      - a name;
-    //      - a description (could be considered like "notes")
-    //      - the array of names of exercises which are in the routine
-    //      - total time to complete (assuming that each rep takes 4 seconds)
-    //      - rating [1-5] (any other number is "Unrated")
+    /**
+     *      Represents a routine entry, having:
+     *      routineName         - a name
+     *      routineDescription  - a routine description (could be considered like "notes")
+     *      includedExercises   - the list of exercises which are in the routine
+     *      totalTimeToComplete - total time to complete (assuming that each rep takes 4 seconds)
+     *      routineRating       - rating [1-5] (any other number is "Unrated")
+     */
     public static final int TIME_FOR_1REP = 4;
 
     private String routineName;
@@ -26,12 +28,13 @@ public class Routine implements Writable {
     private int totalTimeToComplete;
     private int routineRating;
 
-    // EFFECTS: Constructs the exercise
-    //          routineName is initialized to user input (can't be empty)
-    //          sets routineDescription to user input (can be empty)
-    //          sets includedExercise to user input (can be empty)
-    //          calculates and sets the totalTimeToComplete for that routine
-    //          sets routineRating to user input (any integer)
+    /**
+     *      EFFECTS: Constructs the exercise
+     * @param routineName routineName is initialized to user input (can't be empty)
+     * @param routineDescription sets routineDescription to user input (can be empty)
+     * @param includedExercises sets includedExercise to user input (can be empty)
+     * @param routineRating sets routineRating to user input (any integer)
+     */
     public Routine(String routineName, String routineDescription, List<Exercise> includedExercises, int routineRating) {
         int totalExerciseTime = 0;
 

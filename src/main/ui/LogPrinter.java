@@ -4,13 +4,15 @@ import model.EventLog;
 import model.exception.LogException;
 
 /**
- * Defines behaviours that event log printers must support.
+ *      Credit to https://github.students.cs.ubc.ca/CPSC210/AlarmSystem for allowing me to use their implementation of
+ *      Event and EventLog classes and the design.
+ *
+ *      Defines behaviours that event log printers must support.
  */
 public interface LogPrinter {
-    /**
-     * Prints the log
-     * @param el  the event log to be printed
-     * @throws LogException when printing fails for any reason
+    /*
+        Prints the log
+        throws LogException if file path name is incorrect
      */
-    void printLog(EventLog el) throws LogException;
+    void printLog(EventLog eventLog) throws LogException;
 }

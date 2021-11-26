@@ -7,25 +7,51 @@ import persistence.Writable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *      Credit to JsonSerializationDemo - https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+ *      for inspiration for methods relating to JSON
+ */
 
-/*
-    !!! I created this class so that I could save/load to the same file, got the idea from
-    https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo,
-    where a workroom contained all the information that needed to be saved.
+/**
+ *      I created this class so that I could save/load to the same file, got the idea from
+ *      https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo,
+ *      where a workroom contained all the information that needed to be saved.
  */
 
 // Represents a workout profile having a name, and list of already existing exercises and workout routines.
 public class Workout implements Writable {
 
+
     private String name;
     private List<Exercise> exercises;
     private List<Routine> routines;
 
-    // EFFECTS: constructs a new workout with name as provided with empty exercises and routines lists.
+    /**
+     *      EFFECTS: constructs a new workout with name as provided with empty exercises and routines lists.
+     * @param name is the name of the workout profile (could add different log in/profile management
+     *
+     *
+     *      Workout represents :
+     *      exercises: a list of all stand-alone exercises that a user currently has in their profile
+     *      routines: a list of all routines that a user has created based on the list of exercises at some point in
+     *                the program's execution
+     */
+    /*
+            NOTE: List<Exercise> inside the included exercises list in a routine could potentially not exist inside the
+            exercises list if the user has deleted the exercise from the exercises list after creating the routine
+            involving that exercise. This is completely fine as I couldn't figure out what behaviour I want, and this
+            'default' behaviour seems best to me. If I made the choice to validate every exercise inside each routine
+            after deleting that exercise from the exercises list, then some routines would be different and personally
+            I would not want this to happen if i was the user. However, a better alternative I could do (would take some
+            time is that when a user deletes an exercise, there could be a tab opens that shows each routine that will
+            be affected and force the user to choose to remove it from the routine or keep it.
+     */
+
     public Workout(String name) {
         this.name = name;
         exercises = new ArrayList<>();
         routines = new ArrayList<>();
+        EventLog.getInstance().logEvent(new Event("Workout created"));
     }
 
     // EFFECTS: returns the name of the workout profile
@@ -97,6 +123,7 @@ public class Workout implements Writable {
         routines.remove(index);
     }
 
+    // EFFECTS: returns true if there is a matching exercise with the same name inside the exercises list.
     public boolean findExercise(String exerciseName) {
         for (Exercise exercise : exercises) {
             if (exercise.getExerciseName().equals(exerciseName)) {
@@ -106,12 +133,17 @@ public class Workout implements Writable {
         return false;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("name", name);
         json.put("listOfExercises", exercisesToJson());
         json.put("listOfRoutines", routinesToJson());
+        EventLog.getInstance().logEvent(new Event("Workout saved"));
         return json;
     }
 
@@ -136,28 +168,4 @@ public class Workout implements Writable {
 
         return jsonArray;
     }
-
-    public void notifySaved(String path) {
-        EventLog.getInstance().logEvent(new Event("Saved program to " + path));
-    }
-
-    public void notifyLoad(String path) {
-        EventLog.getInstance().logEvent(new Event("Loaded program from " + path));
-    }
-
-//    public List<Exercise> choiceListHelper(ArrayList<String> finalList) throws NullPointerException {
-//
-//        List<Exercise> exerciseList = new ArrayList<>();
-//
-//        for (String exerciseName : finalList) {
-//            for (Exercise exercise : exercises) {
-//                if (exercise.getExerciseName().equals(exerciseName)) {
-//                    exerciseList.add(exercise);
-//                }
-//            }
-//        }
-//
-//        return exerciseList;
-//
-//    }
 }

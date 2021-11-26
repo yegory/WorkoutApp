@@ -19,7 +19,8 @@ public class JsonReaderTest extends JsonTest {
     void testReaderNonExistentFile() {
         JsonReader reader = new JsonReader("./lib/NoFileInPath.json");
         try {
-            Workout workout = reader.read();
+            Workout workout = new Workout("profile");
+            workout = reader.read(workout);
             fail("IOException expected");
         } catch (IOException e) {
             // pass
@@ -30,7 +31,8 @@ public class JsonReaderTest extends JsonTest {
     void testReaderEmptyWorkRoom() {
         JsonReader reader = new JsonReader("./data/testReaderEmptyWorkout.json");
         try {
-            Workout workout = reader.read();
+            Workout workout = new Workout("profile");
+            workout = reader.read(workout);
             assertEquals("testReaderEmptyWorkout", workout.getName());
             assertEquals(0, workout.exercisesSize());
             assertEquals(0, workout.routinesSize());
@@ -43,7 +45,8 @@ public class JsonReaderTest extends JsonTest {
     void testReaderGeneralWorkRoom() {
         JsonReader reader = new JsonReader("./data/testReaderGeneralWorkout.json");
         try {
-            Workout workout = reader.read();
+            Workout workout = new Workout("profile");
+            workout = reader.read(workout);
             assertEquals("testReaderGeneralWorkout", workout.getName());
             List<Exercise> exercises = workout.getExercises();
             assertEquals(8, exercises.size());

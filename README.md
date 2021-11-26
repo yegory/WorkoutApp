@@ -76,6 +76,9 @@ Here is a list of the goals for the second phase:
 
 ## Phase 4: Task 2 (adding event logging)
 ### A representative sample of the events that occur when I use my program:
+    Mon Nov 22 18:26:20 PST 2021
+    Workout created
+
     Mon Nov 22 18:26:24 PST 2021
     Added new exercise "Knee push ups"
     
@@ -114,9 +117,6 @@ Here is a list of the goals for the second phase:
     
     Mon Nov 22 18:26:24 PST 2021
     Added new routine "1"
-    
-    Mon Nov 22 18:26:24 PST 2021
-    Loaded program from ./data/WorkoutAppData.json
     
     Mon Nov 22 18:30:32 PST 2021
     Added new exercise "Lat Pulldown"
@@ -176,7 +176,7 @@ Here is a list of the goals for the second phase:
     Changed total time for "Back day" routine from "6 min, 21 sec" to "54 min, 33 sec".
     
     Mon Nov 22 18:56:28 PST 2021
-    Saved program to ./data/WorkoutAppData.json
+    Workout saved
 
 ## Phase 4: Task 3 (reflection of app design as presented in the UML diagram)
 ### prompt:
@@ -191,5 +191,5 @@ Things that I would refactor:
    - both have a grid panel
    - both have 3 flow panels in the same orders
 
-    `To solve this, I would refactor these common parts out into one abstract class, use it `
-2) Trying to see if i broke my github commit. Still not sure
+    `To solve this, I would refactor these common parts out into one abstract class, and extend ExercisePanel and RoutinePanel using it`
+2) I can reduce coupling

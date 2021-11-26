@@ -5,18 +5,20 @@ import persistence.Writable;
 
 import java.util.Objects;
 
-/*
-    Json stuff borrowed from  JsonSerializationDemo
-    https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+/**
+ *      Credit to JsonSerializationDemo - https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
+ *      for inspiration for methods relating to JSON
  */
 
-// Represents an exercise having:
-//      - a name;
-//      - description;
-//      - # of reps;
-//      - # of sets;
-//      - rest time in seconds (>= 0); and
-//      - rating [1-5] (any other number is "Unrated")
+/**
+ *      Represents an exercise having:
+ *      exerciseName        - a name;
+ *      exerciseDescription - a description
+ *      exerciseNumOfReps   - number of reps (greater than 0)
+ *      exerciseNumOfSets   - number of sets (greater than 0)
+ *      exerciseRestTime    - rest time between sets in seconds (>= 0)
+ *      exerciseRating      - rating between 1 and 5 inclusive (any other number is "Unrated")
+ */
 public class Exercise implements Writable {
 
     private String exerciseName;
@@ -26,13 +28,15 @@ public class Exercise implements Writable {
     private int exerciseRestTime;
     private int exerciseRating;
 
-    // EFFECTS: Constructs the routine
-    //          exerciseName is initialized to a temporary name with (hopefully) a unique number combination.
-    //          sets exerciseDescription to user input (can be empty)
-    //          sets exerciseNumOfReps to whichever integer is greatest ( user input or 1)
-    //          sets exerciseNumOfSets to whichever integer is greatest ( user input or 1)
-    //          sets exerciseRestTime to whichever integer is greatest ( user input or 0)
-    //          sets exerciseRating to any integer
+    /**
+     *      EFFECTS: Constructs the routine
+     * @param exerciseName exerciseName is initialized to a temporary name with (hopefully) a unique number combination.
+     * @param exerciseDescription sets exerciseDescription to user input (can be empty)
+     * @param exerciseNumberOfReps sets exerciseNumOfReps to whichever integer is greatest ( user input or 1)
+     * @param exerciseNumberOfSets sets exerciseNumOfSets to whichever integer is greatest ( user input or 1)
+     * @param exerciseRestTime sets exerciseRestTime to whichever integer is greatest ( user input or 0)
+     * @param exerciseRating sets exerciseRating to any integer
+     */
     public Exercise(String exerciseName, String exerciseDescription, int exerciseNumberOfReps, int exerciseNumberOfSets,
                     int exerciseRestTime, int exerciseRating) {
         this.exerciseDescription = exerciseDescription;
