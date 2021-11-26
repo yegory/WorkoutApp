@@ -193,6 +193,7 @@ Things that I would refactor:
    - both have 3 flow panels in the same orders
 
 `To solve this, I would refactor these common parts out into one abstract class, and extend ExercisePanel and RoutinePanel using it`
+
 2) My ExercisePanel and ExerciseTable both have the same exact table pattern. 
 
 `To reduce the code duplication, I could try to leave the ExerciseTable as it is, and somehow incorporate this class into the
