@@ -89,6 +89,16 @@ public class Workout implements Writable {
         return routines;
     }
 
+    public List<Routine> getFavoriteRoutines() {
+        List<Routine> favorites = new ArrayList<>();
+        for (Routine routine: routines) {
+            if (routine.getRoutineRating() == 5) {
+                favorites.add(routine);
+            }
+        }
+        return favorites;
+    }
+
     // REQUIRES: index is not out of range for routines
     // EFFECT: returns the routine at position equal to index
     public Routine getRoutine(int index) {

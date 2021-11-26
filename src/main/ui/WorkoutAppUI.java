@@ -16,6 +16,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 
+import static ui.RoutinePanel.updateRoutineTable;
+
 /**
     !!! save and load functionality inspired/borrowed from JsonSerializationDemo
     https://github.students.cs.ubc.ca/CPSC210/JsonSerializationDemo
@@ -178,7 +180,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         Updates the routine Panel after the user loaded a save.
      */
     public static void updateRoutinePanel() {
-        RoutinePanel.updateRoutineTable();
+        updateRoutineTable(RoutinePanel.isFavoriteView());
     }
 
     /*
@@ -194,13 +196,8 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
         }
         if (!favoriteView) {
             exerciseTable = new ExerciseTable(routines.get(routinePos));
-        } else {
-            List<Routine> favoriteRoutines = new ArrayList<>();
-            for (Routine routine : routines) {
-                if (routine.getRoutineRating() == 5) {
-                    favoriteRoutines.add(routine);
-                }
-            }
+        } else if (favoriteView) {
+            List<Routine> favoriteRoutines = workout.getFavoriteRoutines();
             exerciseTable = new ExerciseTable(favoriteRoutines.get(routinePos));
         }
     }

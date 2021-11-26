@@ -18,7 +18,10 @@ import java.util.List;
 
 public class RoutinePanel extends AbstractInternalFrame {
 
-    private static boolean favoriteView;
+    public static boolean isFavoriteView() {
+        return (toggleFavoriteRoutinesButton.getText().equals("View all routines"));
+    }
+
     static JButton toggleFavoriteRoutinesButton;
     JButton addRoutineButton;
     JButton deleteRoutineButton;
@@ -48,8 +51,8 @@ public class RoutinePanel extends AbstractInternalFrame {
     static NonEditableJTable table;
     JScrollPane scrollPane;
 
-    private Workout workout;
-    private List<Routine> routines;
+    private Workout workout = WorkoutAppUI.getWorkout();
+    private List<Routine> routines = workout.getRoutines();
 
     /*
         Constructs a Routine panel, with initial view set to all exercises (!favorite)
@@ -59,7 +62,6 @@ public class RoutinePanel extends AbstractInternalFrame {
         setBounds(350, 425, 825, 425);
 
         workout = WorkoutAppUI.getWorkout();
-        favoriteView = false;
         setUp();
     }
 
@@ -74,7 +76,7 @@ public class RoutinePanel extends AbstractInternalFrame {
         setUpFlowPanels();
         setUpTableAndScrollPane();
         setUpActionListeners();
-        updateRoutineTable();
+        updateRoutineTable(isFavoriteView());
 
         gridPanel = new JPanel(new GridLayout(3, 1));
         gridPanel.add(topFlowPanel);
@@ -156,7 +158,7 @@ public class RoutinePanel extends AbstractInternalFrame {
 
         //credit: http://www.java2s.com/Code/Java/Swing-Components/ButtonTableExample.htm
         table.getColumn("Included exercises").setCellRenderer(new ButtonRenderer());
-        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox(), favoriteView));
+        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox()));
         table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
         table.getTableHeader().setOpaque(false);
@@ -178,7 +180,7 @@ public class RoutinePanel extends AbstractInternalFrame {
         addRoutineButton.addActionListener(event -> addRoutine());
         deleteRoutineButton.addActionListener(event -> deleteRoutine());
         editRoutineButton.addActionListener(event -> editRoutine());
-        toggleFavoriteRoutinesButton.addActionListener(event -> repopulateWithFavoriteView(favoriteView));
+        toggleFavoriteRoutinesButton.addActionListener(event -> repopulateWithFavoriteView());
         routineIncludedExercisesButton.addActionListener(event -> new ChoiceList());
     }
 
@@ -195,7 +197,7 @@ public class RoutinePanel extends AbstractInternalFrame {
                     routineDescriptionTextField.getText(), chosenExercises,
                     Integer.parseInt(routineRatingTextField.getText()));
             workout.addRoutine(routine);
-            defaultTableModel.addRow(routineToStringObject(routine));
+            updateRoutineTable(isFavoriteView());
             resetTextFields();
         } catch (Exception error) {
             JOptionPane.showMessageDialog(null, error.toString());
@@ -215,7 +217,7 @@ public class RoutinePanel extends AbstractInternalFrame {
             for (Routine routine : routines) {
                 if (routine.getRoutineName().equals(routineName)) {
                     routines.remove(routine);
-                    updateRoutineTable();
+                    updateRoutineTable(isFavoriteView());
                     resetTextFields();
                     break;
                 }
@@ -243,7 +245,7 @@ public class RoutinePanel extends AbstractInternalFrame {
                     routine.setIncludedExercises(chosenExercises);
                     routine.setRoutineRating(Integer.parseInt(routineRatingTextField.getText()));
                     routine.updateTotalTimeToComplete();
-                    updateRoutineTable();
+                    updateRoutineTable(isFavoriteView());
                 }
             }
         } catch (Exception error) {
@@ -271,21 +273,21 @@ public class RoutinePanel extends AbstractInternalFrame {
             the table's rows will get repopulated with all the current routines.
             Otherwise, only routines with rating equal to '5' will be displayed.
      */
-    public static void repopulateWithFavoriteView(boolean favoriteView) {
+    public void repopulateWithFavoriteView() {
         table.getColumn("Included exercises").setCellRenderer(new ButtonRenderer());
-        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox(), !favoriteView));
-        setFavoriteView(!favoriteView);
-        updateRoutineTable();
+        table.getColumn("Included exercises").setCellEditor(new ButtonEditor(new JCheckBox()));
+        updateRoutineTable(!isFavoriteView());
     }
 
     /*
         MODIFIES: this
         EFFECTS: updates the routine table. Updates the favoriteRoutineButton if needed.
      */
-    public static void updateRoutineTable() {
+    public static void updateRoutineTable(boolean favoriteView) {
         defaultTableModel.setRowCount(0);
 
         Workout workout = WorkoutAppUI.getWorkout();
+
         if (favoriteView) {
             toggleFavoriteRoutinesButton.setText("View all routines");
             for (int i = 0; i < workout.routinesSize(); i++) {
@@ -300,6 +302,8 @@ public class RoutinePanel extends AbstractInternalFrame {
             }
         }
     }
+
+
 
     /*
         Creates a string object from a routine object
@@ -316,8 +320,8 @@ public class RoutinePanel extends AbstractInternalFrame {
         return data;
     }
 
-    public static void setFavoriteView(boolean view) {
-        favoriteView = view;
+    private void getFavoriteView() {
+
     }
 
     /*

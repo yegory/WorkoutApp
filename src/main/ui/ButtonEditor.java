@@ -19,17 +19,15 @@ class ButtonEditor extends DefaultCellEditor implements ActionListener {
     protected JButton button;
     private String label;
     private boolean isPushed;
-    private boolean favoriteView;
 
     /*
         Constructs an invisible checkbox in the table cell.
      */
-    public ButtonEditor(JCheckBox checkBox, boolean favoriteView) {
+    public ButtonEditor(JCheckBox checkBox) {
         super(checkBox);
         button = new JButton();
         button.setOpaque(true);
         button.addActionListener(this);
-        this.favoriteView = favoriteView;
     }
 
     @Override
@@ -79,7 +77,7 @@ class ButtonEditor extends DefaultCellEditor implements ActionListener {
             }
         }
         int routinePos = Integer.parseInt(buttonLabel.substring(startIndex + 1, endIndex)) - 1;
-        WorkoutAppUI.displayIncludedExercises(routinePos, favoriteView);
+        WorkoutAppUI.displayIncludedExercises(routinePos, RoutinePanel.isFavoriteView());
     }
 
     @Override
