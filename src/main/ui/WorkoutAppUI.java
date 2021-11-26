@@ -39,7 +39,6 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     private static final String FILE_DESCRIPTOR = "...file";
     private static final String SCREEN_DESCRIPTOR = "...screen";
     private JComboBox<String> printCombo;
-    private int logNum = 1;
 
     private static final int WIDTH = 1200;
     private static final int HEIGHT = 900;
@@ -292,7 +291,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
             try {
                 if (selected.equals(FILE_DESCRIPTOR)) {
                     Date date = Calendar.getInstance().getTime();
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     String strDate = dateFormat.format(date);
                     logPrinter = new FilePrinter(strDate);
                 } else {
@@ -307,6 +306,8 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
     }
 
     /**
+     *      Taken from AlarmSystem, link to repo at the top of this class.
+     *
      *      MODIFIES: this
      *      EFFECTS: Helper to ensure that only one ScreenPrinter is created.
      */
@@ -357,7 +358,7 @@ public class WorkoutAppUI extends JFrame implements ActionListener {
      */
     public static void main(String[] args) {
         WorkoutAppUI workoutAppUI = new WorkoutAppUI();
-        //new SplashScreen();
+        new SplashScreen();
         workoutAppUI.setVisible(true);
     }
 }
