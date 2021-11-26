@@ -203,6 +203,7 @@ have to constantly be updated when new routines and exercises are added.
 `I am not sure how to implement the observer pattern, but I believe that an implementation would have the Workout class 
 as the Subject of the observer pattern, and the ExercisePanel and RoutinePanel would be the concrete observers 
 (I am not sure if WorkoutAppUI is a concrete observer).`
+
 4) The thing that confuses me the most in my program is the ButtonRenderer and ButtonEditor, as well as the way they 
 work with favorite view. In my current implementation, I had to verify whether the RoutinePanel is in favorite 
 view or not is by checking the text on the button. This is obviously wrong, but I could not figure out how to use 
